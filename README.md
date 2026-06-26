@@ -193,8 +193,3 @@ CarBook.WebUI/
 └── Dtos/               → UI katmanı DTO'ları
 ```
 
----
-
-## 📄 Lisans
-
-Bu proje eğitim amaçlı geliştirilmiştir.
