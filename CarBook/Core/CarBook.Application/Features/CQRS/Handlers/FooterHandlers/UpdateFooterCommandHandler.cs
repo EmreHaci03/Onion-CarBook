@@ -1,0 +1,30 @@
+﻿using AutoMapper;
+using CarBook.Application.Features.CQRS.Commands.FooterCommands;
+using CarBook.Application.Interfaces;
+using CarBook.Domain.Entities;
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CarBook.Application.Features.CQRS.Handlers.FooterHandlers
+{
+    public class UpdateFooterCommandHandler : IRequestHandler<UpdateFooterCommand>
+    {
+        private readonly IRepository<Footer> _repository;
+        private readonly IMapper _mapper;
+
+        public UpdateFooterCommandHandler(IRepository<Footer> repository, IMapper mapper)
+        {
+            _repository = repository;
+            _mapper = mapper;
+        }
+        public async Task Handle(UpdateFooterCommand request, CancellationToken cancellationToken)
+        {
+            var values = _mapper.Map<Footer>(request);
+            await _repository.UpdateAsync(values);
+        }
+    }
+}

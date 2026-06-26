@@ -1,0 +1,97 @@
+﻿@model GetAllStatisticDto
+
+<style>
+    .stat-counter-section {
+        padding: 70px 0;
+    }
+
+    .stat-counter-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+    }
+
+    .stat-counter-card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+        padding: 32px 20px;
+        text-align: center;
+        min-height: 150px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .stat-counter-number {
+        font-size: 34px;
+        font-weight: 700;
+        color: #1d2127;
+        line-height: 1.2;
+        white-space: nowrap;
+    }
+
+        .stat-counter-number small {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fbb710;
+        }
+
+    .stat-counter-label {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #777;
+        line-height: 1.4;
+    }
+
+        .stat-counter-label strong {
+            display: block;
+            color: #1d2127;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+    @@media (max-width: 991px) {
+        .stat-counter-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @@media (max-width: 575px) {
+        .stat-counter-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<section class="stat-counter-section bg-light" id="section-counter">
+    <div class="container">
+        <div class="stat-counter-grid">
+
+            <div class="stat-counter-card">
+                <div class="stat-counter-number">@Model?.CarCount</div>
+                <div class="stat-counter-label">Araç<br>Filomuzda</div>
+            </div>
+
+            <div class="stat-counter-card">
+                <div class="stat-counter-number">@Model?.CheapestCarPriceDay <small>₺</small></div>
+                <div class="stat-counter-label">'den Başlayan<br>Günlük Fiyatlar</div>
+            </div>
+
+            <div class="stat-counter-card">
+                <div class="stat-counter-number">@Model?.MostCarCount</div>
+                <div class="stat-counter-label">
+                    <strong>@Model?.MostCarBrandName</strong>
+                    En Çok Tercih Edilen
+                </div>
+            </div>
+
+            <div class="stat-counter-card">
+                <div class="stat-counter-number">@Model?.MostCommentedBlogCommentCount</div>
+                <div class="stat-counter-label">Yorum Alan<br>Popüler Blog Yazımız</div>
+            </div>
+
+        </div>
+    </div>
+</section>

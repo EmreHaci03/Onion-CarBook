@@ -1,0 +1,429 @@
+﻿@model CreateBannerDto
+@{
+    ViewData["Title"] = "Yeni Banner Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .page-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.4fr;
+        gap: 20px;
+        height: calc(100vh - 120px);
+    }
+
+    .left-panel {
+        background: linear-gradient(145deg, #0f172a, #1e3a5f);
+        border-radius: 16px;
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden;
+        position: relative;
+    }
+
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 220px;
+            height: 220px;
+            background: rgba(59,130,246,.15);
+            border-radius: 50%;
+        }
+
+        .left-panel::after {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            left: -40px;
+            width: 160px;
+            height: 160px;
+            background: rgba(99,102,241,.12);
+            border-radius: 50%;
+        }
+
+    .left-top {
+        position: relative;
+        z-index: 1;
+    }
+
+    .left-icon {
+        width: 52px;
+        height: 52px;
+        background: rgba(59,130,246,.2);
+        border: 1px solid rgba(59,130,246,.3);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+        .left-icon i {
+            font-size: 24px;
+            color: #60a5fa;
+        }
+
+    .left-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 10px;
+        line-height: 1.3;
+    }
+
+    .left-desc {
+        font-size: 13px;
+        color: #94a3b8;
+        line-height: 1.6;
+    }
+
+    .tips {
+        position: relative;
+        z-index: 1;
+    }
+
+    .tip-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+
+    .tip-dot {
+        width: 22px;
+        height: 22px;
+        background: rgba(59,130,246,.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 1px;
+    }
+
+        .tip-dot i {
+            font-size: 11px;
+            color: #60a5fa;
+        }
+
+    .tip-text {
+        font-size: 12px;
+        color: #94a3b8;
+        line-height: 1.5;
+    }
+
+        .tip-text strong {
+            color: #cbd5e1;
+            font-weight: 600;
+        }
+
+    .preview-box {
+        background: rgba(255,255,255,.05);
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 12px;
+        padding: 16px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .preview-label {
+        font-size: 10px;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+    }
+
+    .preview-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #f1f5f9;
+        margin-bottom: 4px;
+    }
+
+    .preview-desc {
+        font-size: 11px;
+        color: #64748b;
+    }
+
+    .preview-video {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 8px;
+        background: rgba(59,130,246,.15);
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 11px;
+        color: #93c5fd;
+    }
+
+    .right-panel {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .right-header {
+        padding: 18px 24px;
+        border-bottom: 1px solid #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .right-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    .right-subtitle {
+        font-size: 11px;
+        color: #94a3b8;
+        margin-top: 2px;
+    }
+
+    .right-body {
+        padding: 24px;
+        overflow-y: auto;
+        flex: 1;
+    }
+
+    .field-group {
+        margin-bottom: 18px;
+    }
+
+    .field-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+        .field-label i {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+    .field-hint {
+        font-size: 11px;
+        color: #94a3b8;
+        margin-top: 4px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+        font-size: 13px;
+        color: #0f172a;
+        font-family: 'Segoe UI', sans-serif;
+        transition: border-color .15s, box-shadow .15s;
+        outline: none;
+        background: #fafafa;
+    }
+
+        .form-control:focus {
+            border-color: #93c5fd;
+            box-shadow: 0 0 0 3px rgba(59,130,246,.1);
+            background: #fff;
+        }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 85px;
+    }
+
+    .text-danger {
+        font-size: 11px;
+        color: #dc2626;
+        display: block;
+        margin-top: 3px;
+    }
+
+    .right-footer {
+        padding: 16px 24px;
+        border-top: 1px solid #f1f5f9;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fafafa;
+    }
+
+    .footer-note {
+        font-size: 11px;
+        color: #94a3b8;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn-cancel {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 18px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #64748b;
+        text-decoration: none;
+        transition: all .15s;
+    }
+
+        .btn-cancel:hover {
+            background: #f8fafc;
+            color: #374151;
+        }
+
+    .btn-save {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 20px;
+        background: linear-gradient(135deg, #3b82f6, #6366f1);
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #fff;
+        cursor: pointer;
+        transition: opacity .15s;
+    }
+
+        .btn-save:hover {
+            opacity: .9;
+        }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: #64748b;
+        text-decoration: none;
+        margin-bottom: 16px;
+        transition: color .15s;
+    }
+
+        .back-btn:hover {
+            color: #374151;
+        }
+</style>
+
+<a asp-area="Admin" asp-controller="Banner" asp-action="Index" class="back-btn">
+    <i class="bi bi-arrow-left"></i> Banner Listesine Dön
+</a>
+
+<div class="page-grid">
+    <div class="left-panel">
+        <div class="left-top">
+            <div class="left-icon"><i class="bi bi-megaphone-fill"></i></div>
+            <div class="left-title">Yeni Banner Oluştur</div>
+            <div class="left-desc">Ana sayfanızda görünecek banner içeriğini buradan ekleyebilirsiniz. Başlık, açıklama ve video bilgilerini girin.</div>
+        </div>
+        <div>
+            <div class="tips">
+                <div class="tip-item">
+                    <div class="tip-dot"><i class="bi bi-check-lg"></i></div>
+                    <div class="tip-text"><strong>Kısa ve etkileyici</strong> bir başlık seçin. 5-8 kelime idealdir.</div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-dot"><i class="bi bi-check-lg"></i></div>
+                    <div class="tip-text"><strong>Açıklama</strong> metni ziyaretçiyi bilgilendirmeli, 1-2 cümle yeterli.</div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-dot"><i class="bi bi-check-lg"></i></div>
+                    <div class="tip-text"><strong>YouTube veya Vimeo</strong> linki ekleyerek tanıtım videosu gösterebilirsiniz.</div>
+                </div>
+            </div>
+            <div class="preview-box">
+                <div class="preview-label">Önizleme</div>
+                <div class="preview-title" id="prev-title">Başlık burada görünecek...</div>
+                <div class="preview-desc" id="prev-desc">Açıklama metni burada...</div>
+                <div class="preview-video">
+                    <i class="bi bi-play-circle-fill"></i>
+                    <span id="prev-video">Video açıklaması...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="right-header">
+            <div>
+                <div class="right-title">Banner Bilgileri</div>
+                <div class="right-subtitle">Tüm alanları eksiksiz doldurun</div>
+            </div>
+            <div style="width:36px; height:36px; background:#eff6ff; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+                <i class="bi bi-megaphone" style="color:#3b82f6; font-size:16px;"></i>
+            </div>
+        </div>
+        <div class="right-body">
+            <form asp-action="AddBanner" method="post" id="bannerForm">
+                <div class="field-group">
+                    <label class="field-label"><i class="bi bi-type-h1"></i> Başlık</label>
+                    <input asp-for="Title" class="form-control" id="inp-title" placeholder="Örn: Hızlı ve Kolay Araç Kiralama" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                    <div class="field-hint">Ana sayfada büyük başlık olarak gösterilir.</div>
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="bi bi-text-paragraph"></i> Açıklama</label>
+                    <textarea asp-for="Description" class="form-control" id="inp-desc" placeholder="Banner altında görünecek kısa açıklama..."></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="bi bi-camera-video"></i> Video Açıklaması</label>
+                    <input asp-for="VideoDescription" class="form-control" id="inp-video" placeholder="Örn: Araç kiralama nasıl çalışır?" />
+                    <span asp-validation-for="VideoDescription" class="text-danger"></span>
+                    <div class="field-hint">Video oynat butonunun yanında görünür.</div>
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="bi bi-link-45deg"></i> Video URL</label>
+                    <input asp-for="VideoUrl" class="form-control" placeholder="https://youtube.com/watch?v=..." />
+                    <span asp-validation-for="VideoUrl" class="text-danger"></span>
+                    <div class="field-hint">YouTube veya Vimeo linki girebilirsiniz.</div>
+                </div>
+            </form>
+        </div>
+        <div class="right-footer">
+            <div class="footer-note"><i class="bi bi-info-circle me-1"></i>Tüm alanlar zorunludur.</div>
+            <div class="form-actions">
+                <a asp-area="Admin" asp-controller="Banner" asp-action="Index" class="btn-cancel">
+                    <i class="bi bi-x-lg"></i> İptal
+                </a>
+                <button type="submit" form="bannerForm" class="btn-save">
+                    <i class="bi bi-check-lg"></i> Banneri Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('inp-title').addEventListener('input', function() {
+        document.getElementById('prev-title').textContent = this.value || 'Başlık burada görünecek...';
+    });
+    document.getElementById('inp-desc').addEventListener('input', function() {
+        document.getElementById('prev-desc').textContent = this.value || 'Açıklama metni burada...';
+    });
+    document.getElementById('inp-video').addEventListener('input', function() {
+        document.getElementById('prev-video').textContent = this.value || 'Video açıklaması...';
+    });
+</script>

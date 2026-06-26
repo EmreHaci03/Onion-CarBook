@@ -1,0 +1,162 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        padding: 40px 20px;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .stat-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 20px;
+        text-align: center;
+        transition: box-shadow .2s, transform .2s;
+    }
+
+        .stat-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+
+    .stat-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        margin: 0 auto 12px;
+    }
+
+    .stat-val {
+        font-size: 26px;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 4px;
+    }
+
+    .stat-lbl {
+        font-size: 12px;
+        color: #94a3b8;
+    }
+
+    .stat-sub {
+        font-size: 11px;
+        color: #64748b;
+        margin-top: 6px;
+        background: #f8fafc;
+        border-radius: 6px;
+        padding: 3px 8px;
+        display: inline-block;
+    }
+
+    .live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #dcfce7;
+        color: #16a34a;
+        border: 1px solid #bbf7d0;
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 11px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .live-dot {
+        width: 7px;
+        height: 7px;
+        background: #16a34a;
+        border-radius: 50%;
+        animation: pulse 1.5s infinite;
+    }
+
+    @@keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.3;
+        }
+    }
+</style>
+
+<div style="padding: 40px 20px; max-width:1100px; margin:0 auto;">
+    <div class="live-badge">
+        <div class="live-dot"></div> Canlı Veri
+    </div>
+
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:#eff6ff;">🚗</div>
+            <div class="stat-val" id="carCount">-</div>
+            <div class="stat-lbl">Toplam Araç</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="background:#fef4dd;">📝</div>
+            <div class="stat-val" id="blogName" style="font-size:14px;">-</div>
+            <div class="stat-lbl">Son Blog</div>
+            <div class="stat-sub" id="blogAuthor">-</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="background:#dcfce7;">🏆</div>
+            <div class="stat-val" id="mostCarBrand" style="font-size:18px;">-</div>
+            <div class="stat-lbl">En Çok Araç</div>
+            <div class="stat-sub" id="mostCarCount">-</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="background:#fdf4ff;">⛽</div>
+            <div class="stat-val" id="fuelType" style="font-size:18px;">-</div>
+            <div class="stat-lbl">En Çok Yakıt</div>
+            <div class="stat-sub" id="fuelCount">-</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="background:#fff7ed;">💰</div>
+            <div class="stat-val" id="cheapestPrice">-</div>
+            <div class="stat-lbl">En Ucuz Günlük</div>
+            <div class="stat-sub" id="cheapestCar">-</div>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script>
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("https://localhost:7211/carhub")
+        .build();
+
+    connection.on("ReceiveCarStats", function (data) {
+        const d = JSON.parse(data);
+
+        document.getElementById("carCount").textContent = d.carCount;
+        document.getElementById("blogName").textContent = d.lastBlogName;
+        document.getElementById("blogAuthor").textContent = d.lastBlogAuthor;
+        document.getElementById("mostCarBrand").textContent = d.mostCarBrandName;
+        document.getElementById("mostCarCount").textContent = d.mostCarCount + " araç";
+        document.getElementById("fuelType").textContent = d.mostUsedFuelType;
+        document.getElementById("fuelCount").textContent = d.fuelTypeCount + " araç";
+        document.getElementById("cheapestPrice").textContent = d.cheapestCarPriceDay + " ₺";
+        document.getElementById("cheapestCar").textContent = d.carNameWithBrand;
+    });
+
+    connection.start().then(() => {
+        connection.invoke("SendCarStats");
+    });
+
+    setInterval(() => {
+        if (connection.state === signalR.HubConnectionState.Connected) {
+            connection.invoke("SendCarStats");
+        }
+    }, 10000);
+</script>

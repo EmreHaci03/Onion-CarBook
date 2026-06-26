@@ -1,0 +1,404 @@
+﻿@model UpdateBlogDto
+@{
+    ViewData["Title"] = "Blog Düzenle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: #64748b;
+        text-decoration: none;
+        margin-bottom: 16px;
+        transition: color .15s;
+    }
+
+        .back-btn:hover {
+            color: #374151;
+        }
+
+    .add-wrap {
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: 24px;
+        align-items: start;
+    }
+
+    .form-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .form-card-header {
+        padding: 16px 22px;
+        border-bottom: 1px solid #f1f5f9;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .form-card-icon {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, #fefce8, #fef9c3);
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .form-card-icon i {
+            font-size: 18px;
+            color: #ca8a04;
+        }
+
+    .form-card-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    .form-card-body {
+        padding: 22px;
+    }
+
+    .field-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .field-group {
+        margin-bottom: 0;
+    }
+
+        .field-group.full {
+            grid-column: 1 / -1;
+        }
+
+    .field-label {
+        font-size: 11.5px;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 6px;
+        display: block;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+        font-size: 13px;
+        color: #0f172a;
+        font-family: 'Segoe UI', sans-serif;
+        transition: border-color .15s, box-shadow .15s;
+        outline: none;
+        background: #fafafa;
+        box-sizing: border-box;
+        appearance: none;
+    }
+
+        .form-control:focus {
+            border-color: #fde047;
+            box-shadow: 0 0 0 3px rgba(234,179,8,.1);
+            background: #fff;
+        }
+
+    select.form-control {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 36px;
+    }
+
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .text-danger {
+        font-size: 11px;
+        color: #dc2626;
+        display: block;
+        margin-top: 3px;
+    }
+
+    .divider {
+        border: none;
+        border-top: 1px solid #f1f5f9;
+        margin: 18px 0;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .btn-cancel {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 18px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #64748b;
+        text-decoration: none;
+        transition: all .15s;
+    }
+
+        .btn-cancel:hover {
+            background: #f8fafc;
+            color: #374151;
+        }
+
+    .btn-save {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 20px;
+        background: linear-gradient(135deg, #ca8a04, #eab308);
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #fff;
+        cursor: pointer;
+        transition: opacity .15s;
+    }
+
+        .btn-save:hover {
+            opacity: .9;
+        }
+
+    .side-card {
+        background: #fafafa;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 22px;
+    }
+
+    .side-card-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #f1f5f9;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+        .side-card-title i {
+            color: #ca8a04;
+        }
+
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 14px;
+        font-size: 12.5px;
+        color: #475569;
+        line-height: 1.6;
+    }
+
+        .info-item i {
+            color: #fde047;
+            font-size: 14px;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+    .preview-blog-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .preview-blog-img {
+        height: 110px;
+        background: #f1f5f9;
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #cbd5e1;
+        font-size: 28px;
+    }
+
+    .preview-blog-body {
+        padding: 12px;
+    }
+
+    .preview-blog-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .preview-blog-meta {
+        font-size: 11px;
+        color: #94a3b8;
+    }
+
+    @@media (max-width: 900px) {
+        .add-wrap {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<a asp-area="Admin" asp-controller="Blog" asp-action="Index" class="back-btn">
+    <i class="bi bi-arrow-left"></i> Blog Listesine Dön
+</a>
+
+<div class="add-wrap">
+
+    <div class="form-card">
+        <div class="form-card-header">
+            <div class="form-card-icon"><i class="bi bi-pencil-square"></i></div>
+            <div>
+                <div class="form-card-title">Blog Yazısını Düzenle</div>
+                <div style="font-size:11px; color:#94a3b8;">Mevcut blog yazısını güncelleyin</div>
+            </div>
+        </div>
+        <div class="form-card-body">
+            <form asp-action="AdminUpdateBlog" asp-controller="Blog" asp-area="Admin" method="post">
+
+                <input type="hidden" asp-for="Id" />
+
+                <div class="field-grid">
+
+                    <div class="field-group full">
+                        <label class="field-label">Başlık</label>
+                        <input asp-for="Title" class="form-control" id="inp-title"
+                               placeholder="Blog yazısı başlığı" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="field-group">
+                        <label class="field-label">Yazar</label>
+                        <select asp-for="AuthorId" asp-items="ViewBag.Authors" class="form-control">
+                            <option value="">Yazar seçiniz</option>
+                        </select>
+                        <span asp-validation-for="AuthorId" class="text-danger"></span>
+                    </div>
+
+                    <div class="field-group">
+                        <label class="field-label">Kategori</label>
+                        <select asp-for="BlogCategoryId" asp-items="ViewBag.BlogCategories" class="form-control">
+                            <option value="">Kategori seçiniz</option>
+                        </select>
+                        <span asp-validation-for="BlogCategoryId" class="text-danger"></span>
+                    </div>
+
+                    <div class="field-group full">
+                        <label class="field-label">Kapak Görseli URL</label>
+                        <input asp-for="CoverImageUrl" class="form-control" id="inp-cover"
+                               placeholder="https://..." />
+                        <span asp-validation-for="CoverImageUrl" class="text-danger"></span>
+                    </div>
+
+                    <div class="field-group full">
+                        <label class="field-label">Açıklama</label>
+                        <textarea asp-for="Description" class="form-control"
+                                  placeholder="Blog yazısının kısa açıklaması..."></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <hr class="divider" />
+
+                <div class="form-actions">
+                    <a asp-area="Admin" asp-controller="Blog" asp-action="Index" class="btn-cancel">
+                        <i class="bi bi-x-lg"></i> İptal
+                    </a>
+                    <button type="submit" class="btn-save">
+                        <i class="bi bi-check-lg"></i> Güncelle
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="side-card">
+        <div class="side-card-title">
+            <i class="bi bi-eye-fill"></i> Önizleme
+        </div>
+
+        <div class="preview-blog-card">
+            <div class="preview-blog-img" id="prev-img"
+                 style="@(!string.IsNullOrEmpty(Model.CoverImageUrl) ? $"background-image:url('{Model.CoverImageUrl}');" : "")">
+                @if (string.IsNullOrEmpty(Model.CoverImageUrl))
+                {
+                    <i class="bi bi-image"></i>
+                }
+            </div>
+            <div class="preview-blog-body">
+                <div class="preview-blog-title" id="prev-title">@Model.Title</div>
+                <div class="preview-blog-meta">
+                    <i class="bi bi-person" style="font-size:10px;"></i> @Model.AuthorName
+                </div>
+            </div>
+        </div>
+
+        <div class="info-item">
+            <i class="bi bi-info-circle"></i>
+            Yayın tarihi değiştirilmez — orijinal tarih korunur.
+        </div>
+        <div class="info-item">
+            <i class="bi bi-image"></i>
+            Kapak görseli URL'sini değiştirince önizleme güncellenir.
+        </div>
+        <div class="info-item">
+            <i class="bi bi-shield-check"></i>
+            Güncelleme sonrası blog listesine yönlendirilirsiniz.
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('inp-title').addEventListener('input', function () {
+            document.getElementById('prev-title').textContent = this.value || 'Başlık girilmedi...';
+        });
+
+        document.getElementById('inp-cover').addEventListener('input', function () {
+            var img = document.getElementById('prev-img');
+            if (this.value.trim()) {
+                img.style.backgroundImage = "url('" + this.value + "')";
+                img.innerHTML = '';
+            } else {
+                img.style.backgroundImage = '';
+                img.innerHTML = '<i class="bi bi-image"></i>';
+            }
+        });
+    </script>
+}

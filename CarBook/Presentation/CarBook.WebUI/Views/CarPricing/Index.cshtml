@@ -1,0 +1,405 @@
+﻿@model PagedCarPricingViewModel
+@{
+    ViewData["Title"] = "Araç Fiyatları";
+    Layout = "~/Views/Shared/_UILayout.cshtml";
+}
+
+@section HeroBanner {
+    <style>
+        .page-hero-wrap {
+            position: relative;
+        }
+
+            .page-hero-wrap .overlay {
+                background: linear-gradient(180deg, rgba(13,15,18,0.5), rgba(13,15,18,0.82));
+            }
+
+        .page-breadcrumbs {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 8px 18px;
+            border-radius: 24px;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+            .page-breadcrumbs a {
+                color: #d8d9db;
+                text-decoration: none;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                transition: color .2s ease;
+            }
+
+                .page-breadcrumbs a:hover {
+                    color: #fbb710;
+                    text-decoration: none;
+                }
+
+            .page-breadcrumbs .current {
+                color: #fbb710;
+                font-weight: 600;
+            }
+
+            .page-breadcrumbs .sep {
+                color: #5f646b;
+            }
+
+        .page-hero-title {
+            color: #fff;
+            font-size: 46px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 18px;
+        }
+
+            .page-hero-title::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 60px;
+                height: 4px;
+                background: #fbb710;
+                border-radius: 2px;
+            }
+
+        @@media (max-width: 767px) {
+            .page-hero-title {
+                font-size: 30px;
+            }
+        }
+    </style>
+
+    <section class="hero-wrap hero-wrap-2 page-hero-wrap js-fullheight" style="background-image: url('/carbook-master/images/bg_3.jpg');">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text js-fullheight align-items-end">
+                <div class="col-md-9 pb-5">
+                    <div class="page-breadcrumbs">
+                        <a href="/Default/Index/"><i class="ion-ios-home"></i> Ana Sayfa</a>
+                        <span class="sep">/</span>
+                        <span class="current">Araç Fiyatları</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<style>
+    .pricing-table-wrap {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+        overflow: hidden;
+    }
+
+    .pricing-row {
+        display: grid;
+        grid-template-columns: 280px repeat(3, 1fr);
+        align-items: center;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+        .pricing-row:last-child {
+            border-bottom: none;
+        }
+
+    .pricing-row-head {
+        background: #1d2127;
+        color: #fff;
+    }
+
+    .pricing-head-cell {
+        text-align: center;
+        padding: 20px 16px;
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+    }
+
+        .pricing-head-cell.hourly {
+            background: rgba(251,183,16,0.12);
+            color: #fbb710;
+        }
+
+        .pricing-head-cell.daily {
+            background: rgba(255,255,255,0.06);
+        }
+
+        .pricing-head-cell.monthly {
+            background: rgba(255,255,255,0.03);
+        }
+
+    .pricing-car-cell {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 22px 24px;
+    }
+
+    .pricing-car-img {
+        width: 90px;
+        height: 64px;
+        border-radius: 8px;
+        background-size: cover;
+        background-position: center;
+        flex-shrink: 0;
+    }
+
+    .pricing-car-name {
+        font-size: 15.5px;
+        font-weight: 700;
+        color: #1d2127;
+        margin-bottom: 6px;
+    }
+
+    .pricing-car-stars {
+        color: #fbb710;
+        font-size: 12px;
+        letter-spacing: 1px;
+    }
+
+    .pricing-cell {
+        text-align: center;
+        padding: 20px 16px;
+    }
+
+    .pricing-amount {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1d2127;
+    }
+
+        .pricing-amount sup {
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: 2px;
+        }
+
+    .pricing-per {
+        display: block;
+        font-size: 12px;
+        color: #999;
+        margin-top: 2px;
+    }
+
+    .pricing-rent-btn {
+        display: inline-block;
+        margin-top: 10px;
+        background: #fbb710;
+        color: #1d2127;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 7px 18px;
+        border-radius: 20px;
+        text-decoration: none;
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+        .pricing-rent-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(251,183,16,0.35);
+            color: #1d2127;
+            text-decoration: none;
+        }
+
+    .pricing-pagination {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        list-style: none;
+        padding: 0;
+        margin: 32px 0 0;
+    }
+
+        .pricing-pagination li a, .pricing-pagination li span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 42px;
+            height: 42px;
+            padding: 0 8px;
+            border-radius: 8px;
+            background: #fff;
+            color: #1d2127;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            border: 1px solid #ececec;
+            transition: all .2s ease;
+        }
+
+            .pricing-pagination li a:hover {
+                background: #fbb710;
+                border-color: #fbb710;
+                color: #1d2127;
+                text-decoration: none;
+            }
+
+        .pricing-pagination li.active span {
+            background: #1d2127;
+            border-color: #1d2127;
+            color: #fff;
+        }
+
+        .pricing-pagination li.disabled span {
+            opacity: .4;
+            cursor: not-allowed;
+        }
+
+    @@media (max-width: 991px) {
+        .pricing-row {
+            grid-template-columns: 1fr;
+        }
+
+        .pricing-row-head {
+            display: none;
+        }
+
+        .pricing-car-cell {
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .pricing-cell {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 24px;
+            text-align: left;
+        }
+
+            .pricing-cell::before {
+                content: attr(data-label);
+                font-size: 12.5px;
+                font-weight: 700;
+                color: #888;
+                text-transform: uppercase;
+            }
+
+        .pricing-car-brand {
+            font-size: 11.5px;
+            font-weight: 600;
+            color: #fbb710;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-bottom: 3px;
+        }
+    }
+</style>
+
+<section class="ftco-section ftco-cart bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 ftco-animate">
+
+                <div class="pricing-table-wrap">
+
+                    <div class="pricing-row pricing-row-head d-none d-lg-grid">
+                        <div></div>
+                        <div class="pricing-head-cell hourly">Günlük Ücret</div>
+                        <div class="pricing-head-cell daily">Haftalık Ücret</div>
+                        <div class="pricing-head-cell monthly">Aylık Kiralama</div>
+                    </div>
+
+                    @foreach (var item in Model.Items)
+                    {
+                        var hourly = item.Pricings?.FirstOrDefault(x => x.PricingName == "Günlük")?.Amount;
+                        var daily = item.Pricings?.FirstOrDefault(x => x.PricingName == "Haftalık")?.Amount;
+                        var monthly = item.Pricings?.FirstOrDefault(x => x.PricingName == "Aylık")?.Amount;
+
+                        <div class="pricing-row">
+
+                            <div class="pricing-car-cell">
+                                <div class="pricing-car-img" style="background-image:url('@item.MainImageUrl');"></div>
+                                <div>
+                                    <div class="pricing-car-brand">@item.BrandName</div>
+                                    <div class="pricing-car-name">@item.Model</div>
+                                    <div class="pricing-car-stars">
+                                        <i class="ion-ios-star"></i><i class="ion-ios-star"></i><i class="ion-ios-star"></i><i class="ion-ios-star"></i><i class="ion-ios-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pricing-cell" data-label="Günlük">
+                                <div>
+                                    <div class="pricing-amount"><sup>₺</sup>@hourly</div>
+                                    <span class="pricing-per">/ Gün</span>
+                                    <a href="/Reservation/Index/@item.Id" class="pricing-rent-btn">Kirala</a>
+                                </div>
+                            </div>
+
+                            <div class="pricing-cell" data-label="Haftalık">
+                                <div>
+                                    <div class="pricing-amount"><sup>₺</sup>@daily</div>
+                                    <span class="pricing-per">/ Hafta</span>
+                                    <a href="/Reservation/Index/@item.Id" class="pricing-rent-btn">Kirala</a>
+                                </div>
+                            </div>
+
+                            <div class="pricing-cell" data-label="Aylık">
+                                <div>
+                                    <div class="pricing-amount"><sup>₺</sup>@monthly</div>
+                                    <span class="pricing-per">/ ay</span>
+                                    <a href="/Reservation/Index/@item.Id" class="pricing-rent-btn">Kirala</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+
+                @if (Model.TotalPages > 1)
+                {
+                    <ul class="pricing-pagination">
+                        <li class="@(Model.PageNumber == 1 ? "disabled" : "")">
+                            @if (Model.PageNumber == 1)
+                            {
+                                <span><i class="ion-ios-arrow-back"></i></span>
+                            }
+                            else
+                            {
+                                <a href="?page=@(Model.PageNumber - 1)"><i class="ion-ios-arrow-back"></i></a>
+                            }
+                        </li>
+
+                        @for (int i = 1; i <= Model.TotalPages; i++)
+                        {
+                            <li class="@(i == Model.PageNumber ? "active" : "")">
+                                @if (i == Model.PageNumber)
+                                {
+                                    <span>@i</span>
+                                }
+                                else
+                                {
+                                    <a href="?page=@i">@i</a>
+                                }
+                            </li>
+                        }
+
+                        <li class="@(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
+                            @if (Model.PageNumber == Model.TotalPages)
+                            {
+                                <span><i class="ion-ios-arrow-forward"></i></span>
+                            }
+                            else
+                            {
+                                <a href="?page=@(Model.PageNumber + 1)"><i class="ion-ios-arrow-forward"></i></a>
+                            }
+                        </li>
+                    </ul>
+                }
+
+            </div>
+        </div>
+    </div>
+</section>

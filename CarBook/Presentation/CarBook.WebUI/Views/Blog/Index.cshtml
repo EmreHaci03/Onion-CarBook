@@ -1,0 +1,176 @@
+﻿@model List<ResultBlogDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_UILayout.cshtml";
+}
+@section HeroBanner {
+    <style>
+        .page-hero-wrap {
+            position: relative;
+        }
+
+            .page-hero-wrap .overlay {
+                background: linear-gradient(180deg, rgba(13,15,18,0.5), rgba(13,15,18,0.82));
+            }
+
+        .page-breadcrumbs {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 8px 18px;
+            border-radius: 24px;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+            .page-breadcrumbs a {
+                color: #d8d9db;
+                text-decoration: none;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                transition: color .2s ease;
+            }
+
+                .page-breadcrumbs a:hover {
+                    color: #fbb710;
+                    text-decoration: none;
+                }
+
+            .page-breadcrumbs .current {
+                color: #fbb710;
+                font-weight: 600;
+            }
+
+            .page-breadcrumbs .sep {
+                color: #5f646b;
+            }
+
+        .page-hero-title {
+            color: #fff;
+            font-size: 46px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 18px;
+        }
+
+            .page-hero-title::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 60px;
+                height: 4px;
+                background: #fbb710;
+                border-radius: 2px;
+            }
+
+        @@media (max-width: 767px) {
+            .page-hero-title {
+                font-size: 30px;
+            }
+        }
+    </style>
+
+    <section class="hero-wrap hero-wrap-2 page-hero-wrap js-fullheight" style="background-image: url('/carbook-master/images/bg_3.jpg');">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text js-fullheight align-items-end">
+                <div class="col-md-9 pb-5">
+                    <div class="page-breadcrumbs">
+                        <a href="/Default/Index/"><i class="ion-ios-home"></i> Ana Sayfa</a>
+                        <span class="sep">/</span>
+                        <span class="current">Bloglarımız</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<section class="ftco-section" style="padding: 60px 0;">
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-6 col-lg-4 ftco-animate mb-5">
+                    <div style="border-radius:14px; overflow:hidden; border:1px solid rgba(0,0,0,.08); background:#fff; height:100%; display:flex; flex-direction:column; transition:box-shadow .2s;"
+                         onmouseover="this.style.boxShadow='0 8px 32px rgba(0,0,0,0.10)'"
+                         onmouseout="this.style.boxShadow='none'">
+
+                        <a href="/Blog/BlogDetail/@item.Id" style="display:block; overflow:hidden;">
+                            <img src="@item.CoverImageUrl" alt="@item.Title"
+                                 style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;
+                                            transition:transform .35s;"
+                                 onmouseover="this.style.transform='scale(1.04)'"
+                                 onmouseout="this.style.transform='scale(1)'">
+                        </a>
+
+                        <div style="padding:22px 24px 20px; flex:1; display:flex; flex-direction:column;">
+
+                            <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px; flex-wrap:wrap;">
+                                <span style="background:#e6f1fb; color:#185fa5; font-size:11px; font-weight:500;
+                                                 padding:3px 11px; border-radius:20px; letter-spacing:.3px;">
+                                    @item.BlogCategoryName
+                                </span>
+                                <span style="font-size:12px; color:#aaa; display:flex; align-items:center; gap:4px;">
+                                    <i class="ion-ios-calendar" style="font-size:13px;"></i>
+                                    @item.CreateDate.ToString("dd MMM yyyy")
+                                </span>
+                            </div>
+
+                            <h3 style="font-size:17px; font-weight:600; line-height:1.4; margin:0 0 10px;">
+                                <a href="/Blog/BlogDetail/@item.Id"
+                                   style="color:inherit; text-decoration:none;"
+                                   onmouseover="this.style.color='#185fa5'"
+                                   onmouseout="this.style.color='inherit'">
+                                    @item.Title
+                                </a>
+                            </h3>
+
+                            <p style="font-size:14px; color:#777; line-height:1.7; flex:1; margin:0 0 18px;">
+                                @(item.Description.Contains(".")
+                                                            ? item.Description.Substring(0, item.Description.IndexOf(".")) + "."
+                                                            : item.Description)
+                            </p>
+
+                            <div style="display:flex; align-items:center; justify-content:space-between; padding-top:14px; border-top:1px solid rgba(0,0,0,.06);">
+                                <span style="font-size:12px; color:#999; display:flex; align-items:center; gap:5px;">
+                                    <i class="ion-ios-person" style="font-size:14px;"></i>
+                                    @item.AuthorName
+                                </span>
+                                <a href="/Blog/BlogDetail/@item.Id"
+                                   style="font-size:13px; font-weight:500; color:#185fa5; text-decoration:none; display:flex; align-items:center; gap:4px;"
+                                   onmouseover="this.style.gap='8px'"
+                                   onmouseout="this.style.gap='4px'">
+                                    Devamını Oku <i class="ion-ios-arrow-forward"></i>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="row mt-4">
+            <div class="col text-center">
+                <div class="block-27">
+                    <ul>
+                        <li><a href="#">&lt;</a></li>
+                        <li class="active"><span>1</span></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li><a href="#">&gt;</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

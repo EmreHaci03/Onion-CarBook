@@ -1,0 +1,250 @@
+﻿@model RentACarFilterViewModel
+
+<style>
+    .rc-section {
+        padding: 2.5rem 1rem;
+    }
+
+    .rc-inner {
+        max-width: 960px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1.4fr;
+        gap: 1.5rem;
+        align-items: stretch;
+    }
+
+    .rc-form-wrap {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .rc-form-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1e293b;
+        margin: 0 0 0.25rem;
+    }
+
+    .rc-form-sub {
+        font-size: 13px;
+        color: #94a3b8;
+        margin: 0 0 0.5rem;
+    }
+
+    .rc-field label {
+        display: block;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #64748b;
+        margin-bottom: 6px;
+    }
+
+    .rc-field select, .rc-field input[type=date] {
+        width: 100%;
+        padding: 9px 12px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        background: #f8fafc;
+        color: #1e293b;
+        font-size: 13px;
+        outline: none;
+    }
+
+        .rc-field select:focus, .rc-field input[type=date]:focus {
+            border-color: #3b82f6;
+        }
+
+    .rc-dates {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .rc-submit {
+        width: 100%;
+        padding: 11px;
+        background: #f59e0b;
+        color: #1a1200;
+        border: none;
+        border-radius: 8px;
+        font-size: 13.5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.15s;
+    }
+
+        .rc-submit:hover {
+            opacity: 0.88;
+        }
+
+    .rc-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .rc-stat {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .rc-stat-val {
+        font-size: 17px;
+        font-weight: 600;
+        color: #f59e0b;
+    }
+
+    .rc-stat-lbl {
+        font-size: 10px;
+        color: #94a3b8;
+        margin-top: 2px;
+    }
+
+    .rc-right {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 1.5rem;
+    }
+
+    .rc-right-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1e293b;
+        margin: 0 0 0.5rem;
+    }
+
+    .rc-steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .rc-step {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 14px 10px;
+        text-align: center;
+    }
+
+    .rc-step-ic {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #eff6ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 8px;
+        font-size: 18px;
+    }
+
+    .rc-step-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #1e293b;
+        line-height: 1.4;
+    }
+
+    .rc-step-desc {
+        font-size: 11px;
+        color: #94a3b8;
+        margin-top: 4px;
+    }
+
+    .rc-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 20px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 13px;
+        color: #1e293b;
+        text-decoration: none;
+        background: #f8fafc;
+    }
+
+        .rc-cta:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+</style>
+
+<section class="rc-section ftco-no-pt bg-light">
+    <div class="rc-inner">
+
+        <div class="rc-form-wrap">
+            <div>
+                <p class="rc-form-title">Araç kirala</p>
+                <p class="rc-form-sub">Uygun aracını bul, hemen rezervasyon yap</p>
+            </div>
+
+            <form method="get" action="/RentACar/RentACarList/">
+                <div class="rc-field" style="margin-bottom:14px">
+                    <label>Alış lokasyonu</label>
+                    <select asp-for="PickUpLocationId" asp-items="Model.Locations">
+                        <option value="">Lokasyon seçiniz</option>
+                    </select>
+                </div>
+                <div class="rc-dates" style="margin-bottom:14px">
+                    <div class="rc-field">
+                        <label>Alış tarihi</label>
+                        <input type="date" name="PickUpDate" />
+                    </div>
+                    <div class="rc-field">
+                        <label>Bırakış tarihi</label>
+                        <input type="date" name="DropOffDate" />
+                    </div>
+                </div>
+                <button type="submit" class="rc-submit">Uygun araçları listele</button>
+            </form>
+
+            <div class="rc-stats">
+                <div class="rc-stat"><div class="rc-stat-val">250+</div><div class="rc-stat-lbl">Araç</div></div>
+                <div class="rc-stat"><div class="rc-stat-val">15K+</div><div class="rc-stat-lbl">Müşteri</div></div>
+                <div class="rc-stat"><div class="rc-stat-val">4.8★</div><div class="rc-stat-lbl">Puan</div></div>
+            </div>
+        </div>
+
+        <div class="rc-right">
+            <p class="rc-right-title">Aracını kiralamanın en kolay yolu</p>
+            <div class="rc-steps">
+                <div class="rc-step">
+                    <div class="rc-step-ic">📍</div>
+                    <div class="rc-step-label">Alış noktasını seç</div>
+                    <div class="rc-step-desc">Sana en yakın lokasyonu bul</div>
+                </div>
+                <div class="rc-step">
+                    <div class="rc-step-ic">🏷️</div>
+                    <div class="rc-step-label">En iyi teklifi seç</div>
+                    <div class="rc-step-desc">Bütçene uygun seçenekler</div>
+                </div>
+                <div class="rc-step">
+                    <div class="rc-step-ic">✅</div>
+                    <div class="rc-step-label">Rezervasyon yap</div>
+                    <div class="rc-step-desc">Tek tıkla onayla</div>
+                </div>
+            </div>
+            <div>
+                <a href="/CarPricing/Index/" class="rc-cta">🚗 Araç fiyat listemizi gör</a>
+            </div>
+        </div>
+
+    </div>
+</section>

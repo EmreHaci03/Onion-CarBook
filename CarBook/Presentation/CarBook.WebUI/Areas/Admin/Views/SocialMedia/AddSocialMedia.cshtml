@@ -1,0 +1,460 @@
+﻿@model CreateSocialMediaDto
+@{
+    ViewData["Title"] = "Sosyal Medya Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .page-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.4fr;
+        gap: 20px;
+        height: calc(100vh - 120px);
+    }
+
+    .left-panel {
+        background: linear-gradient(145deg, #0f172a, #1e293b);
+        border-radius: 16px;
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        overflow: hidden;
+        position: relative;
+    }
+
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 260px;
+            height: 260px;
+            background: rgba(99,102,241,.1);
+            border-radius: 50%;
+        }
+
+        .left-panel::after {
+            content: '';
+            position: absolute;
+            bottom: -60px;
+            left: -60px;
+            width: 200px;
+            height: 200px;
+            background: rgba(59,130,246,.08);
+            border-radius: 50%;
+        }
+
+    .left-header {
+        position: relative;
+        z-index: 1;
+    }
+
+    .left-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #fff;
+        margin: 0 0 6px;
+    }
+
+    .left-desc {
+        font-size: 13px;
+        color: #64748b;
+        line-height: 1.6;
+    }
+
+    .platforms-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .platform-item {
+        background: rgba(255,255,255,.05);
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 10px;
+        padding: 12px 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition: all .2s;
+    }
+
+        .platform-item:hover {
+            background: rgba(255,255,255,.1);
+            border-color: rgba(255,255,255,.15);
+        }
+
+        .platform-item.selected {
+            border-color: rgba(59,130,246,.6);
+            background: rgba(59,130,246,.15);
+        }
+
+    .platform-icon {
+        font-size: 22px;
+    }
+
+    .platform-name {
+        font-size: 10px;
+        color: #94a3b8;
+        font-weight: 500;
+    }
+
+    .ig {
+        color: #e1306c;
+    }
+
+    .yt {
+        color: #ff0000;
+    }
+
+    .gh {
+        color: #e2e8f0;
+    }
+
+    .tw {
+        color: #1da1f2;
+    }
+
+    .fb {
+        color: #4267b2;
+    }
+
+    .li {
+        color: #0a66c2;
+    }
+
+    .preview-box {
+        background: rgba(255,255,255,.05);
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 12px;
+        padding: 16px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .preview-label {
+        font-size: 10px;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 12px;
+    }
+
+    .preview-social {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .preview-icon-wrap {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        flex-shrink: 0;
+        background: rgba(255,255,255,.08);
+    }
+
+    .preview-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: #f1f5f9;
+    }
+
+    .preview-url {
+        font-size: 11px;
+        color: #475569;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 180px;
+    }
+
+    .right-panel {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .right-header {
+        padding: 18px 24px;
+        border-bottom: 1px solid #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .right-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    .right-subtitle {
+        font-size: 11px;
+        color: #94a3b8;
+        margin-top: 2px;
+    }
+
+    .right-body {
+        padding: 24px;
+        overflow-y: auto;
+        flex: 1;
+    }
+
+    .field-group {
+        margin-bottom: 18px;
+    }
+
+    .field-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+        .field-label i {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+    .field-hint {
+        font-size: 11px;
+        color: #94a3b8;
+        margin-top: 4px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+        font-size: 13px;
+        color: #0f172a;
+        font-family: 'Segoe UI', sans-serif;
+        transition: border-color .15s, box-shadow .15s;
+        outline: none;
+        background: #fafafa;
+        box-sizing: border-box;
+    }
+
+        .form-control:focus {
+            border-color: #93c5fd;
+            box-shadow: 0 0 0 3px rgba(59,130,246,.1);
+            background: #fff;
+        }
+
+    .text-danger {
+        font-size: 11px;
+        color: #dc2626;
+        display: block;
+        margin-top: 3px;
+    }
+
+    .right-footer {
+        padding: 16px 24px;
+        border-top: 1px solid #f1f5f9;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fafafa;
+    }
+
+    .footer-note {
+        font-size: 11px;
+        color: #94a3b8;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn-cancel {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 18px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #64748b;
+        text-decoration: none;
+        transition: all .15s;
+    }
+
+        .btn-cancel:hover {
+            background: #f8fafc;
+            color: #374151;
+        }
+
+    .btn-save {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 20px;
+        background: linear-gradient(135deg, #3b82f6, #6366f1);
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #fff;
+        cursor: pointer;
+        transition: opacity .15s;
+    }
+
+        .btn-save:hover {
+            opacity: .9;
+        }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: #64748b;
+        text-decoration: none;
+        margin-bottom: 16px;
+        transition: color .15s;
+    }
+
+        .back-btn:hover {
+            color: #374151;
+        }
+</style>
+
+<a asp-area="Admin" asp-controller="SocialMedia" asp-action="Index" class="back-btn">
+    <i class="bi bi-arrow-left"></i> Sosyal Medya Listesine Dön
+</a>
+
+<div class="page-grid">
+    <div class="left-panel">
+        <div class="left-header">
+            <div class="left-title">Sosyal Medya Ekle</div>
+            <div class="left-desc">Platform seçin veya manuel girin</div>
+        </div>
+
+        <div>
+            <div style="font-size:11px; color:#475569; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; position:relative; z-index:1;">Popüler Platformlar</div>
+            <div class="platforms-grid">
+                <div class="platform-item" onclick="fillPlatform('Instagram','bi bi-instagram','https://instagram.com/')">
+                    <i class="bi bi-instagram platform-icon ig"></i>
+                    <span class="platform-name">Instagram</span>
+                </div>
+                <div class="platform-item" onclick="fillPlatform('YouTube','bi bi-youtube','https://youtube.com/')">
+                    <i class="bi bi-youtube platform-icon yt"></i>
+                    <span class="platform-name">YouTube</span>
+                </div>
+                <div class="platform-item" onclick="fillPlatform('GitHub','bi bi-github','https://github.com/')">
+                    <i class="bi bi-github platform-icon gh"></i>
+                    <span class="platform-name">GitHub</span>
+                </div>
+                <div class="platform-item" onclick="fillPlatform('Twitter','bi bi-twitter','https://twitter.com/')">
+                    <i class="bi bi-twitter platform-icon tw"></i>
+                    <span class="platform-name">Twitter</span>
+                </div>
+                <div class="platform-item" onclick="fillPlatform('Facebook','bi bi-facebook','https://facebook.com/')">
+                    <i class="bi bi-facebook platform-icon fb"></i>
+                    <span class="platform-name">Facebook</span>
+                </div>
+                <div class="platform-item" onclick="fillPlatform('LinkedIn','bi bi-linkedin','https://linkedin.com/')">
+                    <i class="bi bi-linkedin platform-icon li"></i>
+                    <span class="platform-name">LinkedIn</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="preview-box">
+            <div class="preview-label">Canlı Önizleme</div>
+            <div class="preview-social">
+                <div class="preview-icon-wrap"><i id="prev-icon-el"></i></div>
+                <div style="min-width:0;">
+                    <div class="preview-name" id="prev-name">Platform adı...</div>
+                    <div class="preview-url" id="prev-url">https://...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="right-header">
+            <div>
+                <div class="right-title">Hesap Bilgileri</div>
+                <div class="right-subtitle">Tüm alanları eksiksiz doldurun</div>
+            </div>
+            <div style="width:36px; height:36px; background:#eff6ff; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+                <i class="bi bi-share" style="color:#3b82f6; font-size:16px;"></i>
+            </div>
+        </div>
+        <div class="right-body">
+            <form asp-action="AddSocialMedia" method="post" id="smForm">
+                <div class="field-group">
+                    <label class="field-label"><i class="bi bi-type"></i> Platform Adı</label>
+                    <input asp-for="Name" class="form-control" id="inp-name" placeholder="Örn: Instagram, GitHub, YouTube" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="bi bi-link-45deg"></i> URL</label>
+                    <input asp-for="Url" class="form-control" id="inp-url" placeholder="https://instagram.com/kullanici" />
+                    <span asp-validation-for="Url" class="text-danger"></span>
+                    <div class="field-hint">Tam URL adresini girin.</div>
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="bi bi-code"></i> İkon Class</label>
+                    <input asp-for="Icon" class="form-control" id="inp-icon" placeholder="Örn: bi bi-instagram" />
+                    <span asp-validation-for="Icon" class="text-danger"></span>
+                    <div class="field-hint">Bootstrap Icons class adı. Yukarıdan platform seçerek otomatik doldurabilirsiniz.</div>
+                </div>
+            </form>
+        </div>
+        <div class="right-footer">
+            <div class="footer-note"><i class="bi bi-info-circle me-1"></i>Tüm alanlar zorunludur.</div>
+            <div class="form-actions">
+                <a asp-area="Admin" asp-controller="SocialMedia" asp-action="Index" class="btn-cancel">
+                    <i class="bi bi-x-lg"></i> İptal
+                </a>
+                <button type="submit" form="smForm" class="btn-save">
+                    <i class="bi bi-check-lg"></i> Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function fillPlatform(name, icon, url) {
+        document.getElementById('inp-name').value = name;
+        document.getElementById('inp-icon').value = icon;
+        document.getElementById('inp-url').value = url;
+        document.getElementById('prev-name').textContent = name;
+        document.getElementById('prev-url').textContent = url;
+        document.getElementById('prev-icon-el').className = icon;
+        document.querySelectorAll('.platform-item').forEach(el => el.classList.remove('selected'));
+        event.currentTarget.classList.add('selected');
+    }
+    document.getElementById('inp-name').addEventListener('input', function() {
+        document.getElementById('prev-name').textContent = this.value || 'Platform adı...';
+    });
+    document.getElementById('inp-url').addEventListener('input', function() {
+        document.getElementById('prev-url').textContent = this.value || 'https://...';
+    });
+    document.getElementById('inp-icon').addEventListener('input', function() {
+        document.getElementById('prev-icon-el').className = this.value;
+    });
+</script>

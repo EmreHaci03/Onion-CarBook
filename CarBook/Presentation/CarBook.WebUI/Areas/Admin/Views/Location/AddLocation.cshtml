@@ -1,0 +1,338 @@
+﻿@model CreateLocationDto
+@{
+    ViewData["Title"] = "Lokasyon Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: #64748b;
+        text-decoration: none;
+        margin-bottom: 16px;
+        transition: color .15s;
+    }
+
+        .back-btn:hover {
+            color: #374151;
+        }
+
+    .add-wrap {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        align-items: start;
+    }
+
+    .form-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .form-card-header {
+        padding: 16px 22px;
+        border-bottom: 1px solid #f1f5f9;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .form-card-icon {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .form-card-icon i {
+            font-size: 18px;
+            color: #16a34a;
+        }
+
+    .form-card-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    .form-card-body {
+        padding: 22px;
+    }
+
+    .field-group {
+        margin-bottom: 18px;
+    }
+
+    .field-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+    }
+
+        .field-label i {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+        font-size: 13px;
+        color: #0f172a;
+        font-family: 'Segoe UI', sans-serif;
+        transition: border-color .15s, box-shadow .15s;
+        outline: none;
+        background: #fafafa;
+        box-sizing: border-box;
+    }
+
+        .form-control:focus {
+            border-color: #86efac;
+            box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+            background: #fff;
+        }
+
+    .text-danger {
+        font-size: 11px;
+        color: #dc2626;
+        display: block;
+        margin-top: 3px;
+    }
+
+    .divider {
+        border: none;
+        border-top: 1px solid #f1f5f9;
+        margin: 18px 0;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .btn-cancel {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 18px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #64748b;
+        text-decoration: none;
+        transition: all .15s;
+    }
+
+        .btn-cancel:hover {
+            background: #f8fafc;
+            color: #374151;
+        }
+
+    .btn-save {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 20px;
+        background: linear-gradient(135deg, #16a34a, #15803d);
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #fff;
+        cursor: pointer;
+        transition: opacity .15s;
+    }
+
+        .btn-save:hover {
+            opacity: .9;
+        }
+
+    .info-card {
+        background: #fafafa;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 24px;
+    }
+
+    .info-card-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+        .info-card-title i {
+            color: #16a34a;
+        }
+
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 14px;
+        font-size: 12.5px;
+        color: #475569;
+        line-height: 1.6;
+    }
+
+        .info-item i {
+            color: #86efac;
+            font-size: 14px;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+    .preview-box {
+        margin-top: 22px;
+        padding-top: 18px;
+        border-top: 1px solid #f1f5f9;
+    }
+
+    .preview-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: .6px;
+        margin-bottom: 10px;
+    }
+
+    .preview-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #f0fdf4;
+        color: #15803d;
+        border: 1px solid #bbf7d0;
+        border-radius: 20px;
+        padding: 7px 16px;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .preview-empty {
+        font-size: 12.5px;
+        color: #cbd5e1;
+        font-style: italic;
+    }
+
+    @@media (max-width: 900px) {
+        .add-wrap {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<a asp-area="Admin" asp-controller="Location" asp-action="Index" class="back-btn">
+    <i class="bi bi-arrow-left"></i> Lokasyon Listesine Dön
+</a>
+
+<div class="add-wrap">
+
+    <div class="form-card">
+        <div class="form-card-header">
+            <div class="form-card-icon"><i class="bi bi-geo-alt-fill"></i></div>
+            <div>
+                <div class="form-card-title">Yeni Lokasyon Ekle</div>
+                <div style="font-size:11px; color:#94a3b8;">Araç kiralama için yeni lokasyon ekleyin</div>
+            </div>
+        </div>
+        <div class="form-card-body">
+            <form asp-action="AddLocation" method="post">
+
+                <div class="field-group">
+                    <label class="field-label"><i class="bi bi-geo-alt"></i> Lokasyon Adı</label>
+                    <input asp-for="Name" class="form-control" id="inp-name"
+                           placeholder="Örn: İstanbul Havalimanı, Ankara Merkez" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <hr class="divider" />
+
+                <div class="form-actions">
+                    <a asp-area="Admin" asp-controller="Location" asp-action="Index" class="btn-cancel">
+                        <i class="bi bi-x-lg"></i> İptal
+                    </a>
+                    <button type="submit" class="btn-save">
+                        <i class="bi bi-check-lg"></i> Kaydet
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="info-card">
+        <div class="info-card-title">
+            <i class="bi bi-info-circle-fill"></i> Bilgi
+        </div>
+        <div class="info-item">
+            <i class="bi bi-check-circle"></i>
+            Eklenen lokasyonlar, rezervasyon formunda alış ve bırakış noktası olarak kullanılır.
+        </div>
+        <div class="info-item">
+            <i class="bi bi-exclamation-circle"></i>
+            Lokasyon adını açık ve anlaşılır yazın — kullanıcılar rezervasyon yaparken bu ismi görecek.
+        </div>
+        <div class="info-item">
+            <i class="bi bi-geo-alt"></i>
+            Örnek: "İstanbul Havalimanı", "Ankara Esenboğa", "İzmir Adnan Menderes" gibi tanımlayıcı isimler tercih edin.
+        </div>
+
+        <div class="preview-box">
+            <div class="preview-label">Canlı Önizleme</div>
+            <div id="preview-wrap">
+                <span class="preview-empty" id="prev-empty">Lokasyon adını yazmaya başlayın...</span>
+                <span class="preview-pill" id="prev-pill" style="display:none;">
+                    <i class="bi bi-geo-alt-fill" style="font-size:12px;"></i>
+                    <span id="prev-name"></span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.getElementById('inp-name').addEventListener('input', function () {
+        var pill = document.getElementById('prev-pill');
+        var empty = document.getElementById('prev-empty');
+        var name = document.getElementById('prev-name');
+        if (this.value.trim()) {
+            pill.style.display = 'inline-flex';
+            empty.style.display = 'none';
+            name.textContent = this.value;
+        } else {
+            pill.style.display = 'none';
+            empty.style.display = 'block';
+        }
+    });
+</script>

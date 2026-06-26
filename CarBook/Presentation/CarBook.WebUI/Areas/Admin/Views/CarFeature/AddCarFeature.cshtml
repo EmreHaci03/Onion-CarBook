@@ -1,0 +1,287 @@
+﻿@model CreateCarFeatureDto
+@{
+    ViewData["Title"] = "Özellik Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: #64748b;
+        text-decoration: none;
+        margin-bottom: 16px;
+        transition: color .15s;
+    }
+
+        .back-btn:hover {
+            color: #374151;
+        }
+
+    .add-feature-wrap {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        align-items: start;
+    }
+
+    .add-feature-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 28px;
+    }
+
+    .add-feature-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 26px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .add-feature-icon {
+        width: 42px;
+        height: 42px;
+        background: #f5f3ff;
+        border: 1px solid #ddd6fe;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+        .add-feature-icon i {
+            font-size: 18px;
+            color: #6d28d9;
+        }
+
+    .add-feature-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0;
+    }
+
+    .add-feature-subtitle {
+        font-size: 12px;
+        color: #94a3b8;
+        margin: 0;
+    }
+
+    .field-group {
+        margin-bottom: 16px;
+    }
+
+        .field-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 7px;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+        }
+
+        .field-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+            background: #fff;
+            color: #1e293b;
+            transition: border-color .15s, box-shadow .15s;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+
+            .field-group select:focus {
+                border-color: #a78bfa;
+                box-shadow: 0 0 0 3px rgba(167,139,250,.15);
+            }
+
+    .avaliable-toggle {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+        background: #fafafa;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        margin-bottom: 22px;
+        cursor: pointer;
+    }
+
+        .avaliable-toggle input[type="checkbox"] {
+            width: 17px;
+            height: 17px;
+            cursor: pointer;
+            accent-color: #6d28d9;
+        }
+
+        .avaliable-toggle label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .avaliable-toggle span {
+            font-size: 11.5px;
+            color: #94a3b8;
+            display: block;
+            margin-top: 2px;
+            font-weight: 400;
+        }
+
+    .btn-submit {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #6d28d9, #8b5cf6);
+        color: #fff;
+        border: none;
+        border-radius: 9px;
+        font-size: 13.5px;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        transition: opacity .15s, transform .15s;
+    }
+
+        .btn-submit:hover {
+            opacity: .92;
+            transform: translateY(-1px);
+        }
+
+    .info-card {
+        background: #fafafa;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 24px;
+    }
+
+    .info-card-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+        .info-card-title i {
+            color: #6d28d9;
+        }
+
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 14px;
+        font-size: 12.5px;
+        color: #475569;
+        line-height: 1.6;
+    }
+
+        .info-item i {
+            color: #a78bfa;
+            font-size: 14px;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+    @@media (max-width: 900px) {
+        .add-feature-wrap {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<a href="javascript:history.back()" class="back-btn">
+    <i class="bi bi-arrow-left"></i> Geri Dön
+</a>
+
+<div class="add-feature-wrap">
+
+    <div class="add-feature-card">
+        <div class="add-feature-header">
+            <div class="add-feature-icon">
+                <i class="bi bi-plus-circle-fill"></i>
+            </div>
+            <div>
+                <p class="add-feature-title">Araç Özelliği Ekle</p>
+                <p class="add-feature-subtitle">Araca yeni bir özellik tanımlayın</p>
+            </div>
+        </div>
+
+        <form asp-action="AddCarFeature" asp-controller="CarFeature" asp-area="Admin" method="post">
+
+            <div class="field-group">
+                <label>Araç</label>
+                <input type="hidden" asp-for="CarId" value="@ViewBag.SelectedCarId" />
+                <div style="padding:10px 12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; font-size:13px; color:#475569;">
+                    <i class="bi bi-car-front" style="margin-right:6px;"></i>
+                    @ViewBag.SelectedCarName
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label>Özellik</label>
+                <select asp-for="FeatureId" asp-items="ViewBag.Features">
+                    <option value="">Özellik seçiniz</option>
+                </select>
+            </div>
+
+            <div class="avaliable-toggle">
+                <input type="checkbox" asp-for="Avaliable" id="avaliable" />
+                <div>
+                    <label for="avaliable">Özellik aktif olarak eklensin</label>
+                    <span>İşaretlenirse özellik açık, işaretlenmezse kapalı olarak eklenir.</span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class="bi bi-plus-lg"></i> Ekle
+            </button>
+
+        </form>
+    </div>
+
+    <div class="info-card">
+        <div class="info-card-title">
+            <i class="bi bi-info-circle-fill"></i> Bilgi
+        </div>
+        <div class="info-item">
+            <i class="bi bi-check-circle"></i>
+            Araç seçip özellik ekledikten sonra, araç özellik listesinden toggle ile açıp kapatabilirsiniz.
+        </div>
+        <div class="info-item">
+            <i class="bi bi-exclamation-circle"></i>
+            Aynı araca aynı özelliği iki kez eklemeyin — her araç-özellik kombinasyonu sistemde tek olmalıdır.
+        </div>
+        <div class="info-item">
+            <i class="bi bi-arrow-repeat"></i>
+            Ekleme sonrası otomatik olarak o aracın özellik listesine yönlendirilirsiniz.
+        </div>
+    </div>
+
+</div>

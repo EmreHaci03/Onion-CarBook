@@ -1,0 +1,101 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 — Sayfa Bulunamadı</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #080e1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            padding: 60px 40px;
+            background: #0f172a;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,.06);
+            box-shadow: 0 32px 80px rgba(0,0,0,.5);
+            max-width: 480px;
+            width: 90%;
+        }
+
+        .code {
+            font-size: 90px;
+            font-weight: 800;
+            color: #fbb710;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 12px;
+        }
+
+        .desc {
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: opacity .15s;
+        }
+
+            .btn:hover {
+                opacity: .85;
+            }
+
+        .btn-primary {
+            background: #fbb710;
+            color: #1a1200;
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,.05);
+            color: #94a3b8;
+            border: 1px solid rgba(255,255,255,.08);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="code">404</div>
+        <div class="title">Sayfa Bulunamadı</div>
+        <div class="desc">Aradığınız sayfa taşınmış, silinmiş ya da hiç var olmamış olabilir.</div>
+        <div class="actions">
+            <a href="/Default/Index/" class="btn btn-primary">Ana Sayfaya Dön</a>
+        </div>
+    </div>
+</body>
+</html>

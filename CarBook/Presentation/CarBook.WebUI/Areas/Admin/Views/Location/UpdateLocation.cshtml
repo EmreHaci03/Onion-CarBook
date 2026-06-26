@@ -1,0 +1,77 @@
+﻿@model UpdateLocationDto
+@{
+    ViewData["Title"] = "Lokasyon Düzenle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .form-wrap { max-width: 560px; }
+    .form-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; overflow: hidden; }
+    .form-card-header { padding: 16px 22px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 10px; }
+    .form-card-icon { width: 36px; height: 36px; background: linear-gradient(135deg, #fffbeb, #fef9c3); border-radius: 9px; display: flex; align-items: center; justify-content: center; }
+    .form-card-icon i { font-size: 18px; color: #f59e0b; }
+    .form-card-title { font-size: 14px; font-weight: 600; color: #0f172a; }
+    .form-card-body { padding: 22px; }
+    .field-group { margin-bottom: 18px; }
+    .field-label { font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 6px; display: flex; align-items: center; gap: 5px; }
+    .field-label i { font-size: 13px; color: #94a3b8; }
+    .form-control { width: 100%; padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 9px; font-size: 13px; color: #0f172a; font-family: 'Segoe UI', sans-serif; transition: border-color .15s, box-shadow .15s; outline: none; background: #fafafa; box-sizing: border-box; }
+    .form-control:focus { border-color: #fcd34d; box-shadow: 0 0 0 3px rgba(245,158,11,.1); background: #fff; }
+    .text-danger { font-size: 11px; color: #dc2626; display: block; margin-top: 3px; }
+    .divider { border: none; border-top: 1px solid #f1f5f9; margin: 18px 0; }
+    .form-actions { display: flex; justify-content: flex-end; gap: 8px; }
+    .btn-cancel { display: inline-flex; align-items: center; gap: 5px; padding: 8px 18px; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; font-weight: 500; color: #64748b; text-decoration: none; transition: all .15s; }
+    .btn-cancel:hover { background: #f8fafc; color: #374151; }
+    .btn-save { display: inline-flex; align-items: center; gap: 5px; padding: 8px 20px; background: linear-gradient(135deg, #f59e0b, #ef4444); border: none; border-radius: 8px; font-size: 13px; font-weight: 500; color: #fff; cursor: pointer; transition: opacity .15s; }
+    .btn-save:hover { opacity: .9; }
+    .back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #64748b; text-decoration: none; margin-bottom: 16px; transition: color .15s; }
+    .back-btn:hover { color: #374151; }
+    .edit-badge { display: inline-flex; align-items: center; gap: 5px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 20px; padding: 3px 10px; font-size: 11px; color: #92400e; font-weight: 500; }
+    .preview-pill { display: inline-flex; align-items: center; gap: 6px; background: #fffbeb; color: #92400e; border: 1px solid #fde68a; border-radius: 20px; padding: 5px 14px; font-size: 13px; font-weight: 500; margin-top: 8px; }
+</style>
+
+<a asp-area="Admin" asp-controller="Location" asp-action="Index" class="back-btn">
+    <i class="bi bi-arrow-left"></i> Lokasyon Listesine Dön
+</a>
+
+<div class="form-wrap">
+    <div class="form-card">
+        <div class="form-card-header">
+            <div class="form-card-icon"><i class="bi bi-pencil-square"></i></div>
+            <div style="flex:1;">
+                <div class="form-card-title">Lokasyon Düzenle</div>
+                <div style="font-size:11px; color:#94a3b8;">Lokasyon adını güncelleyin</div>
+            </div>
+            <span class="edit-badge"><i class="bi bi-pencil-fill"></i> Düzenleme Modu</span>
+        </div>
+        <div class="form-card-body">
+            <form asp-action="UpdateLocation" method="post">
+                <input asp-for="LocationId" type="hidden" />
+                <div class="field-group">
+                    <label class="field-label"><i class="bi bi-geo-alt"></i> Lokasyon Adı</label>
+                    <input asp-for="Name" class="form-control" id="inp-name" placeholder="Lokasyon adı" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                    <div>
+                        <div style="font-size:11px; color:#94a3b8; margin-top:10px; margin-bottom:4px;">Önizleme:</div>
+                        <span class="preview-pill"><i class="bi bi-geo-alt-fill" style="font-size:12px;"></i> <span id="prev-name">@Model?.Name</span></span>
+                    </div>
+                </div>
+                <hr class="divider" />
+                <div class="form-actions">
+                    <a asp-area="Admin" asp-controller="Location" asp-action="Index" class="btn-cancel">
+                        <i class="bi bi-x-lg"></i> İptal
+                    </a>
+                    <button type="submit" class="btn-save">
+                        <i class="bi bi-check-lg"></i> Değişiklikleri Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('inp-name').addEventListener('input', function() {
+        document.getElementById('prev-name').textContent = this.value || '@Model?.Name';
+    });
+</script>

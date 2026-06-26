@@ -1,0 +1,87 @@
+﻿@using CarBook.WebUI.Dtos.ServiceDto
+@model List<ResultServiceDto>
+
+<style>
+    .service-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 38px 24px;
+        text-align: center;
+        height: 100%;
+        border: 1px solid #f0f0f0;
+        transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    }
+
+        .service-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.08);
+            border-color: transparent;
+        }
+
+    .service-icon-wrap {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: #fef4dd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 22px;
+        transition: background .3s ease;
+    }
+
+        .service-icon-wrap span {
+            font-size: 30px;
+            color: #fbb710;
+        }
+
+    .service-card:hover .service-icon-wrap {
+        background: #fbb710;
+    }
+
+        .service-card:hover .service-icon-wrap span {
+            color: #1d2127;
+        }
+
+    .service-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1d2127;
+        margin-bottom: 12px;
+    }
+
+    .service-desc {
+        font-size: 14px;
+        color: #888;
+        line-height: 1.7;
+        margin: 0;
+    }
+</style>
+
+<section class="ftco-section">
+    <div class="container">
+
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-7 text-center heading-section ftco-animate">
+                <span class="subheading" style="color:#fbb710">Hizmetlerimiz</span>
+                <h2 class="mb-3">Hizmetlerimiz</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            @foreach (var item in Model.Take(8))
+            {
+                <div class="col-md-3 mb-4 ftco-animate">
+                    <div class="service-card">
+                        <div class="service-icon-wrap">
+                            <span class="@item.Icon"></span>
+                        </div>
+                        <h3 class="service-title">@item.Title</h3>
+                        <p class="service-desc">@item.Description</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+</section>

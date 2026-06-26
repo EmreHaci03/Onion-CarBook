@@ -1,0 +1,199 @@
+﻿@model List<ResultFeatureDto>
+@{
+    ViewData["Title"] = "Özellik Yönetimi";
+    ViewData["AddUrl"] = Url.Action("AddFeature", "Feature", new { area = "Admin" });
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 12px;
+    }
+
+    .feature-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 16px 18px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        transition: box-shadow .2s, border-color .2s, transform .2s;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #16a34a, #22c55e);
+            opacity: 0;
+            transition: opacity .2s ease;
+        }
+
+        .feature-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,.08);
+            border-color: #bbf7d0;
+            transform: translateY(-2px);
+        }
+
+            .feature-card:hover::before {
+                opacity: 1;
+            }
+
+    .feature-icon {
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        border-radius: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+        .feature-icon i {
+            font-size: 19px;
+            color: #16a34a;
+        }
+
+    .feature-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .feature-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: #0f172a;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 3px;
+    }
+
+    .feature-id-badge {
+        background: #f1f5f9;
+        color: #64748b;
+        border-radius: 6px;
+        padding: 1px 8px;
+        font-size: 10.5px;
+        font-weight: 600;
+        font-family: monospace;
+        display: inline-block;
+    }
+
+    .feature-actions {
+        display: flex;
+        gap: 6px;
+        flex-shrink: 0;
+    }
+
+    .btn-edit {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        color: #475569;
+        text-decoration: none;
+        transition: all .15s;
+        font-size: 13px;
+    }
+
+        .btn-edit:hover {
+            background: #eff6ff;
+            border-color: #bfdbfe;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+    .btn-delete {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background: #fff5f5;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        color: #dc2626;
+        text-decoration: none;
+        transition: all .15s;
+        font-size: 13px;
+    }
+
+        .btn-delete:hover {
+            background: #fee2e2;
+            border-color: #f87171;
+            text-decoration: none;
+        }
+
+    .empty-box {
+        background: #fff;
+        border: 2px dashed #e2e8f0;
+        border-radius: 14px;
+        padding: 60px 20px;
+        text-align: center;
+    }
+
+    .count-badge {
+        background: #f0fdf4;
+        color: #15803d;
+        border: 1px solid #bbf7d0;
+        border-radius: 20px;
+        padding: 3px 12px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+</style>
+
+<div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+    <div style="font-size:13px; color:#64748b;">Toplam</div>
+    <span class="count-badge">@(Model?.Count ?? 0) özellik</span>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="feature-grid">
+        @foreach (var item in Model)
+        {
+            <div class="feature-card">
+                <div class="feature-icon"><i class="bi bi-check2-circle"></i></div>
+                <div class="feature-info">
+                    <div class="feature-name">@item.Name</div>
+                    <span class="feature-id-badge">#@item.Id</span>
+                </div>
+                <div class="feature-actions">
+                    <a asp-area="Admin" asp-controller="Feature" asp-action="UpdateFeature" asp-route-id="@item.Id" class="btn-edit" title="Düzenle">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a asp-area="Admin" asp-controller="Feature" asp-action="DeleteFeature" asp-route-id="@item.Id" class="btn-delete" title="Sil">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="empty-box">
+        <i class="bi bi-check2-circle" style="font-size:40px; color:#cbd5e1; display:block; margin-bottom:14px;"></i>
+        <div style="font-size:15px; font-weight:600; color:#374151; margin-bottom:6px;">Henüz özellik eklenmemiş</div>
+        <div style="font-size:13px; color:#94a3b8; margin-bottom:20px;">İlk özelliği ekleyin.</div>
+        <a asp-area="Admin" asp-controller="Feature" asp-action="AddFeature"
+           style="display:inline-flex; align-items:center; gap:6px; padding:9px 20px; background:linear-gradient(135deg,#16a34a,#15803d); color:#fff; border-radius:9px; text-decoration:none; font-size:13px; font-weight:500;">
+            <i class="bi bi-plus-lg"></i> Özellik Ekle
+        </a>
+    </div>
+}

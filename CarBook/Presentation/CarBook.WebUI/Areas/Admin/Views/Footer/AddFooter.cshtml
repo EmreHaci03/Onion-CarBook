@@ -1,0 +1,379 @@
+﻿@model CreateFooterAdressDto
+@{
+    ViewData["Title"] = "Footer Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: #64748b;
+        text-decoration: none;
+        margin-bottom: 16px;
+        transition: color .15s;
+    }
+
+        .back-btn:hover {
+            color: #374151;
+        }
+
+    .add-wrap {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        align-items: start;
+    }
+
+    .form-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .form-card-header {
+        padding: 16px 22px;
+        border-bottom: 1px solid #f1f5f9;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .form-card-icon {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg,#eff6ff,#dbeafe);
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .form-card-icon i {
+            font-size: 18px;
+            color: #3b82f6;
+        }
+
+    .form-card-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    .form-card-body {
+        padding: 22px;
+    }
+
+    .field-group {
+        margin-bottom: 16px;
+    }
+
+    .field-label {
+        font-size: 11.5px;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+    }
+
+        .field-label i {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+        font-size: 13px;
+        color: #0f172a;
+        font-family: 'Segoe UI',sans-serif;
+        transition: border-color .15s,box-shadow .15s;
+        outline: none;
+        background: #fafafa;
+        box-sizing: border-box;
+    }
+
+        .form-control:focus {
+            border-color: #93c5fd;
+            box-shadow: 0 0 0 3px rgba(59,130,246,.1);
+            background: #fff;
+        }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 90px;
+    }
+
+    .text-danger {
+        font-size: 11px;
+        color: #dc2626;
+        display: block;
+        margin-top: 3px;
+    }
+
+    .divider {
+        border: none;
+        border-top: 1px solid #f1f5f9;
+        margin: 18px 0;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .btn-cancel {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 18px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #64748b;
+        text-decoration: none;
+        transition: all .15s;
+    }
+
+        .btn-cancel:hover {
+            background: #f8fafc;
+            color: #374151;
+        }
+
+    .btn-save {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 20px;
+        background: linear-gradient(135deg,#3b82f6,#6366f1);
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #fff;
+        cursor: pointer;
+        transition: opacity .15s;
+    }
+
+        .btn-save:hover {
+            opacity: .9;
+        }
+
+    .side-card {
+        background: #fafafa;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 22px;
+    }
+
+    .side-card-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 18px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #f1f5f9;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+        .side-card-title i {
+            color: #3b82f6;
+        }
+
+    .preview-contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px 14px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .preview-contact-icon {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        border-radius: 8px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+    }
+
+    .preview-contact-label {
+        font-size: 10px;
+        font-weight: 600;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+        margin-bottom: 2px;
+    }
+
+    .preview-contact-value {
+        font-size: 13px;
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    .preview-contact-empty {
+        font-size: 12px;
+        color: #cbd5e1;
+        font-style: italic;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 12px;
+        font-size: 12.5px;
+        color: #475569;
+        line-height: 1.6;
+    }
+
+        .info-item i {
+            color: #93c5fd;
+            font-size: 14px;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+    @@media (max-width:900px) {
+        .add-wrap {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<a asp-area="Admin" asp-controller="Footer" asp-action="Index" class="back-btn">
+    <i class="bi bi-arrow-left"></i> Footer Listesine Dön
+</a>
+
+<div class="add-wrap">
+    <div class="form-card">
+        <div class="form-card-header">
+            <div class="form-card-icon"><i class="bi bi-layout-text-window-reverse"></i></div>
+            <div>
+                <div class="form-card-title">Yeni Footer Bilgisi Ekle</div>
+                <div style="font-size:11px;color:#94a3b8;">İletişim ve adres bilgilerini girin</div>
+            </div>
+        </div>
+        <div class="form-card-body">
+            <form asp-action="AddFooter" method="post">
+                <div class="field-group">
+                    <label class="field-label"><i class="bi bi-card-text"></i> Açıklama</label>
+                    <textarea asp-for="Description" class="form-control" id="inp-desc" placeholder="Footer açıklama metni"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="bi bi-geo-alt"></i> Adres</label>
+                    <input asp-for="Address" class="form-control" id="inp-address" placeholder="Örn: Atatürk Cad. No:1, İstanbul" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="bi bi-telephone"></i> Telefon</label>
+                    <input asp-for="Phone" class="form-control" id="inp-phone" placeholder="Örn: +90 555 123 45 67" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="bi bi-envelope"></i> E-posta</label>
+                    <input asp-for="Mail" class="form-control" id="inp-mail" placeholder="Örn: info@carbook.com" />
+                    <span asp-validation-for="Mail" class="text-danger"></span>
+                </div>
+                <hr class="divider" />
+                <div class="form-actions">
+                    <a asp-area="Admin" asp-controller="Footer" asp-action="Index" class="btn-cancel">
+                        <i class="bi bi-x-lg"></i> İptal
+                    </a>
+                    <button type="submit" class="btn-save">
+                        <i class="bi bi-check-lg"></i> Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="side-card">
+        <div class="side-card-title">
+            <i class="bi bi-eye-fill"></i> Canlı Önizleme
+        </div>
+
+        <div class="preview-contact-item">
+            <div class="preview-contact-icon"><i class="bi bi-geo-alt-fill"></i></div>
+            <div>
+                <div class="preview-contact-label">Adres</div>
+                <div class="preview-contact-value preview-contact-empty" id="prev-address">Henüz girilmedi...</div>
+            </div>
+        </div>
+
+        <div class="preview-contact-item">
+            <div class="preview-contact-icon"><i class="bi bi-telephone-fill"></i></div>
+            <div>
+                <div class="preview-contact-label">Telefon</div>
+                <div class="preview-contact-value preview-contact-empty" id="prev-phone">Henüz girilmedi...</div>
+            </div>
+        </div>
+
+        <div class="preview-contact-item">
+            <div class="preview-contact-icon"><i class="bi bi-envelope-fill"></i></div>
+            <div>
+                <div class="preview-contact-label">E-posta</div>
+                <div class="preview-contact-value preview-contact-empty" id="prev-mail">Henüz girilmedi...</div>
+            </div>
+        </div>
+
+        <div style="margin-top:16px;">
+            <div class="info-item">
+                <i class="bi bi-info-circle"></i>
+                Bu bilgiler sitenin footer bölümünde iletişim alanında görünür.
+            </div>
+            <div class="info-item">
+                <i class="bi bi-shield-check"></i>
+                Kaydet'e basınca footer listesine yönlendirilirsiniz.
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function bindPreview(inputId, previewId) {
+            document.getElementById(inputId).addEventListener('input', function () {
+                var el = document.getElementById(previewId);
+                if (this.value.trim()) {
+                    el.textContent = this.value;
+                    el.classList.remove('preview-contact-empty');
+                } else {
+                    el.textContent = 'Henüz girilmedi...';
+                    el.classList.add('preview-contact-empty');
+                }
+            });
+        }
+        bindPreview('inp-address', 'prev-address');
+        bindPreview('inp-phone', 'prev-phone');
+        bindPreview('inp-mail', 'prev-mail');
+    </script>
+}

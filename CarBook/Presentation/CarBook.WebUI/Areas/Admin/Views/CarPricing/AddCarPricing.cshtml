@@ -1,0 +1,249 @@
+﻿@model CreateCarPricingDto
+
+@{
+    ViewData["Title"] = "Fiyatlandırma Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .page-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.4fr;
+        gap: 20px;
+    }
+
+    .left-panel {
+        background: linear-gradient(145deg, #0f172a, #1e3a5f);
+        border-radius: 16px;
+        padding: 32px;
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 180px;
+            height: 180px;
+            background: rgba(59,130,246,.15);
+            border-radius: 50%;
+        }
+
+    .left-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .left-desc {
+        font-size: 13px;
+        color: #94a3b8;
+        line-height: 1.6;
+    }
+
+    .preview-box {
+        margin-top: 20px;
+        background: rgba(255,255,255,.06);
+        border-radius: 12px;
+        padding: 14px;
+        border: 1px solid rgba(255,255,255,.1);
+    }
+
+    .preview-title {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .preview-row {
+        font-size: 12px;
+        color: #cbd5e1;
+        margin-bottom: 5px;
+    }
+
+    .right-panel {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .right-header {
+        padding: 18px 24px;
+        border-bottom: 1px solid #f1f5f9;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .right-title {
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .right-body {
+        padding: 24px;
+    }
+
+    .field-group {
+        margin-bottom: 14px;
+    }
+
+    .field-label {
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #374151;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid #e2e8f0;
+        font-size: 13px;
+        background: #fafafa;
+    }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(59,130,246,.1);
+        }
+
+    .right-footer {
+        padding: 16px 24px;
+        border-top: 1px solid #f1f5f9;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fafafa;
+    }
+
+    .btn-save {
+        background: linear-gradient(135deg,#16a34a,#22c55e);
+        border: none;
+        padding: 10px 18px;
+        border-radius: 10px;
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .btn-cancel {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        padding: 10px 18px;
+        border-radius: 10px;
+        color: #64748b;
+        text-decoration: none;
+    }
+
+        .btn-cancel:hover {
+            background: #f8fafc;
+        }
+</style>
+
+<div class="page-grid">
+
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+
+        <div class="left-title">💰 Yeni Fiyatlandırma</div>
+        <div class="left-desc">
+            Araç için fiyatlandırma bilgilerini ekleyin.
+            Seçilen değerler aşağıda önizleme olarak gösterilir.
+        </div>
+
+        <div class="preview-box">
+            <div class="preview-title">Önizleme</div>
+            <div class="preview-row" id="prev-car">Araç: -</div>
+            <div class="preview-row" id="prev-type">Tip: -</div>
+            <div class="preview-row" id="prev-amount">Tutar: -</div>
+        </div>
+
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+
+        <div class="right-header">
+            <div class="right-title">Fiyat Bilgileri</div>
+            <i class="bi bi-currency-dollar" style="color:#16a34a"></i>
+        </div>
+
+        <form asp-action="AddCarPricing" method="post" id="formPricing">
+
+            <div class="right-body">
+
+                <div class="field-group">
+                    <label class="field-label">Araç</label>
+                    <select asp-for="CarId" asp-items="ViewBag.Cars" class="form-control" id="carSelect">
+                        <option value="">Araç Seçin</option>
+                    </select>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Fiyatlandırma</label>
+                    <select asp-for="PricingId" asp-items="ViewBag.Pricings" class="form-control" id="pricingSelect">
+                        <option value="">Seçin</option>
+                    </select>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Fiyat Tipi</label>
+                    <input asp-for="PricingType" class="form-control" id="typeInput" placeholder="Günlük / Haftalık" />
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Tutar</label>
+                    <input asp-for="Amount" type="number" class="form-control" id="amountInput" />
+                </div>
+
+            </div>
+
+            <div class="right-footer">
+
+                <a asp-action="CarPricing" class="btn-cancel">
+                    İptal
+                </a>
+
+                <button type="submit" class="btn-save">
+                    Kaydet
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+    function updatePreview() {
+
+        var car = document.getElementById("carSelect");
+        var pricing = document.getElementById("pricingSelect");
+        var type = document.getElementById("typeInput").value;
+        var amount = document.getElementById("amountInput").value;
+
+        document.getElementById("prev-car").innerText =
+            "Araç: " + (car.options[car.selectedIndex]?.text || "-");
+
+        document.getElementById("prev-type").innerText =
+            "Tip: " + (type || "-");
+
+        document.getElementById("prev-amount").innerText =
+            "Tutar: " + (amount ? "₺" + amount : "-");
+    }
+
+    document.getElementById("carSelect").addEventListener("change", updatePreview);
+    document.getElementById("pricingSelect").addEventListener("change", updatePreview);
+    document.getElementById("typeInput").addEventListener("input", updatePreview);
+    document.getElementById("amountInput").addEventListener("input", updatePreview);
+</script>

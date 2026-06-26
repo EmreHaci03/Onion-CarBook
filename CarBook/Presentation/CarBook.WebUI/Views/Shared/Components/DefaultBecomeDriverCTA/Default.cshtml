@@ -1,0 +1,130 @@
+﻿<style>
+    .recruitment-cta-section {
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        padding: 100px 0;
+    }
+
+        .recruitment-cta-section .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(100deg, rgba(13,15,18,0.92) 35%, rgba(13,15,18,0.5));
+        }
+
+    .recruitment-icon-badge {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: rgba(251,183,16,0.15);
+        border: 1px solid #fbb710;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: #fbb710;
+        margin-bottom: 22px;
+    }
+
+    .recruitment-cta-section h2 {
+        color: #fff;
+        font-size: 32px;
+        font-weight: 700;
+        line-height: 1.4;
+        margin-bottom: 24px;
+    }
+
+    .recruitment-stats-row {
+        display: flex;
+        gap: 32px;
+        margin-bottom: 32px;
+    }
+
+    .recruitment-stat-item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .recruitment-stat-number {
+        color: #fbb710;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .recruitment-stat-label {
+        color: #b4b6ba;
+        font-size: 12.5px;
+        margin-top: 2px;
+    }
+
+    .recruitment-cta-btn {
+        background: #fbb710;
+        color: #1d2127;
+        border: none;
+        font-weight: 700;
+        font-size: 15px;
+        border-radius: 6px;
+        padding: 16px 36px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: transform .25s ease, box-shadow .25s ease;
+        text-decoration: none;
+    }
+
+        .recruitment-cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(251,183,16,0.4);
+            color: #1d2127;
+            text-decoration: none;
+        }
+
+    @@media (max-width: 767px) {
+        .recruitment-cta-section h2 {
+            font-size: 24px;
+        }
+
+        .recruitment-stats-row {
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+    }
+</style>
+
+<section class="recruitment-cta-section" style="background-image: url(/carbook-master/images/bg_3.jpg);">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row justify-content-end">
+            <div class="col-md-6 ftco-animate">
+
+                <div class="recruitment-icon-badge">
+                    <i class="ion-ios-cash"></i>
+                </div>
+
+                <h2>Araçlarınızı Değerlendirerek Gelir Elde Etmek İster Misiniz? Hemen Başvurun.</h2>
+
+                <div class="recruitment-stats-row">
+                    <div class="recruitment-stat-item">
+                        <span class="recruitment-stat-number">%40+</span>
+                        <span class="recruitment-stat-label">Ekstra Gelir</span>
+                    </div>
+                    <div class="recruitment-stat-item">
+                        <span class="recruitment-stat-number">7/24</span>
+                        <span class="recruitment-stat-label">Destek</span>
+                    </div>
+                    <div class="recruitment-stat-item">
+                        <span class="recruitment-stat-number">0₺</span>
+                        <span class="recruitment-stat-label">Başvuru Ücreti</span>
+                    </div>
+                </div>
+
+                <a href="#" class="recruitment-cta-btn">
+                    <i class="ion-ios-car"></i> Sürücü Ol
+                </a>
+
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,944 @@
+﻿@model CarDetailViewModel
+@{
+    ViewData["Title"] = Model.BrandName + " " + Model.Model;
+    Layout = "~/Views/Shared/_UILayout.cshtml";
+
+    var dailyPrice = Model.Pricings?
+         .FirstOrDefault(x => x.PricingName == "Günlük");
+
+    var weeklyPrice = Model.Pricings?
+        .FirstOrDefault(x => x.PricingName == "Haftalık");
+
+    var monthlyPrice = Model.Pricings?
+        .FirstOrDefault(x => x.PricingName == "Aylık");
+}
+
+@section HeroBanner {
+    <style>
+        .page-hero-wrap {
+            position: relative;
+        }
+
+            .page-hero-wrap .overlay {
+                background: linear-gradient(180deg, rgba(13,15,18,0.5), rgba(13,15,18,0.82));
+            }
+
+        .page-breadcrumbs {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 8px 18px;
+            border-radius: 24px;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+            .page-breadcrumbs a {
+                color: #d8d9db;
+                text-decoration: none;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                transition: color .2s ease;
+            }
+
+                .page-breadcrumbs a:hover {
+                    color: #fbb710;
+                    text-decoration: none;
+                }
+
+            .page-breadcrumbs .current {
+                color: #fbb710;
+                font-weight: 600;
+            }
+
+            .page-breadcrumbs .sep {
+                color: #5f646b;
+            }
+    </style>
+
+    <section class="hero-wrap hero-wrap-2 page-hero-wrap js-fullheight"
+             style="background-image: url('/carbook-master/images/bg_3.jpg');">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text js-fullheight align-items-end">
+                <div class="col-md-9 pb-5">
+                    <div class="page-breadcrumbs">
+                        <a href="/Default/Index/"><i class="ion-ios-home"></i> Ana Sayfa</a>
+                        <span class="sep">/</span>
+                        <a href="/Car/Index/">Araçlarımız</a>
+                        <span class="sep">/</span>
+                        <span class="current">@Model.BrandName @Model.Model</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<style>
+    .cd-wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 40px 20px 60px;
+    }
+
+    .cd-hero {
+        display: grid;
+        grid-template-columns: 1fr 360px;
+        gap: 28px;
+        align-items: start;
+        margin-bottom: 52px;
+    }
+
+
+    .cd-gallery-main {
+        height: 400px;
+        border-radius: 16px;
+        position: relative;
+        overflow: hidden;
+        background-size: cover;
+        background-position: center;
+        transition: background-image .3s ease;
+    }
+
+    .cd-gallery-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(0deg, rgba(13,15,18,.72) 0%, transparent 55%);
+    }
+
+    .cd-gallery-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 22px 24px;
+    }
+
+    .cd-brand-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #fbb710;
+        color: #1d2127;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 5px 14px;
+        border-radius: 20px;
+        margin-bottom: 10px;
+    }
+
+    .cd-car-name {
+        font-size: 26px;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1.2;
+    }
+
+    .cd-car-sub {
+        font-size: 13px;
+        color: rgba(255,255,255,.6);
+        margin-top: 4px;
+    }
+
+    .cd-thumbs {
+        display: flex;
+        gap: 10px;
+        margin-top: 14px;
+    }
+
+    .cd-thumb {
+        width: 90px;
+        height: 62px;
+        border-radius: 10px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: .2s;
+        overflow: hidden;
+        flex-shrink: 0;
+        background-size: cover;
+        background-position: center;
+        opacity: .65;
+    }
+
+        .cd-thumb:hover {
+            opacity: .9;
+        }
+
+        .cd-thumb.active {
+            border-color: #fbb710;
+            opacity: 1;
+        }
+
+    /* ═══════════════════════════════════════
+           SPEC ŞERİDİ
+        ═══════════════════════════════════════ */
+    .cd-specs {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-top: 14px;
+    }
+
+    .cd-spec {
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 12px;
+        padding: 14px 10px;
+        text-align: center;
+    }
+
+    .cd-spec-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #fef4dd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 8px;
+        font-size: 16px;
+        color: #fbb710;
+    }
+
+    .cd-spec-val {
+        font-size: 13px;
+        font-weight: 700;
+        color: #1d2127;
+    }
+
+    .cd-spec-lbl {
+        font-size: 11px;
+        color: #999;
+        margin-top: 2px;
+    }
+
+    /* ═══════════════════════════════════════
+           REZERVASYON KARTI
+        ═══════════════════════════════════════ */
+    .cd-book {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        overflow: hidden;
+        position: sticky;
+        top: 24px;
+        box-shadow: 0 10px 32px rgba(0,0,0,0.07);
+    }
+
+    .cd-book-head {
+        background: #1d2127;
+        padding: 22px 22px 18px;
+    }
+
+    .cd-book-head-lbl {
+        font-size: 10px;
+        color: rgba(255,255,255,.4);
+        letter-spacing: 1px;
+        margin-bottom: 6px;
+    }
+
+    .cd-book-head-name {
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+    }
+
+    .cd-book-head-rating {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 10px;
+    }
+
+    .cd-stars-sm {
+        display: flex;
+        gap: 2px;
+    }
+
+        .cd-stars-sm i {
+            font-size: 12px;
+            color: #fbb710;
+        }
+
+    .cd-rating-text {
+        font-size: 12px;
+        color: rgba(255,255,255,.45);
+    }
+
+    .cd-book-body {
+        padding: 20px 22px 22px;
+    }
+
+    .cd-price-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+        .cd-price-row:last-of-type {
+            border-bottom: none;
+        }
+
+    .cd-price-lbl {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 13px;
+        color: #666;
+    }
+
+        .cd-price-lbl i {
+            color: #fbb710;
+            font-size: 15px;
+        }
+
+    .cd-price-val {
+        font-size: 16px;
+        font-weight: 700;
+        color: #1d2127;
+    }
+
+        .cd-price-val small {
+            font-size: 11px;
+            font-weight: 400;
+            color: #999;
+        }
+
+    .cd-btn-reserve {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        background: #fbb710;
+        color: #1d2127;
+        border: none;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 700;
+        padding: 14px;
+        margin-top: 16px;
+        text-decoration: none;
+        transition: .2s;
+    }
+
+        .cd-btn-reserve:hover {
+            background: #f0a800;
+            color: #1d2127;
+            text-decoration: none;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(251,183,16,0.3);
+        }
+
+    .cd-trust {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        font-size: 11px;
+        color: #999;
+        margin-top: 12px;
+    }
+
+        .cd-trust i {
+            color: #28a745;
+            font-size: 13px;
+        }
+
+    /* ═══════════════════════════════════════
+           SECTION BAŞLIĞI
+        ═══════════════════════════════════════ */
+    .cd-section {
+        margin-bottom: 44px;
+    }
+
+    .cd-section-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-bottom: 14px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .cd-section-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        background: #fef4dd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        color: #fbb710;
+        flex-shrink: 0;
+    }
+
+    .cd-section-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #1d2127;
+    }
+
+    .cd-section-sub {
+        font-size: 12px;
+        color: #999;
+        margin-left: auto;
+    }
+
+    /* ═══════════════════════════════════════
+           ÖZELLİKLER
+        ═══════════════════════════════════════ */
+    .feat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 10px;
+    }
+
+    .feat-pill {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: 1px solid #e9ecef;
+        background: #fff;
+    }
+
+        .feat-pill.yes {
+            background: #f4fbf6;
+            border-color: #b7e4c7;
+        }
+
+        .feat-pill.no {
+            background: #f8f9fa;
+            opacity: .7;
+        }
+
+    .feat-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        flex-shrink: 0;
+    }
+
+    .feat-pill.yes .feat-icon {
+        background: #28a745;
+        color: #fff;
+    }
+
+    .feat-pill.no .feat-icon {
+        background: #dee2e6;
+        color: #999;
+    }
+
+    .feat-pill.yes .feat-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: #155724;
+    }
+
+    .feat-pill.no .feat-name {
+        font-size: 13px;
+        color: #adb5bd;
+    }
+
+    /* ═══════════════════════════════════════
+           YORUMLAR — ÖZET
+        ═══════════════════════════════════════ */
+    .rv-summary {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        background: #f8f9fa;
+        border-radius: 14px;
+        padding: 20px 24px;
+        margin-bottom: 20px;
+        border: 1px solid #e9ecef;
+    }
+
+    .rv-big {
+        font-size: 52px;
+        font-weight: 700;
+        color: #1d2127;
+        line-height: 1;
+    }
+
+    .rv-stars {
+        display: flex;
+        gap: 3px;
+        margin: 6px 0 4px;
+    }
+
+        .rv-stars i {
+            font-size: 16px;
+            color: #fbb710;
+        }
+
+    .rv-count {
+        font-size: 12px;
+        color: #999;
+    }
+
+    .rv-bars {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .rv-bar-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 12px;
+        color: #666;
+    }
+
+    .rv-bar-track {
+        flex: 1;
+        height: 6px;
+        background: #e2e8f0;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .rv-bar-fill {
+        height: 100%;
+        background: #fbb710;
+        border-radius: 4px;
+    }
+
+    .rv-bar-cnt {
+        min-width: 16px;
+        text-align: right;
+        font-weight: 600;
+    }
+
+    /* KATEGORİ PUANLARI */
+    .rv-cats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-bottom: 24px;
+    }
+
+    .rv-cat {
+        background: #fff;
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        padding: 14px 12px;
+        text-align: center;
+    }
+
+    .rv-cat-val {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1d2127;
+    }
+
+    .rv-cat-lbl {
+        font-size: 11px;
+        color: #999;
+        margin-top: 4px;
+    }
+
+    .rv-cat-stars {
+        display: flex;
+        justify-content: center;
+        gap: 1px;
+        margin-top: 4px;
+    }
+
+        .rv-cat-stars i {
+            font-size: 10px;
+            color: #fbb710;
+        }
+
+    /* YORUM KARTI */
+    .rv-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .rv-card {
+        background: #fff;
+        border: 1px solid #e9ecef;
+        border-radius: 14px;
+        padding: 18px 20px;
+        transition: box-shadow .2s;
+    }
+
+        .rv-card:hover {
+            box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+        }
+
+    .rv-card-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+
+    .rv-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 600;
+        flex-shrink: 0;
+    }
+
+    .rv-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1d2127;
+    }
+
+    .rv-date {
+        font-size: 11px;
+        color: #adb5bd;
+        margin-top: 1px;
+    }
+
+    .rv-card-stars {
+        display: flex;
+        gap: 2px;
+        margin-left: auto;
+    }
+
+        .rv-card-stars i {
+            font-size: 13px;
+            color: #fbb710;
+        }
+
+    .rv-text {
+        font-size: 13px;
+        color: #555;
+        line-height: 1.7;
+    }
+
+    .rv-footer {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+        flex-wrap: wrap;
+    }
+
+    .rv-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 11px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        background: #f8f9fa;
+        color: #666;
+        border: 1px solid #e2e8f0;
+    }
+
+    .rv-helpful {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        color: #adb5bd;
+        cursor: pointer;
+        transition: color .2s;
+    }
+
+        .rv-helpful:hover {
+            color: #1d2127;
+        }
+
+    .verified-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 10px;
+        padding: 3px 8px;
+        border-radius: 20px;
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #b7e4c7;
+    }
+
+    /* ═══════════════════════════════════════
+           RESPONSIVE
+        ═══════════════════════════════════════ */
+    @@media (max-width: 991px) {
+        .cd-hero {
+            grid-template-columns: 1fr;
+        }
+
+        .cd-specs {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .cd-book {
+            position: static;
+        }
+
+        .rv-cats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .cd-specs {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .rv-cats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .rv-summary {
+            flex-direction: column;
+            gap: 16px;
+        }
+    }
+</style>
+
+<section class="ftco-section bg-light">
+    <div class="cd-wrap">
+
+        <div class="cd-hero">
+
+            <div>
+                <div class="cd-gallery-main" id="galleryMain"
+                     style="background-image:url('@Model.MainImageUrl');">
+                    <div class="cd-gallery-overlay"></div>
+                    <div class="cd-gallery-bottom">
+                        <div class="cd-brand-badge">
+                            <i class="ion-ios-car"></i> @Model.BrandName
+                        </div>
+                        <div class="cd-car-name">@Model.BrandName @Model.Model</div>
+                        <div class="cd-car-sub">@Model.Model · @Model.Transmission</div>
+                    </div>
+                </div>
+
+                <div class="cd-thumbs">
+                    <div class="cd-thumb active"
+                         style="background-image:url('@Model.MainImageUrl');"
+                         onclick="switchImage(this,'@Model.MainImageUrl')"></div>
+                    @if (!string.IsNullOrEmpty(Model.DetailImageUrl))
+                    {
+                        <div class="cd-thumb"
+                             style="background-image:url('@Model.DetailImageUrl');"
+                             onclick="switchImage(this,'@Model.DetailImageUrl')"></div>
+                    }
+                </div>
+
+                <div class="cd-specs">
+                    <div class="cd-spec">
+                        <div class="cd-spec-icon"><i class="ion-ios-speedometer"></i></div>
+                        <div class="cd-spec-val">@Model.Mileage.ToString("N0") km</div>
+                        <div class="cd-spec-lbl">Kilometre</div>
+                    </div>
+                    <div class="cd-spec">
+                        <div class="cd-spec-icon"><i class="ion-ios-settings"></i></div>
+                        <div class="cd-spec-val">@Model.Transmission</div>
+                        <div class="cd-spec-lbl">Vites</div>
+                    </div>
+                    <div class="cd-spec">
+                        <div class="cd-spec-icon"><i class="ion-ios-people"></i></div>
+                        <div class="cd-spec-val">@Model.Seats Kişi</div>
+                        <div class="cd-spec-lbl">Koltuk</div>
+                    </div>
+                    <div class="cd-spec">
+                        <div class="cd-spec-icon"><i class="ion-ios-water"></i></div>
+                        <div class="cd-spec-val">@Model.FuelType</div>
+                        <div class="cd-spec-lbl">Yakıt</div>
+                    </div>
+                </div>
+                @if (!string.IsNullOrEmpty(Model.DetailDescription))
+                {
+                    <div style="margin-top:16px; background:#fff; border:1px solid #ececec; border-radius:12px; padding:18px 20px;">
+                        <div style="font-size:12px; font-weight:700; color:#999; text-transform:uppercase; letter-spacing:.5px; margin-bottom:10px;">
+                            <i class="ion-ios-document" style="color:#fbb710; margin-right:6px;"></i> Araç Hakkında
+                        </div>
+                        <p style="font-size:13.5px; color:#475569; line-height:1.8; margin:0;">@Model.DetailDescription</p>
+                    </div>
+                }
+            </div>
+
+            <!-- Sağ: Rezervasyon Kartı -->
+            <div class="cd-book">
+                <div class="cd-book-head">
+                    <div class="cd-book-head-lbl">FİYATLANDIRMA</div>
+                    <div class="cd-book-head-name">@Model.BrandName @Model.Model</div>
+                    <div class="cd-book-head-rating">
+                        <div class="cd-stars-sm">
+                            <i class="ion-ios-star"></i>
+                            <i class="ion-ios-star"></i>
+                            <i class="ion-ios-star"></i>
+                            <i class="ion-ios-star"></i>
+                            <i class="ion-ios-star-half"></i>
+                        </div>
+                        <span class="cd-rating-text">4.7 · 24 yorum</span>
+                    </div>
+                </div>
+                <div class="cd-book-body">
+                    <div class="cd-price-row">
+                        <div class="cd-price-lbl">
+                            <i class="ion-ios-calendar"></i> Günlük
+                        </div>
+                        <div class="cd-price-val">
+                           @dailyPrice?.Amount ₺ <small>/ gün</small>
+                        </div>
+                    </div>
+                    <div class="cd-price-row">
+                        <div class="cd-price-lbl">
+                            <i class="ion-ios-calendar"></i> Haftalık
+                        </div>
+                        <div class="cd-price-val">
+                           @weeklyPrice?.Amount ₺ <small>/ hafta</small>
+                        </div>
+                    </div>
+                    <div class="cd-price-row">
+                        <div class="cd-price-lbl">
+                            <i class="ion-ios-calendar"></i> Aylık
+                        </div>
+                        <div class="cd-price-val">
+                           @monthlyPrice?.Amount ₺ <small>/ ay</small>
+                        </div>
+                    </div>
+
+                    <a href="/Reservation/Index/@Model.Id" class="cd-btn-reserve">
+                        <i class="ion-ios-checkmark-circle"></i> Hemen Kirala
+                    </a>
+
+                    <div class="cd-trust">
+                        <i class="ion-ios-shield-checkmark"></i>
+                        Ücretsiz iptal · Gizli ücret yok
+                    </div>
+                </div>
+            </div>
+        </div>
+        @await Component.InvokeAsync("CarDetailFeature", new { carId = Model.Id })
+
+        <!-- ═══ YORUMLAR ═══ -->
+        <div class="cd-section">
+            <div class="cd-section-head">
+                <div class="cd-section-icon"><i class="ion-ios-chatbubbles"></i></div>
+                <div class="cd-section-title">Kullanıcı yorumları</div>
+                <div class="cd-section-sub">24 değerlendirme</div>
+            </div>
+
+            <!-- Özet + Bar -->
+            <div class="rv-summary">
+                <div style="text-align:center;">
+                    <div class="rv-big">4.7</div>
+                    <div class="rv-stars">
+                        <i class="ion-ios-star"></i>
+                        <i class="ion-ios-star"></i>
+                        <i class="ion-ios-star"></i>
+                        <i class="ion-ios-star"></i>
+                        <i class="ion-ios-star-half"></i>
+                    </div>
+                    <div class="rv-count">24 değerlendirme</div>
+                </div>
+                <div class="rv-bars">
+                    <div class="rv-bar-row">
+                        <span>5</span>
+                        <div class="rv-bar-track"><div class="rv-bar-fill" style="width:72%;"></div></div>
+                        <span class="rv-bar-cnt">17</span>
+                    </div>
+                    <div class="rv-bar-row">
+                        <span>4</span>
+                        <div class="rv-bar-track"><div class="rv-bar-fill" style="width:20%;"></div></div>
+                        <span class="rv-bar-cnt">5</span>
+                    </div>
+                    <div class="rv-bar-row">
+                        <span>3</span>
+                        <div class="rv-bar-track"><div class="rv-bar-fill" style="width:8%;"></div></div>
+                        <span class="rv-bar-cnt">2</span>
+                    </div>
+                    <div class="rv-bar-row">
+                        <span>2</span>
+                        <div class="rv-bar-track"><div class="rv-bar-fill" style="width:0%;"></div></div>
+                        <span class="rv-bar-cnt">0</span>
+                    </div>
+                    <div class="rv-bar-row">
+                        <span>1</span>
+                        <div class="rv-bar-track"><div class="rv-bar-fill" style="width:4%;"></div></div>
+                        <span class="rv-bar-cnt">1</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kategori Puanları -->
+            <div class="rv-cats">
+                <div class="rv-cat">
+                    <div class="rv-cat-val">4.9</div>
+                    <div class="rv-cat-stars">
+                        <i class="ion-ios-star"></i><i class="ion-ios-star"></i>
+                        <i class="ion-ios-star"></i><i class="ion-ios-star"></i>
+                        <i class="ion-ios-star"></i>
+                    </div>
+                    <div class="rv-cat-lbl">Temizlik</div>
+                </div>
+                <div class="rv-cat">
+                    <div class="rv-cat-val">4.8</div>
+                    <div class="rv-cat-stars">
+                        <i class="ion-ios-star"></i><i class="ion-ios-star"></i>
+                        <i class="ion-ios-star"></i><i class="ion-ios-star"></i>
+                        <i class="ion-ios-star-half"></i>
+                    </div>
+                    <div class="rv-cat-lbl">Konfor</div>
+                </div>
+                <div class="rv-cat">
+                    <div class="rv-cat-val">4.6</div>
+                    <div class="rv-cat-stars">
+                        <i class="ion-ios-star"></i><i class="ion-ios-star"></i>
+                        <i class="ion-ios-star"></i><i class="ion-ios-star"></i>
+                        <i class="ion-ios-star-half"></i>
+                    </div>
+                    <div class="rv-cat-lbl">Fiyat / Kalite</div>
+                </div>
+                <div class="rv-cat">
+                    <div class="rv-cat-val">4.5</div>
+                    <div class="rv-cat-stars">
+                        <i class="ion-ios-star"></i><i class="ion-ios-star"></i>
+                        <i class="ion-ios-star"></i><i class="ion-ios-star"></i>
+                        <i class="ion-ios-star-half"></i>
+                    </div>
+                    <div class="rv-cat-lbl">Teslim süreci</div>
+                </div>
+            </div>
+
+            <!-- Yorum Kartları -->
+            @await Component.InvokeAsync("CarDetailReview", new { carId = Model.Id })
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        function switchImage(el, url) {
+            document.getElementById('galleryMain').style.backgroundImage = "url('" + url + "')";
+            document.querySelectorAll('.cd-thumb').forEach(function (t) {
+                t.classList.remove('active');
+            });
+            el.classList.add('active');
+        }
+    </script>
+}

@@ -1,0 +1,152 @@
+﻿@model List<GetLast3BlogsWithAuthorDto>
+@{
+    var commentCounts = ViewBag.CommentCounts as Dictionary<int, int>;
+}
+<style>
+    .blog-card-wrap {
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+        transition: transform .3s ease, box-shadow .3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .blog-card-wrap:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 32px rgba(0,0,0,0.12);
+        }
+
+    .blog-card-img {
+        height: 220px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        display: block;
+    }
+
+        .blog-card-img::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.35), transparent 60%);
+        }
+
+    .blog-card-date-badge {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        background: #fbb710;
+        color: #1d2127;
+        font-size: 12.5px;
+        font-weight: 700;
+        padding: 6px 12px;
+        border-radius: 6px;
+        z-index: 2;
+    }
+
+    .blog-card-body {
+        padding: 22px 22px 24px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .blog-card-meta {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 13px;
+        color: #999;
+        margin-bottom: 12px;
+    }
+
+        .blog-card-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .blog-card-meta i {
+            color: #fbb710;
+            font-size: 14px;
+        }
+
+    .blog-card-title {
+        font-size: 19px;
+        font-weight: 700;
+        color: #1d2127;
+        line-height: 1.4;
+        margin-bottom: 16px;
+        flex: 1;
+    }
+
+        .blog-card-title a {
+            color: inherit;
+            text-decoration: none;
+            transition: color .2s ease;
+        }
+
+            .blog-card-title a:hover {
+                color: #fbb710;
+                text-decoration: none;
+            }
+
+    .blog-card-link {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1d2127;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+        transition: gap .2s ease, color .2s ease;
+    }
+
+        .blog-card-link:hover {
+            color: #fbb710;
+            gap: 10px;
+            text-decoration: none;
+        }
+</style>
+
+<section class="ftco-section">
+    <div class="container">
+
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-7 heading-section text-center ftco-animate">
+                <span class="subheading" style="color:#fbb710">Blog</span>
+                <h2>Son Bloglar</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                var count = commentCounts != null && commentCounts.ContainsKey(item.Id) ? commentCounts[item.Id] : 0;
+                <div class="col-md-4 mb-4 ftco-animate">
+                    <div class="blog-card-wrap">
+                        <a href="/Blog/BlogDetail/@item.Id" class="blog-card-img" style="background-image:url('@item.CoverImageUrl');">
+                            <span class="blog-card-date-badge">@item.CreateDate.ToString("dd MMM yyyy")</span>
+                        </a>
+                        <div class="blog-card-body">
+                            <div class="blog-card-meta">
+                                <span><i class="ion-ios-person"></i>@item.AuthorName</span>
+                                <span><i class="ion-ios-chatbubbles"></i>@count yorum</span>
+                            </div>
+                            <h3 class="blog-card-title">
+                                <a href="/Blog/BlogDetail/@item.Id">@item.Title</a>
+                            </h3>
+                            <a href="/Blog/BlogDetail/@item.Id" class="blog-card-link">
+                                Devamını Oku <i class="ion-ios-arrow-forward"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+</section>

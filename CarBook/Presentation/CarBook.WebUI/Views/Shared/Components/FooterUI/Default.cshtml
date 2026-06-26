@@ -1,0 +1,337 @@
+﻿<style>
+    .ftco-footer {
+        position: relative;
+    }
+
+        .ftco-footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #fbb710, #fbb71080, transparent);
+        }
+
+        .ftco-footer .ftco-heading-2 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 22px;
+            padding-bottom: 14px;
+            position: relative;
+        }
+
+            .ftco-footer .ftco-heading-2::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 36px;
+                height: 2px;
+                background: #fbb710;
+            }
+
+        .ftco-footer .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+            .ftco-footer .logo span {
+                color: #fbb710;
+            }
+
+    .ftco-footer-widget p {
+        color: #9aa0a6;
+        font-size: 14px;
+        line-height: 1.8;
+    }
+
+    .ftco-footer-widget ul.list-unstyled li a {
+        color: #9aa0a6;
+        font-size: 14px;
+        transition: color .2s ease, padding-left .2s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+    }
+
+        .ftco-footer-widget ul.list-unstyled li a::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #fbb710;
+            flex-shrink: 0;
+            opacity: .6;
+            transition: opacity .2s ease;
+        }
+
+        .ftco-footer-widget ul.list-unstyled li a:hover {
+            color: #fbb710;
+            padding-left: 4px;
+            text-decoration: none;
+        }
+
+            .ftco-footer-widget ul.list-unstyled li a:hover::before {
+                opacity: 1;
+            }
+
+    .ftco-footer-bottom {
+        border-top: 1px solid rgba(255,255,255,0.08);
+        padding-top: 26px;
+        margin-top: 10px;
+    }
+
+        .ftco-footer-bottom p {
+            color: #888d93;
+            font-size: 13px;
+            margin: 0;
+        }
+
+            .ftco-footer-bottom p a {
+                color: #fbb710;
+                text-decoration: none;
+            }
+
+                .ftco-footer-bottom p a:hover {
+                    text-decoration: underline;
+                }
+
+    .swal2-popup.cb-terms-popup {
+        text-align: left;
+        border-radius: 14px;
+        font-family: 'Poppins', sans-serif;
+    }
+
+        .swal2-popup.cb-terms-popup .swal2-html-container {
+            text-align: left;
+            max-height: 360px;
+            font-size: 13.5px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+    .cb-terms-popup h4 {
+        font-size: 14.5px;
+        font-weight: 700;
+        color: #1d2127;
+        margin: 18px 0 6px;
+    }
+
+        .cb-terms-popup h4:first-child {
+            margin-top: 0;
+        }
+</style>
+
+<footer class="ftco-footer ftco-bg-dark ftco-section">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md">
+                <div class="ftco-footer-widget mb-4">
+                    <h2 class="ftco-heading-2"><a href="#" class="logo">Car<span>book</span></a></h2>
+                    <p>2010 yılından bu yana güvenilir araç kiralama hizmeti sunmaktayız. Konforlu ve güvenli yolculuklar için doğru adrestesiniz.</p>
+                    @await Component.InvokeAsync("SocialMedia")
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="ftco-footer-widget mb-4 ml-md-5">
+                    <h2 class="ftco-heading-2">Bilgi</h2>
+                    <ul class="list-unstyled">
+                        <li><a href="/About/Index/" class="py-2 d-block">Hakkımızda</a></li>
+                        <li><a href="/Service/Index" class="py-2 d-block">Hizmetlerimiz</a></li>
+                        <li><a href="javascript:void(0)" id="btnTerms" class="py-2 d-block">Kullanım Koşulları</a></li>
+                        <li><a href="javascript:void(0)" id="btnPriceGuarantee" class="py-2 d-block">En İyi Fiyat Garantisi</a></li>
+                        <li><a href="javascript:void(0)" id="btnPrivacy" class="py-2 d-block">Gizlilik &amp; Çerez Politikası</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="ftco-footer-widget mb-4">
+                    <h2 class="ftco-heading-2">Müşteri Desteği</h2>
+                    <ul class="list-unstyled">
+                        <li><a href="javascript:void(0)" id="btnFaq" class="py-2 d-block">Sık Sorulan Sorular</a></li>
+                        <li><a href="javascript:void(0)" id="btnPayment" class="py-2 d-block">Ödeme Seçenekleri</a></li>
+                        <li><a href="javascript:void(0)" id="btnBookingTips" class="py-2 d-block">Rezervasyon İpuçları</a></li>
+                        <li><a href="javascript:void(0)" id="btnHowItWorks" class="py-2 d-block">Nasıl Çalışır?</a></li>
+                        <li><a href="/Contact/Index/" class="py-2 d-block">Bize Ulaşın</a></li>
+                    </ul>
+                </div>
+            </div>
+            @await Component.InvokeAsync("FooterAddress")
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="ftco-footer-bottom text-center">
+                    <p>
+                        Telif Hakkı &copy;<script>document.write(new Date().getFullYear());</script> Tüm hakları saklıdır. | Bu şablon <i class="ion-ios-heart" aria-hidden="true"></i> ile yapılmıştır. <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        document.getElementById('btnTerms').addEventListener('click', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Kullanım Koşulları',
+                html: `
+                    <h4>1. Genel Hükümler</h4>
+                    <p>CarBook üzerinden sunulan araç kiralama hizmetlerinden faydalanan tüm kullanıcılar, bu kullanım koşullarını kabul etmiş sayılır. Şirketimiz, hizmet koşullarını önceden haber vermeksizin değiştirme hakkını saklı tutar.</p>
+
+                    <h4>2. Kiralama Şartları</h4>
+                    <p>Araç kiralama işlemi için kullanıcının 18 yaşını doldurmuş, geçerli bir ehliyete ve en az 1 yıllık sürücü deneyimine sahip olması gerekmektedir. Rezervasyon sırasında girilen bilgilerin doğruluğundan kullanıcı sorumludur.</p>
+
+                    <h4>3. Ödeme ve İptal Koşulları</h4>
+                    <p>Rezervasyon onayından sonra yapılacak iptallerde, kiralama tarihine kalan süreye göre iade politikası uygulanır. Ödeme işlemleri güvenli ödeme altyapısı üzerinden gerçekleştirilir.</p>
+
+                    <h4>4. Sorumluluklar</h4>
+                    <p>Kiralanan araçların trafik kurallarına uygun, dikkatli ve özenli kullanılması esastır. Araçta oluşacak hasarlardan, kullanım koşullarına aykırı davranışlardan kullanıcı sorumludur.</p>
+
+                    <h4>5. Yürürlük</h4>
+                    <p>Bu kullanım koşulları, kullanıcının siteyi ziyaret ettiği veya rezervasyon yaptığı andan itibaren yürürlüğe girer.</p>
+                `,
+                confirmButtonText: 'Anladım',
+                confirmButtonColor: '#fbb710',
+                customClass: { popup: 'cb-terms-popup' },
+                width: 600
+            });
+        });
+
+        document.getElementById('btnPriceGuarantee').addEventListener('click', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'En İyi Fiyat Garantisi',
+                html: `
+                    <p>CarBook olarak, kiraladığınız araç için piyasadaki en uygun fiyatı sunmayı taahhüt ediyoruz. Rezervasyonunuzdan sonra aynı araç ve aynı tarihler için başka bir platformda daha düşük bir fiyat bulmanız durumunda, farkı size iade ediyoruz.</p>
+                    <p>Fiyat farkı talepleri, rezervasyon tarihinden itibaren 24 saat içinde müşteri hizmetlerimize bildirilmelidir.</p>
+                `,
+                confirmButtonText: 'Anladım',
+                confirmButtonColor: '#fbb710',
+                customClass: { popup: 'cb-terms-popup' },
+                width: 560
+            });
+        });
+
+        document.getElementById('btnPrivacy').addEventListener('click', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Gizlilik & Çerez Politikası',
+                html: `
+                    <h4>Kişisel Verilerin Korunması</h4>
+                    <p>CarBook, kullanıcılarından topladığı kişisel verileri yalnızca rezervasyon işlemlerini gerçekleştirmek, hizmet kalitesini artırmak ve yasal yükümlülükleri yerine getirmek amacıyla işler. Verileriniz, açık rızanız olmadan üçüncü taraflarla paylaşılmaz.</p>
+
+                    <h4>Çerez Kullanımı</h4>
+                    <p>Sitemiz, kullanıcı deneyimini geliştirmek amacıyla çerezler kullanmaktadır. Tarayıcı ayarlarınızdan çerez tercihlerinizi istediğiniz zaman değiştirebilirsiniz.</p>
+                `,
+                confirmButtonText: 'Anladım',
+                confirmButtonColor: '#fbb710',
+                customClass: { popup: 'cb-terms-popup' },
+                width: 560
+            });
+        });
+
+            document.getElementById('btnFaq').addEventListener('click', function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Sık Sorulan Sorular',
+            html: `
+                <h4>Rezervasyonumu nasıl iptal edebilirim?</h4>
+                <p>Hesabım sayfasından ilgili rezervasyonu seçip "İptal Et" butonuna tıklayarak işleminizi gerçekleştirebilirsiniz. İptal koşulları rezervasyon tarihine göre değişiklik gösterebilir.</p>
+
+                <h4>Araç teslim alırken hangi belgeler gerekli?</h4>
+                <p>Geçerli bir kimlik belgesi, sürücü belgesi ve rezervasyon onay kodu yeterlidir. Bazı araç gruplarında ek belge talep edilebilir.</p>
+
+                <h4>Kilometre sınırı var mı?</h4>
+                <p>Standart kiralamalarda günlük kilometre sınırı bulunmaktadır. Sınırsız kilometre seçeneği rezervasyon sırasında ek paket olarak eklenebilir.</p>
+
+                <h4>Yurt dışına araç çıkarabilir miyim?</h4>
+                <p>Yurt dışı kullanımı için önceden müşteri hizmetlerimizden onay alınması gerekmektedir.</p>
+            `,
+            confirmButtonText: 'Anladım',
+            confirmButtonColor: '#fbb710',
+            customClass: { popup: 'cb-terms-popup' },
+            width: 600
+        });
+    });
+
+    document.getElementById('btnPayment').addEventListener('click', function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Ödeme Seçenekleri',
+            html: `
+                <h4>Kabul Edilen Ödeme Yöntemleri</h4>
+                <p>Kredi kartı, banka kartı ve havale/EFT ile ödeme yapabilirsiniz. Tüm ödemeler 3D Secure altyapısı ile güvence altındadır.</p>
+
+                <h4>Depozito</h4>
+                <p>Araç teslim alımında, araç grubuna göre değişen tutarda bloke depozito alınır. Depozito, araç hasarsız teslim edildiğinde iade edilir.</p>
+
+                <h4>Taksitli Ödeme</h4>
+                <p>Uzun süreli kiralamalarda, anlaşmalı bankalar üzerinden taksitli ödeme seçeneklerinden faydalanabilirsiniz.</p>
+            `,
+            confirmButtonText: 'Anladım',
+            confirmButtonColor: '#fbb710',
+            customClass: { popup: 'cb-terms-popup' },
+            width: 560
+        });
+    });
+
+    document.getElementById('btnBookingTips').addEventListener('click', function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Rezervasyon İpuçları',
+            html: `
+                <h4>Erken Rezervasyon Avantajı</h4>
+                <p>Yoğun dönemlerde (tatil, bayram) en az 1 hafta önceden rezervasyon yapmanız, istediğiniz araç grubunu bulma şansınızı artırır.</p>
+
+                <h4>Lokasyon Seçimi</h4>
+                <p>Alış ve bırakış lokasyonunu aynı seçmeniz, ek lokasyon farkı ücreti ödememenizi sağlar.</p>
+
+                <h4>Sigorta Paketleri</h4>
+                <p>Tam kasko paketini seçerek, olası hasar durumlarında ek ödeme riskinden korunabilirsiniz.</p>
+
+                <h4>Yakıt Politikası</h4>
+                <p>Aracı aldığınız yakıt seviyesiyle teslim etmeniz, ek yakıt ücreti ödememeniz açısından önemlidir.</p>
+            `,
+            confirmButtonText: 'Anladım',
+            confirmButtonColor: '#fbb710',
+            customClass: { popup: 'cb-terms-popup' },
+            width: 600
+        });
+    });
+
+    document.getElementById('btnHowItWorks').addEventListener('click', function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Nasıl Çalışır?',
+            html: `
+                <h4>1. Araç ve Tarih Seçin</h4>
+                <p>Alış-bırakış lokasyonunuzu ve kiralama tarihlerinizi belirleyerek size uygun araçları listeleyin.</p>
+
+                <h4>2. Rezervasyonunuzu Tamamlayın</h4>
+                <p>Beğendiğiniz aracı seçip, kişisel bilgilerinizi girerek rezervasyonunuzu birkaç adımda tamamlayın.</p>
+
+                <h4>3. Aracınızı Teslim Alın</h4>
+                <p>Belirlediğiniz tarihte, seçtiğiniz lokasyondan kimlik ve ehliyetinizle aracınızı teslim alın.</p>
+
+                <h4>4. Yolculuğunuzun Tadını Çıkarın</h4>
+                <p>Güvenli ve konforlu bir sürüş deneyimi için aracınızı kullanın, kiralama süresi sonunda aynı veya farklı bir lokasyona teslim edin.</p>
+            `,
+            confirmButtonText: 'Anladım',
+            confirmButtonColor: '#fbb710',
+            customClass: { popup: 'cb-terms-popup' },
+            width: 600
+        });
+    });
+
+
+
+    });
+</script>

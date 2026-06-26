@@ -1,0 +1,68 @@
+﻿<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar ftco-navbar-light" id="ftco-navbar"
+     style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0.6rem 0;">
+    <div class="container">
+        <a class="navbar-brand" href="/Default/Index/"
+           style="font-size:20px; font-weight:700; letter-spacing:-0.5px; color:#fff;">
+            Araç<span style="color:#f59e0b;">Kirala</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+                aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation"
+                style="border-color:rgba(255,255,255,0.2);">
+            <span class="oi oi-menu"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="ftco-nav">
+            <ul class="navbar-nav ml-auto" style="align-items:center; gap:2px;">
+                <li class="nav-item"><a href="/Default/Index/" class="nav-link" style="font-size:13.5px; color:rgba(255,255,255,0.75); padding:8px 12px; border-radius:6px; transition:all .15s;">Ana Sayfa</a></li>
+                <li class="nav-item"><a href="/About/Index/" class="nav-link" style="font-size:13.5px; color:rgba(255,255,255,0.75); padding:8px 12px; border-radius:6px; transition:all .15s;">Hakkımızda</a></li>
+                <li class="nav-item"><a href="/Service/Index/" class="nav-link" style="font-size:13.5px; color:rgba(255,255,255,0.75); padding:8px 12px; border-radius:6px; transition:all .15s;">Hizmetlerimiz</a></li>
+                <li class="nav-item"><a href="/CarPricing/Index/" class="nav-link" style="font-size:13.5px; color:rgba(255,255,255,0.75); padding:8px 12px; border-radius:6px; transition:all .15s;">Fiyatlarımız</a></li>
+                <li class="nav-item"><a href="/Car/Index/" class="nav-link" style="font-size:13.5px; color:rgba(255,255,255,0.75); padding:8px 12px; border-radius:6px; transition:all .15s;">Arabalarımız</a></li>
+                <li class="nav-item"><a href="/Blog/Index/" class="nav-link" style="font-size:13.5px; color:rgba(255,255,255,0.75); padding:8px 12px; border-radius:6px; transition:all .15s;">Blog</a></li>
+                <li class="nav-item"><a href="/Contact/Index/" class="nav-link" style="font-size:13.5px; color:rgba(255,255,255,0.75); padding:8px 12px; border-radius:6px; transition:all .15s;">İletişim</a></li>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item dropdown" style="margin-left:8px;">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"
+                           style="display:flex; align-items:center; gap:8px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:7px 14px; font-size:13px; color:#fff;">
+                            <span style="width:26px; height:26px; background:#f59e0b; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:#1a1200;">
+                                @User.Identity.Name?.Substring(0, 1).ToUpper()
+                            </span>
+                            @User.Identity.Name
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right"
+                             style="background:#1e293b; border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:6px; min-width:160px; margin-top:0;">
+                            <a class="dropdown-item" href="/Login/Logout"
+                               style="color:#f87171; font-size:13px; border-radius:6px; padding:8px 12px;">
+                                🚪 Çıkış Yap
+                            </a>
+                        </div>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item" style="margin-left:8px;">
+                        <a href="/Login/Index" class="nav-link"
+                           style="background:#f59e0b; color:#1a1200 !important; font-size:13px; font-weight:600; padding:8px 18px; border-radius:8px;">
+                            Giriş Yap
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<style>
+    .navbar-nav .nav-link:hover {
+        color: #fff !important;
+        background: rgba(255,255,255,0.08);
+    }
+
+    .dropdown-item:hover {
+        background: rgba(248,113,113,0.1) !important;
+        color: #f87171 !important;
+    }
+</style>

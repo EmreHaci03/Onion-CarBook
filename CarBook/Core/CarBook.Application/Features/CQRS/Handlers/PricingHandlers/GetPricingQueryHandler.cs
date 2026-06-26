@@ -1,0 +1,32 @@
+﻿using AutoMapper;
+using CarBook.Application.Features.CQRS.Queries.PricingQueries;
+using CarBook.Application.Features.CQRS.Results.PricingResults;
+using CarBook.Application.Interfaces;
+using CarBook.Domain.Entities;
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CarBook.Application.Features.CQRS.Handlers.PricingHandlers
+{
+    public class GetPricingQueryHandler : IRequestHandler<GetPricingQuery,List<GetPricingQueryResult>>
+    {
+        private readonly IRepository<Pricing> _repository;
+        private readonly IMapper _mapper;
+
+        public GetPricingQueryHandler(IRepository<Pricing> repository, IMapper mapper)
+        {
+            _repository = repository;
+            _mapper = mapper;
+        }
+
+        public async Task<List<GetPricingQueryResult>> Handle(GetPricingQuery request, CancellationToken cancellationToken)
+        {
+            var values = await _repository.GetAllAsync();
+            return _mapper.Map<List<GetPricingQueryResult>>(values);
+        }
+    }
+}

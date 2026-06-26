@@ -1,0 +1,264 @@
+﻿
+@{
+    ViewData["Title"] = "İstatistikler";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 14px;
+    }
+
+    .stat-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        transition: .2s;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,.08);
+        }
+
+    .stat-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+    }
+
+    .stat-badge {
+        font-size: 10px;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: 20px;
+    }
+
+    .stat-value {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0f172a;
+        line-height: 1.2;
+        word-break: break-word;
+    }
+
+    .stat-label {
+        font-size: 12px;
+        color: #64748b;
+    }
+
+    
+    .theme-red .stat-icon {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+
+    .theme-red .stat-badge {
+        background: #fff5f5;
+        color: #b91c1c;
+    }
+
+    .theme-green .stat-icon {
+        background: #dcfce7;
+        color: #16a34a;
+    }
+
+    .theme-green .stat-badge {
+        background: #f0fdf4;
+        color: #15803d;
+    }
+
+    .theme-blue .stat-icon {
+        background: #dbeafe;
+        color: #2563eb;
+    }
+
+    .theme-blue .stat-badge {
+        background: #eff6ff;
+        color: #1d4ed8;
+    }
+
+    .theme-purple .stat-icon {
+        background: #ede9fe;
+        color: #7c3aed;
+    }
+
+    .theme-purple .stat-badge {
+        background: #f5f3ff;
+        color: #6d28d9;
+    }
+
+    .theme-amber .stat-icon {
+        background: #fef9c3;
+        color: #ca8a04;
+    }
+
+    .theme-amber .stat-badge {
+        background: #fffbeb;
+        color: #92400e;
+    }
+
+    .theme-orange .stat-icon {
+        background: #ffedd5;
+        color: #ea580c;
+    }
+
+    .theme-orange .stat-badge {
+        background: #fff7ed;
+        color: #c2410c;
+    }
+</style>
+
+<div style="margin-bottom:18px;">
+    <div style="font-size:18px;font-weight:700;">Araç İstatistikleri</div>
+    <div style="font-size:13px;color:#64748b;">Sistemdeki analiz raporları</div>
+</div>
+
+<div class="stat-grid">
+
+    <!-- EN PAHALI -->
+    <div class="stat-card theme-red">
+        <div class="stat-top">
+            <div class="stat-icon">
+                <i class="bi bi-cash-stack"></i>
+            </div>
+            <span class="stat-badge">En Pahalı</span>
+        </div>
+
+        <div class="stat-value">
+            @ViewBag.HighestPriceCarName
+        </div>
+
+        <div class="stat-label">
+            Günlük kiralama ücreti
+            <strong>@ViewBag.HighestCarPriceDay ₺</strong>
+        </div>
+    </div>
+
+    <!-- EN UCUZ -->
+    <div class="stat-card theme-green">
+        <div class="stat-top">
+            <div class="stat-icon"><i class="bi bi-tag-fill"></i></div>
+            <span class="stat-badge">En Ucuz</span>
+        </div>
+        <div class="stat-value">@ViewBag.CheapestCarName</div>
+        <div class="stat-label">
+            Günlük kiralama ücreti
+            <strong>@ViewBag.CheapestCarPrice ₺</strong>
+        </div>
+    </div>
+
+    <!-- EN ÇOK ARACA SAHİP MARKA -->
+    <div class="stat-card theme-green">
+        <div class="stat-top">
+            <div class="stat-icon"><i class="bi bi-fuel-pump-fill"></i></div>
+            <span class="stat-badge">Yakıt</span>
+        </div>
+        <div class="stat-value">@ViewBag.MostUsedFuelType</div>
+        <div class="stat-label">@ViewBag.FuelTypeCount araç</div>
+    </div>
+
+    <!-- En Çok Kullanılan Araç -->
+    <div class="stat-card theme-blue">
+        <div class="stat-top">
+            <div class="stat-icon"><i class="bi bi-speedometer2"></i></div>
+            <span class="stat-badge">En Kullanılan</span>
+        </div>
+
+        <div class="stat-value">
+            @ViewBag.HighestMileageCar
+        </div>
+
+        <div class="stat-label">
+            @ViewBag.MileageValue  km ile en çok kullanılan araç
+        </div>
+    </div>
+
+    <!-- En Çok Araca Sahip Marka  -->
+    <div class="stat-card theme-orange">
+        <div class="stat-top">
+            <div class="stat-icon"><i class="bi bi-trophy-fill"></i></div>
+            <span class="stat-badge">En Çok Araç</span>
+        </div>
+
+        <div class="stat-value">
+            @ViewBag.MostCarBrandName
+        </div>
+
+        <div class="stat-label">
+            En çok araç sahibi marka •
+            <span style="font-weight:600;">@ViewBag.MostCarCount</span> araç
+        </div>
+    </div>
+
+    <!-- En Yeni Araç -->
+    <div class="stat-card theme-blue">
+        <div class="stat-top">
+            <div class="stat-icon"><i class="bi bi-lightning-fill"></i></div>
+            <span class="stat-badge">Yeni</span>
+        </div>
+        <div class="stat-value">@ViewBag.NewestCarBrand @ViewBag.NewestCarModel</div>
+        <div class="stat-label">Sisteme İlk eklenen araç</div>
+    </div>
+
+    <!-- En Eski Araç -->
+    <div class="stat-card theme-amber">
+        <div class="stat-top">
+            <div class="stat-icon"><i class="bi bi-clock-history"></i></div>
+            <span class="stat-badge">Eski</span>
+        </div>
+        <div class="stat-value">@ViewBag.OldestCarBrand @ViewBag.OldestCarModel</div>
+        <div class="stat-label">Sisteme Son eklenen araç</div>
+    </div>
+
+    <!-- En Çok Yorum Alan Blog -->
+    <div class="stat-card theme-green">
+        <div class="stat-top">
+            <div class="stat-icon"><i class="bi bi-chat-dots-fill"></i></div>
+            <span class="stat-badge">Popüler</span>
+        </div>
+        <div class="stat-value">
+            @ViewBag.MostCommentedBlogName
+        </div>
+        <div class="stat-label">
+            @ViewBag.MostCommentCount yorum
+        </div>
+    </div>
+
+    <!-- Toplam Araç-->
+    <div class="stat-card theme-red">
+        <div class="stat-top">
+            <div class="stat-icon"><i class="bi bi-car-front-fill"></i></div>
+            <span class="stat-badge">Araç</span>
+        </div>
+        <div class="stat-value">@ViewBag.CarCount</div>
+        <div class="stat-label">Toplam araç sayısı</div>
+    </div>
+
+    <!-- Son Blog Ve Yazarı -->
+    <div class="stat-card theme-purple">
+        <div class="stat-top">
+            <div class="stat-icon"><i class="bi bi-file-text-fill"></i></div>
+            <span class="stat-badge">Son Blog</span>
+        </div>
+        <div class="stat-value">@ViewBag.LastBlogTitle</div>
+        <div class="stat-label">@ViewBag.LastBlogAuthor</div>
+    </div>
+
+</div>

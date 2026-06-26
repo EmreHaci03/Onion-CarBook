@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Core/">
+    <Project Path="Core/CarBook.Application/CarBook.Application.csproj" Id="abebaa0f-a953-444e-9f86-7dd144c44645" />
+    <Project Path="Core/CarBook.Domain/CarBook.Domain.csproj" />
+  </Folder>
+  <Folder Name="/Infrastracture/">
+    <Project Path="Infrastructure/CarBook.Persistance/CarBook.Persistance.csproj" />
+  </Folder>
+  <Folder Name="/Presentation/">
+    <Project Path="Presentation/CarBook.WebApi/CarBook.WebApi.csproj" Id="dc2ba9f5-2687-4822-88b2-ff6e7fa1efef" />
+    <Project Path="Presentation/CarBook.WebUI/CarBook.WebUI.csproj" Id="e55b3b6b-009f-4a71-a612-87a53aab6766" />
+  </Folder>
+</Solution>

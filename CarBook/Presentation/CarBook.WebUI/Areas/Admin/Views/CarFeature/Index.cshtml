@@ -1,0 +1,278 @@
+﻿@model List<GetCarFeatureByCarIdDto>
+@{
+    ViewData["Title"] = "Araç Özellikleri";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    var carName = Model != null && Model.Any() ? Model.First().CarName : "";
+    var brandName = Model != null && Model.Any() ? Model.First().BrandName : "";
+    var carId = Context.Request.Query["id"];
+}
+
+<style>
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: #64748b;
+        text-decoration: none;
+        margin-bottom: 16px;
+        transition: color .15s;
+    }
+
+        .back-btn:hover {
+            color: #374151;
+        }
+
+    .feature-page-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 22px;
+    }
+
+    .feature-page-icon {
+        width: 44px;
+        height: 44px;
+        background: #f5f3ff;
+        border: 1px solid #ddd6fe;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+        .feature-page-icon i {
+            font-size: 19px;
+            color: #6d28d9;
+        }
+
+    .feature-page-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0;
+    }
+
+    .feature-page-subtitle {
+        font-size: 12.5px;
+        color: #94a3b8;
+        margin: 0;
+    }
+
+    .save-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 12px;
+        opacity: 0;
+        transition: opacity .25s ease;
+        margin-left: 10px;
+    }
+
+        .save-status.show {
+            opacity: 1;
+        }
+
+        .save-status.success {
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .save-status.error {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .save-status.saving {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+        }
+
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .feature-toggle-card {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        background: #fff;
+        cursor: pointer;
+        transition: border-color .15s, background .15s;
+        position: relative;
+    }
+
+        .feature-toggle-card:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .feature-toggle-card.is-on {
+            border-color: #bbf7d0;
+            background: #f0fdf4;
+        }
+
+        .feature-toggle-card.is-loading {
+            opacity: .6;
+            pointer-events: none;
+        }
+
+    .feature-toggle-switch {
+        width: 38px;
+        height: 22px;
+        border-radius: 20px;
+        background: #e2e8f0;
+        position: relative;
+        flex-shrink: 0;
+        transition: background .2s ease;
+    }
+
+        .feature-toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,.2);
+            transition: transform .2s ease;
+        }
+
+    .feature-toggle-card.is-on .feature-toggle-switch {
+        background: #22c55e;
+    }
+
+        .feature-toggle-card.is-on .feature-toggle-switch::after {
+            transform: translateX(16px);
+        }
+
+    .feature-toggle-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: #334155;
+        flex: 1;
+    }
+
+    .feature-toggle-card.is-on .feature-toggle-name {
+        color: #15803d;
+    }
+
+    .empty-box {
+        background: #fff;
+        border: 2px dashed #e2e8f0;
+        border-radius: 14px;
+        padding: 60px 20px;
+        text-align: center;
+    }
+
+    @@media (max-width: 900px) {
+        .feature-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @@media (max-width: 600px) {
+        .feature-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<a asp-area="Admin" asp-controller="Car" asp-action="Index" class="back-btn">
+    <i class="bi bi-arrow-left"></i> Araç Listesine Dön
+</a>
+
+<div class="feature-page-header">
+    <div class="feature-page-icon">
+        <i class="bi bi-gear-fill"></i>
+    </div>
+    <div>
+        <h2 class="feature-page-title">@brandName @carName — Özellikler</h2>
+        <p class="feature-page-subtitle">
+            Bir özelliği açmak/kapatmak için kutucuğa tıklayın, değişiklik otomatik kaydedilir.
+            <span id="saveStatus" class="save-status"></span>
+        </p>
+    </div>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="feature-grid">
+        @foreach (var item in Model)
+        {
+            <div class="feature-toggle-card @(item.Avaliable ? "is-on" : "")"
+                 data-feature-id="@item.FeatureId"
+                 data-car-id="@item.CarId"
+                 onclick="toggleFeature(this)">
+                <div class="feature-toggle-switch"></div>
+                <span class="feature-toggle-name">@item.FeatureName</span>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="empty-box">
+        <i class="bi bi-gear" style="font-size:40px; color:#cbd5e1; display:block; margin-bottom:14px;"></i>
+        <div style="font-size:15px; font-weight:600; color:#374151; margin-bottom:6px;">Bu araç için özellik bulunamadı</div>
+        <div style="font-size:13px; color:#94a3b8;">Önce sisteme özellik tanımlanması gerekiyor.</div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        async function toggleFeature(card) {
+            var carId = card.getAttribute('data-car-id');
+            var featureId = card.getAttribute('data-feature-id');
+            var willBeOn = !card.classList.contains('is-on');
+            var statusEl = document.getElementById('saveStatus');
+
+            card.classList.add('is-loading');
+            statusEl.className = 'save-status saving show';
+            statusEl.innerHTML = '<i class="bi bi-arrow-repeat"></i> Kaydediliyor...';
+
+            try {
+                var response = await fetch('/Admin/CarFeature/ToggleFeature', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        carId: parseInt(carId),
+                        featureId: parseInt(featureId),
+                        avaliable: willBeOn
+                    })
+                });
+
+                if (response.ok) {
+                    card.classList.toggle('is-on', willBeOn);
+                    statusEl.className = 'save-status success show';
+                    statusEl.innerHTML = '<i class="bi bi-check-circle-fill"></i> Kaydedildi';
+                } else {
+                    statusEl.className = 'save-status error show';
+                    statusEl.innerHTML = '<i class="bi bi-x-circle-fill"></i> Kaydedilemedi';
+                }
+            } catch (err) {
+                statusEl.className = 'save-status error show';
+                statusEl.innerHTML = '<i class="bi bi-x-circle-fill"></i> Bağlantı hatası';
+            } finally {
+                card.classList.remove('is-loading');
+                setTimeout(function () {
+                    statusEl.classList.remove('show');
+                }, 2000);
+            }
+        }
+    </script>
+}

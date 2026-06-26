@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_UILayout.cshtml";
+}
+
+@section HeroBanner {
+    <style>
+        .page-hero-wrap {
+            position: relative;
+        }
+
+            .page-hero-wrap .overlay {
+                background: linear-gradient(180deg, rgba(13,15,18,0.5), rgba(13,15,18,0.82));
+            }
+
+        .page-breadcrumbs {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 8px 18px;
+            border-radius: 24px;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+            .page-breadcrumbs a {
+                color: #d8d9db;
+                text-decoration: none;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                transition: color .2s ease;
+            }
+
+                .page-breadcrumbs a:hover {
+                    color: #fbb710;
+                    text-decoration: none;
+                }
+
+            .page-breadcrumbs .current {
+                color: #fbb710;
+                font-weight: 600;
+            }
+
+            .page-breadcrumbs .sep {
+                color: #5f646b;
+            }
+
+        .page-hero-title {
+            color: #fff;
+            font-size: 46px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 18px;
+        }
+
+            .page-hero-title::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 60px;
+                height: 4px;
+                background: #fbb710;
+                border-radius: 2px;
+            }
+
+        @@media (max-width: 767px) {
+            .page-hero-title {
+                font-size: 30px;
+            }
+        }
+    </style>
+
+    <section class="hero-wrap hero-wrap-2 page-hero-wrap js-fullheight" style="background-image: url('/carbook-master/images/bg_3.jpg');">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text js-fullheight align-items-end">
+                <div class="col-md-9 pb-5">
+                    <div class="page-breadcrumbs">
+                        <a href="/Default/Index/"><i class="ion-ios-home"></i> Ana Sayfa</a>
+                        <span class="sep">/</span>
+                        <span class="current">Hizmetler</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+
+@await Component.InvokeAsync("ServiceList")
+
+@await Component.InvokeAsync("ServiceDriverCTA")
+
+
+

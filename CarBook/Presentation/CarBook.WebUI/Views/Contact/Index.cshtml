@@ -1,0 +1,423 @@
+﻿@model CreateContactDto
+@{
+    ViewData["Title"] = "İletişim";
+    Layout = "~/Views/Shared/_UILayout.cshtml";
+    var adressList = ViewBag.FooterAdress as List<ResultFooterAdressDto>;
+}
+
+@section HeroBanner {
+    <style>
+        .page-hero-wrap {
+            position: relative;
+        }
+
+            .page-hero-wrap .overlay {
+                background: linear-gradient(180deg, rgba(13,15,18,0.5), rgba(13,15,18,0.82));
+            }
+
+        .page-breadcrumbs {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 8px 18px;
+            border-radius: 24px;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+            .page-breadcrumbs a {
+                color: #d8d9db;
+                text-decoration: none;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                transition: color .2s ease;
+            }
+
+                .page-breadcrumbs a:hover {
+                    color: #fbb710;
+                    text-decoration: none;
+                }
+
+            .page-breadcrumbs .current {
+                color: #fbb710;
+                font-weight: 600;
+            }
+
+            .page-breadcrumbs .sep {
+                color: #5f646b;
+            }
+
+        .page-hero-title {
+            color: #fff;
+            font-size: 46px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 18px;
+        }
+
+            .page-hero-title::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 60px;
+                height: 4px;
+                background: #fbb710;
+                border-radius: 2px;
+            }
+
+        @@media (max-width: 767px) {
+            .page-hero-title {
+                font-size: 30px;
+            }
+        }
+    </style>
+
+    <section class="hero-wrap hero-wrap-2 page-hero-wrap js-fullheight" style="background-image: url('/carbook-master/images/bg_2.jpg');">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text js-fullheight align-items-end">
+                <div class="col-md-9 pb-5">
+                    <div class="page-breadcrumbs">
+                        <a href="/Default/Index/"><i class="ion-ios-home"></i> Ana Sayfa</a>
+                        <span class="sep">/</span>
+                        <span class="current">İletişim</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<style>
+    .contact-wrap-row {
+        display: flex;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    }
+
+    .contact-info-panel {
+        background: #1d2127;
+        color: #fff;
+        padding: 48px 40px;
+        flex: 0 0 38%;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .contact-info-panel h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .contact-info-panel > p {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 300;
+            color: #9aa0a6;
+            font-size: 13.5px;
+            line-height: 1.85;
+            margin-bottom: 36px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+    .contact-info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        padding-bottom: 22px;
+        margin-bottom: 22px;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+        transition: padding-left .25s ease;
+    }
+
+        .contact-info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .contact-info-item:hover {
+            padding-left: 6px;
+        }
+
+    .contact-info-icon {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        border-radius: 50%;
+        background: rgba(251,183,16,0.1);
+        border: 1px solid rgba(251,183,16,0.35);
+        color: #fbb710;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 17px;
+        margin-top: 2px;
+        transition: background .25s ease, transform .25s ease;
+    }
+
+    .contact-info-item:hover .contact-info-icon {
+        background: #fbb710;
+        color: #1d2127;
+        transform: scale(1.06);
+    }
+
+    .contact-info-label {
+        font-family: 'Poppins', sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #75797f;
+        margin-bottom: 5px;
+    }
+
+    .contact-info-value {
+        font-family: 'Poppins', sans-serif;
+        font-size: 15px;
+        font-weight: 500;
+        color: #f1f1f2;
+        line-height: 1.5;
+    }
+
+    .contact-form-panel {
+        background: #fff;
+        padding: 48px 44px;
+        flex: 1;
+    }
+
+        .contact-form-panel h4 {
+            font-size: 19px;
+            font-weight: 700;
+            color: #1d2127;
+            margin-bottom: 4px;
+        }
+
+        .contact-form-panel > small {
+            color: #999;
+            font-size: 13.5px;
+            display: block;
+            margin-bottom: 26px;
+        }
+
+    .contact-field-group {
+        margin-bottom: 18px;
+    }
+
+    .contact-field-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #444;
+        margin-bottom: 7px;
+        display: block;
+    }
+
+    .input-icon {
+        position: relative;
+    }
+
+        .input-icon i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 15px;
+            color: #b0b0b0;
+            pointer-events: none;
+        }
+
+        .input-icon .form-control {
+            height: 46px;
+            padding-left: 42px;
+            border-radius: 8px;
+            background: #f8f8f8;
+            border: 1px solid #ebebeb;
+        }
+
+            .input-icon .form-control:focus {
+                background: #fff;
+                border-color: #fbb710;
+                box-shadow: 0 0 0 3px rgba(251,183,16,0.15);
+            }
+
+    textarea.form-control {
+        min-height: 130px;
+        padding: 14px !important;
+        border-radius: 8px;
+        background: #f8f8f8;
+        border: 1px solid #ebebeb;
+        resize: vertical;
+    }
+
+        textarea.form-control:focus {
+            background: #fff;
+            border-color: #fbb710;
+            box-shadow: 0 0 0 3px rgba(251,183,16,0.15);
+        }
+
+    .contact-success-alert {
+        background: #eafaf0;
+        border: 1px solid #b9eccb;
+        color: #1c7c43;
+        padding: 13px 18px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+
+    .btn-send {
+        background: #fbb710;
+        border: none;
+        color: #1d2127;
+        padding: 13px 32px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 15px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+        .btn-send:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(251,183,16,0.35);
+        }
+
+    @@media (max-width: 767px) {
+        .contact-wrap-row {
+            flex-direction: column;
+        }
+
+        .contact-info-panel, .contact-form-panel {
+            flex: 1 1 auto;
+            padding: 36px 28px;
+        }
+    }
+</style>
+
+<section class="ftco-section contact-section bg-light">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-7 text-center heading-section ftco-animate">
+                <span class="subheading" style="color:#fbb710">İletişim</span>
+                <h2 class="mb-2">Bize Ulaşın</h2>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="contact-wrap-row ftco-animate">
+
+                    <div class="contact-info-panel">
+                        <h3>İletişim Bilgileri</h3>
+                        <p>Sorularınız, rezervasyon talepleriniz veya iş birliği önerileriniz için bize ulaşabilirsiniz.</p>
+
+                        @if (adressList != null)
+                        {
+
+                            foreach(var item in adressList){
+
+                            <div class="contact-info-item">
+                                <span class="contact-info-icon"><i class="ion-ios-pin"></i></span>
+                                <div>
+                                    <div class="contact-info-label">Adres</div>
+                                    <div class="contact-info-value">@item.Address</div>
+                                </div>
+                            </div>
+
+                            <div class="contact-info-item">
+                                <span class="contact-info-icon"><i class="ion-ios-telephone"></i></span>
+                                <div>
+                                    <div class="contact-info-label">Telefon</div>
+                                    <div class="contact-info-value">@item.Phone</div>
+                                </div>
+                            </div>
+
+                            <div class="contact-info-item">
+                                <span class="contact-info-icon"><i class="ion-ios-email"></i></span>
+                                <div>
+                                    <div class="contact-info-label">E-posta</div>
+                                    <div class="contact-info-value">@item.Mail</div>
+                                </div>
+                            </div>
+                            }
+                            <div class="contact-info-item">
+                                <span class="contact-info-icon"><i class="ion-ios-clock"></i></span>
+                                <div>
+                                    <div class="contact-info-label">Çalışma Saatleri</div>
+                                    <div class="contact-info-value">Her gün 08:00 - 22:00</div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="contact-form-panel">
+                        <h4>Bize Mesaj Gönderin</h4>
+                        <small>Formu doldurun, en kısa sürede size dönüş yapalım.</small>
+
+                        @if (TempData["Success"] != null)
+                        {
+                            <div class="contact-success-alert">
+                                <i class="ion-ios-checkmark-circle mr-2"></i>@TempData["Success"]
+                            </div>
+                        }
+
+                        <form asp-action="Index" asp-controller="Contact" method="post">
+
+                            <div class="contact-field-group">
+                                <label class="contact-field-label">Adınız</label>
+                                <div class="input-icon">
+                                    <i class="ion-ios-person"></i>
+                                    <input asp-for="Name" class="form-control" />
+                                </div>
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+
+                            <div class="contact-field-group">
+                                <label class="contact-field-label">E-posta</label>
+                                <div class="input-icon">
+                                    <i class="ion-ios-email"></i>
+                                    <input asp-for="Email" class="form-control" />
+                                </div>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="contact-field-group">
+                                <label class="contact-field-label">Konu</label>
+                                <div class="input-icon">
+                                    <i class="ion-ios-chatbubbles"></i>
+                                    <input asp-for="Subject" class="form-control" />
+                                </div>
+                                <span asp-validation-for="Subject" class="text-danger"></span>
+                            </div>
+
+                            <div class="contact-field-group">
+                                <label class="contact-field-label">Mesaj</label>
+                                <textarea asp-for="Message" class="form-control"></textarea>
+                                <span asp-validation-for="Message" class="text-danger"></span>
+                            </div>
+
+                            <button type="submit" class="btn-send">
+                                <i class="ion-ios-send"></i> Gönder
+                            </button>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,61 @@
+﻿<div class="comment-form-wrap pt-5">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:2rem;">
+        <div style="width:44px; height:44px; background:#1d2127; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+            <i class="ion-ios-chatbubbles" style="font-size:20px; color:#fbb710;"></i>
+        </div>
+        <div>
+            <h3 style="font-size:18px; font-weight:700; color:#1d2127; margin:0;">Yorum Yap</h3>
+            <p style="font-size:13px; color:#888; margin:0;">Düşüncelerinizi paylaşın</p>
+        </div>
+    </div>
+
+    <form asp-action="AddComment" asp-controller="Blog" method="post" style="background:#f8f8f8; border:1px solid #ececec; border-radius:14px; padding:24px;">
+        <input type="hidden" name="BlogId" value="@ViewBag.BlogId" />
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;">
+            <div>
+                <label style="display:flex; align-items:center; gap:5px; font-size:12px; font-weight:600; color:#444; margin-bottom:6px;">
+                    <i class="ion-ios-person" style="font-size:13px; color:#aaa;"></i> Ad Soyad <span style="color:#dc3545;">*</span>
+                </label>
+                <input type="text" name="Name" placeholder="Ahmet Yılmaz"
+                       style="width:100%; padding:10px 14px; border:1px solid #e2e2e2; border-radius:8px; font-size:13px; font-family:inherit; outline:none; box-sizing:border-box; background:#fff;"
+                       onfocus="this.style.borderColor='#fbb710'; this.style.boxShadow='0 0 0 3px rgba(251,183,16,.15)';"
+                       onblur="this.style.borderColor='#e2e2e2'; this.style.boxShadow='none';" />
+            </div>
+            <div>
+                <label style="display:flex; align-items:center; gap:5px; font-size:12px; font-weight:600; color:#444; margin-bottom:6px;">
+                    <i class="ion-ios-email" style="font-size:13px; color:#aaa;"></i> E-posta <span style="color:#aaa; font-weight:400;">(isteğe bağlı)</span>
+                </label>
+                <input type="email" name="Email" placeholder="ahmet@ornek.com"
+                       style="width:100%; padding:10px 14px; border:1px solid #e2e2e2; border-radius:8px; font-size:13px; font-family:inherit; outline:none; box-sizing:border-box; background:#fff;"
+                       onfocus="this.style.borderColor='#fbb710'; this.style.boxShadow='0 0 0 3px rgba(251,183,16,.15)';"
+                       onblur="this.style.borderColor='#e2e2e2'; this.style.boxShadow='none';" />
+                <div style="font-size:10.5px; color:#aaa; margin-top:4px;">
+                    <i class="ion-ios-lock"></i> Yayınlanmaz, sadece bizimle paylaşılır.
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-bottom:14px;">
+            <label style="display:flex; align-items:center; gap:5px; font-size:12px; font-weight:600; color:#444; margin-bottom:6px;">
+                <i class="ion-ios-create" style="font-size:13px; color:#aaa;"></i> Yorum <span style="color:#dc3545;">*</span>
+            </label>
+            <textarea name="Content" rows="5" id="commentMsg" placeholder="Yorumunuzu buraya yazın..."
+                      oninput="document.getElementById('commentCnt').textContent=this.value.length+' karakter'"
+                      style="width:100%; padding:10px 14px; border:1px solid #e2e2e2; border-radius:8px; font-size:13px; font-family:inherit; outline:none; box-sizing:border-box; resize:vertical; min-height:110px; background:#fff;"
+                      onfocus="this.style.borderColor='#fbb710'; this.style.boxShadow='0 0 0 3px rgba(251,183,16,.15);"
+                      onblur="this.style.borderColor='#e2e2e2'; this.style.boxShadow='none';"></textarea>
+            <div style="font-size:11px; color:#aaa; text-align:right; margin-top:4px;" id="commentCnt">0 karakter</div>
+        </div>
+
+        <div style="border-top:1px solid #e2e2e2; padding-top:16px; display:flex; align-items:center; justify-content:space-between;">
+            <span style="font-size:12px; color:#aaa;"><span style="color:#dc3545;">*</span> Zorunlu alanlar</span>
+            <button type="submit"
+                    style="display:inline-flex; align-items:center; gap:6px; padding:11px 24px; background:#fbb710; color:#1d2127; border:none; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; transition:transform .2s ease, box-shadow .2s ease;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 18px rgba(251,183,16,.35)';"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                <i class="ion-ios-send"></i> Yorum Gönder
+            </button>
+        </div>
+    </form>
+</div>

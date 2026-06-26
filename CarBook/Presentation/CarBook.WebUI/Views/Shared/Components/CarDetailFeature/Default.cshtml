@@ -1,0 +1,20 @@
+﻿@model List<GetCarFeatureByCarIdDto>
+<div class="cd-section">
+    <div class="cd-section-head">
+        <div class="cd-section-icon"><i class="ion-ios-checkmark-circle"></i></div>
+        <div class="cd-section-title">Araç özellikleri</div>
+        <div class="cd-section-sub">Donanım bilgileri</div>
+    </div>
+    <div class="feat-grid">
+        @foreach(var item in Model)
+        {
+            if (item.Avaliable == true)
+            {
+            <div class="feat-pill yes">
+                <div class="feat-icon"><i class="ion-ios-checkmark"></i></div>
+                <span class="feat-name">@item.FeatureName</span>
+            </div>
+        }
+        }
+    </div>
+</div>

@@ -1,0 +1,165 @@
+﻿@using CarBook.WebUI.Dtos.AboutDto
+@model List<ResultAboutDto>
+<style>
+    .about-section-wrap {
+        padding: 60px 0;
+        background: #f8fafc;
+    }
+
+    .about-card {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .about-img-block {
+        background-size: cover;
+        background-position: center;
+        min-height: 500px;
+        position: relative;
+    }
+
+        .about-img-block::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(13,15,18,0.3), transparent);
+        }
+
+    .about-content-block {
+        background: #1d2127;
+        padding: 60px 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .about-subheading {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #fbb710;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 16px;
+        background: rgba(251,183,16,0.1);
+        border: 1px solid rgba(251,183,16,0.2);
+        padding: 5px 14px;
+        border-radius: 20px;
+        width: fit-content;
+    }
+
+    .about-content-block h2 {
+        color: #fff;
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 18px;
+        line-height: 1.4;
+    }
+
+    .about-content-block p {
+        color: #94a3b8;
+        font-size: 14.5px;
+        line-height: 1.9;
+        margin-bottom: 28px;
+    }
+
+    .about-mini-stats {
+        display: flex;
+        gap: 24px;
+        margin-bottom: 28px;
+        padding-bottom: 28px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .about-mini-stat-val {
+        font-size: 22px;
+        font-weight: 800;
+        color: #fbb710;
+    }
+
+    .about-mini-stat-lbl {
+        font-size: 11px;
+        color: #64748b;
+        margin-top: 2px;
+    }
+
+    .about-cta-btn {
+        background: #fbb710;
+        color: #1d2127;
+        border: none;
+        font-weight: 700;
+        border-radius: 8px;
+        padding: 14px 28px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+        transition: transform .25s ease, box-shadow .25s ease;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+        .about-cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(251,183,16,0.3);
+            color: #1d2127;
+            text-decoration: none;
+        }
+
+    @@media (max-width: 767px) {
+        .about-card {
+            grid-template-columns: 1fr;
+        }
+
+        .about-img-block {
+            min-height: 280px;
+        }
+
+        .about-content-block {
+            padding: 40px 28px;
+        }
+    }
+</style>
+
+<section class="about-section-wrap">
+    <div class="container">
+        @foreach (var item in Model)
+        {
+            <div class="about-card">
+                <div class="about-img-block" style="background-image:url('@item.ImageUrl');"></div>
+                <div class="about-content-block ftco-animate">
+                    <span class="about-subheading">
+                        <i class="ion-ios-information-circle"></i> Hakkımızda
+                    </span>
+                    <h2>@item.Title</h2>
+                    <p>@item.Description</p>
+                    <div class="about-mini-stats">
+                        <div>
+                            <div class="about-mini-stat-val">250+</div>
+                            <div class="about-mini-stat-lbl">Premium Araç</div>
+                        </div>
+                        <div>
+                            <div class="about-mini-stat-val">15K+</div>
+                            <div class="about-mini-stat-lbl">Mutlu Müşteri</div>
+                        </div>
+                        <div>
+                            <div class="about-mini-stat-val">10+</div>
+                            <div class="about-mini-stat-lbl">Yıl Deneyim</div>
+                        </div>
+                    </div>
+                    <a href="/RentACar/RentCar/" class="about-cta-btn">
+                        <i class="ion-ios-car"></i> Hemen Araç Kirala
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</section>

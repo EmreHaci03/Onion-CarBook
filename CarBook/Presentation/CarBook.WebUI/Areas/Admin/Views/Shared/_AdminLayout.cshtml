@@ -1,0 +1,394 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] — CarBook Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/carbook-master/css/flaticon.css">
+    <link rel="stylesheet" href="~/carbook-master/css/ionicons.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f1f5f9;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: #0f172a;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+        }
+
+        .sidebar-scroll {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+        }
+
+            .sidebar-scroll::-webkit-scrollbar {
+                width: 5px;
+            }
+
+            .sidebar-scroll::-webkit-scrollbar-track {
+                background: #0f172a;
+            }
+
+            .sidebar-scroll::-webkit-scrollbar-thumb {
+                background: #334155;
+                border-radius: 10px;
+            }
+
+                .sidebar-scroll::-webkit-scrollbar-thumb:hover {
+                    background: #475569;
+                }
+
+        .sidebar-logo {
+            padding: 20px 18px 14px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+            .sidebar-logo .brand {
+                font-size: 18px;
+                font-weight: 700;
+                color: #fff;
+                letter-spacing: -0.5px;
+            }
+
+                .sidebar-logo .brand span {
+                    color: #60a5fa;
+                }
+
+            .sidebar-logo .subtitle {
+                font-size: 10px;
+                color: #475569;
+                margin-top: 2px;
+            }
+
+        .nav-section {
+            padding: 14px 18px 4px;
+            font-size: 9px;
+            color: #475569;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: #94a3b8;
+            font-size: 13px;
+            cursor: pointer;
+            margin: 1px 8px;
+            text-decoration: none;
+            transition: all .15s;
+        }
+
+            .nav-item:hover {
+                background: #1e293b;
+                color: #e2e8f0;
+            }
+
+            .nav-item.active {
+                background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+                color: #fff;
+                box-shadow: 0 2px 8px rgba(59,130,246,.3);
+            }
+
+            .nav-item i {
+                font-size: 16px;
+                width: 18px;
+                text-align: center;
+                flex-shrink: 0;
+            }
+
+        .sidebar-footer {
+            flex-shrink: 0;
+            padding: 12px 14px;
+            border-top: 1px solid #1e293b;
+        }
+
+        .user-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .user-name {
+            font-size: 12px;
+            color: #e2e8f0;
+            font-weight: 500;
+        }
+
+        .user-role {
+            font-size: 10px;
+            color: #64748b;
+        }
+
+        .logout-btn {
+            margin-left: auto;
+            color: #475569;
+            font-size: 16px;
+            text-decoration: none;
+            transition: color .15s;
+        }
+
+            .logout-btn:hover {
+                color: #ef4444;
+            }
+
+        .main-content {
+            margin-left: 240px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .topbar {
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 24px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .topbar-left .page-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .topbar-left .page-breadcrumb {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notif-btn {
+            position: relative;
+            width: 36px;
+            height: 36px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .notif-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #ef4444;
+            color: #fff;
+            border-radius: 10px;
+            padding: 1px 5px;
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: opacity .15s;
+        }
+
+            .btn-add:hover {
+                opacity: .9;
+                color: #fff;
+            }
+
+        .page-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+    </style>
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-scroll">
+            <div class="sidebar-logo">
+                <div class="brand">Car<span>Book</span></div>
+                <div class="subtitle">Yönetim Paneli</div>
+            </div>
+
+            <div class="nav-section">Ana Menü</div>
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "active" : "")">
+                <i class="bi bi-grid"></i> Dashboard
+            </a>
+            <a asp-area="Admin" asp-controller="Car" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Car" ? "active" : "")">
+                <i class="bi bi-car-front"></i> Araçlar
+            </a>
+            <a asp-area="Admin" asp-controller="Review" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Review" ? "active" : "")">
+                <i class="bi bi-star-half"></i> Araç Değerlendirmeleri
+            </a>
+            <a asp-area="Admin" asp-controller="CarDescription" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "CarDescription" ? "active" : "")">
+                <i class="bi bi-file-earmark-text"></i> Araç Açıklamaları
+            </a>
+            <a asp-area="Admin" asp-controller="Brand" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Brand" ? "active" : "")">
+                <i class="bi bi-bookmark"></i> Markalar
+            </a>
+            <a asp-area="Admin" asp-controller="Banner" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Banner" ? "active" : "")">
+                <i class="bi bi-megaphone"></i> Bannerlar
+            </a>
+            <a asp-area="Admin" asp-controller="Service" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Service" ? "active" : "")">
+                <i class="bi bi-stars"></i> Hizmetler
+            </a>
+            <a asp-area="Admin" asp-controller="Pricing" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Pricing" ? "active" : "")">
+                <i class="bi bi-cash-stack"></i> Fiyatlandırma
+            </a>
+            <a asp-area="Admin" asp-controller="Reservation" asp-action="ReservationList" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Reservation" ? "active" : "")">
+                <i class="bi bi-calendar2-check-fill"></i> Rezervasyonlar
+            </a>
+            <a asp-area="Admin" asp-controller="CarPricing" asp-action="CarPricing" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Pricing" ? "active" : "")">
+                <i class="bi bi-cash-stack"></i> Araç Fiyatları
+            </a>
+            <a asp-area="Admin" asp-controller="Feature" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Feature" ? "active" : "")">
+                <i class="bi bi-check2-circle"></i> Özellikler
+            </a>
+            <a asp-area="Admin" asp-controller="Statistic" asp-action="Index"class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Statistic" ? "active" : "")">
+                <i class="bi bi-bar-chart-fill"></i> İstatistikler
+            </a>
+            <a asp-area="Admin" asp-controller="SignalR" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "SignalR" ? "active" : "")">
+                <i class="bi bi-bar-chart-fill"></i> Anlık Veriler
+            </a>
+
+            <div class="nav-section">İçerik</div>
+            <a asp-area="Admin" asp-controller="Blog" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Blog" ? "active" : "")">
+                <i class="bi bi-file-text"></i> Blog
+            </a>
+            <a asp-area="Admin" asp-controller="Comment" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Comment" ? "active" : "")">
+                <i class="bi bi-chat-dots"></i> Yorumlar
+            </a>
+            <a asp-area="Admin" asp-controller="Author" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Author" ? "active" : "")">
+                <i class="bi bi-person-lines-fill"></i> Yazarlar
+            </a>
+            <a asp-area="Admin" asp-controller="Testimonial" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Testimonial" ? "active" : "")">
+                <i class="bi bi-chat-quote"></i> Referanslar
+            </a>
+            <a asp-area="Admin" asp-controller="Location" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Location" ? "active" : "")">
+                <i class="bi bi-geo-alt"></i> Lokasyonlar
+            </a>
+            <a asp-area="Admin" asp-controller="Contact" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Contact" ? "active" : "")">
+                <i class="bi bi-envelope"></i> İletişim
+            </a>
+
+            <div class="nav-section">Sistem</div>
+            <a asp-area="Admin" asp-controller="About" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "About" ? "active" : "")">
+                <i class="bi bi-info-circle"></i> Hakkımızda
+            </a>
+            <a asp-area="Admin" asp-controller="SocialMedia" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "SocialMedia" ? "active" : "")">
+                <i class="bi bi-share"></i> Sosyal Medya
+            </a>
+            <a asp-area="Admin" asp-controller="BlogCategory" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "BlogCategory" ? "active" : "")">
+                <i class="bi bi-tags"></i> Blog Kategorileri
+            </a>
+            <a asp-area="Admin" asp-controller="Footer" asp-action="Index" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Footer" ? "active" : "")">
+                <i class="bi bi-layout-text-window-reverse"></i> Footer
+            </a>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="user-row">
+                <div class="user-avatar">A</div>
+                <div>
+                    <div class="user-name">Admin</div>
+                    <div class="user-role">Süper Yönetici</div>
+                </div>
+                <a href="#" class="logout-btn"><i class="bi bi-box-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="topbar">
+            <div class="topbar-left">
+                <div class="page-title">@ViewData["Title"]</div>
+                <div class="page-breadcrumb">CarBook Admin / @ViewData["Title"]</div>
+            </div>
+            <div class="topbar-right">
+                <a href="#" class="notif-btn">
+                    <i class="bi bi-bell"></i>
+                    <span class="notif-badge">3</span>
+                </a>
+                @if (ViewData["AddUrl"] != null)
+                {
+                    <a href="@ViewData["AddUrl"]" class="btn-add">
+                        <i class="bi bi-plus-lg"></i> Yeni Ekle
+                    </a>
+                }
+            </div>
+        </div>
+        <div class="page-body">
+            @RenderBody()
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

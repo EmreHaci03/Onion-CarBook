@@ -1,0 +1,405 @@
+﻿@{
+    ViewData["Title"] = "Giriş Yap";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CarBook — Giriş</title>
+    <link rel="stylesheet" href="~/carbook-master/css/open-iconic-bootstrap.min.css" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #080e1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', sans-serif;
+            padding: 20px;
+        }
+
+        .cb-wrap {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            min-height: 560px;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,.06);
+            box-shadow: 0 32px 80px rgba(0,0,0,.5);
+        }
+
+        .cb-left {
+            padding: 44px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            border-right: 1px solid rgba(255,255,255,.06);
+            background: #0f172a;
+        }
+
+        .orb1 {
+            position: absolute;
+            top: -100px;
+            right: -60px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(251,183,16,.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .orb2 {
+            position: absolute;
+            bottom: -80px;
+            left: -40px;
+            width: 240px;
+            height: 240px;
+            background: radial-gradient(circle, rgba(59,130,246,.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .cb-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cb-logo-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(251,183,16,.12);
+            border: 1px solid rgba(251,183,16,.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .cb-logo-name {
+            font-size: 17px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .cb-logo-dot {
+            color: #fbb710;
+        }
+
+        .cb-hero {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cb-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(251,183,16,.08);
+            border: 1px solid rgba(251,183,16,.18);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 11px;
+            color: #fbb710;
+            margin-bottom: 18px;
+        }
+
+        .cb-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #f1f5f9;
+            line-height: 1.35;
+            margin-bottom: 12px;
+        }
+
+        .cb-desc {
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.7;
+        }
+
+        .cb-features {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cb-feat {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cb-feat-ic {
+            width: 28px;
+            height: 28px;
+            background: rgba(251,183,16,.08);
+            border: 1px solid rgba(251,183,16,.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 13px;
+            color: #fbb710;
+        }
+
+        .cb-feat-txt {
+            font-size: 12.5px;
+            color: #64748b;
+        }
+
+            .cb-feat-txt strong {
+                color: #94a3b8;
+                font-weight: 600;
+            }
+
+        .cb-stats {
+            display: flex;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255,255,255,.06);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .cb-stat {
+            flex: 1;
+            padding: 14px 10px;
+            text-align: center;
+            border-right: 1px solid rgba(255,255,255,.06);
+        }
+
+            .cb-stat:last-child {
+                border-right: none;
+            }
+
+        .cb-stat-val {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fbb710;
+        }
+
+        .cb-stat-lbl {
+            font-size: 10px;
+            color: #334155;
+            margin-top: 3px;
+        }
+
+        .cb-right {
+            padding: 44px 36px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #0d1526;
+        }
+
+        .cb-form-title {
+            font-size: 19px;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 4px;
+        }
+
+        .cb-form-sub {
+            font-size: 12.5px;
+            color: #334155;
+            margin-bottom: 22px;
+        }
+
+        .cb-field {
+            margin-bottom: 14px;
+        }
+
+        .cb-lbl {
+            font-size: 10.5px;
+            color: #475569;
+            margin-bottom: 6px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        .cb-iw {
+            position: relative;
+        }
+
+            .cb-iw span {
+                position: absolute;
+                left: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 15px;
+                color: #1e293b;
+            }
+
+        .cb-inp {
+            width: 100%;
+            padding: 10px 14px 10px 38px;
+            border: 1px solid rgba(255,255,255,.06);
+            border-radius: 9px;
+            font-size: 13px;
+            color: #cbd5e1;
+            background: rgba(255,255,255,.03);
+            outline: none;
+            transition: border-color .15s, background .15s;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+            .cb-inp::placeholder {
+                color: #1e293b;
+            }
+
+            .cb-inp:focus {
+                border-color: rgba(251,183,16,.35);
+                background: rgba(251,183,16,.03);
+            }
+
+        .cb-btn {
+            width: 100%;
+            padding: 11px;
+            background: #fbb710;
+            color: #1a1200;
+            border: none;
+            border-radius: 9px;
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: opacity .15s;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+            .cb-btn:hover {
+                opacity: .88;
+            }
+
+        .cb-div {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 18px 0;
+        }
+
+            .cb-div::before, .cb-div::after {
+                content: '';
+                flex: 1;
+                height: 1px;
+                background: rgba(255,255,255,.05);
+            }
+
+            .cb-div span {
+                font-size: 11px;
+                color: #1e293b;
+            }
+
+        .cb-link {
+            text-align: center;
+            font-size: 12px;
+            color: #334155;
+        }
+
+            .cb-link a {
+                color: #fbb710;
+                font-weight: 600;
+                text-decoration: none;
+            }
+
+        .cb-error {
+            background: rgba(239,68,68,.1);
+            border: 1px solid rgba(239,68,68,.2);
+            border-radius: 9px;
+            padding: 10px 14px;
+            font-size: 12px;
+            color: #f87171;
+            margin-bottom: 16px;
+        }
+
+        @@media (max-width: 640px) {
+            .cb-wrap {
+                grid-template-columns: 1fr;
+            }
+
+            .cb-left {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cb-wrap">
+        <div class="cb-left">
+            <div class="orb1"></div>
+            <div class="orb2"></div>
+            <div class="cb-logo">
+                <div class="cb-logo-icon">🚗</div>
+                <div class="cb-logo-name">Car<span class="cb-logo-dot">Book</span></div>
+            </div>
+            <div class="cb-hero">
+                <div class="cb-tag">⭐ Premium araç kiralama</div>
+                <div class="cb-title">Hayalinizdeki aracı tek tıkla kiralayın</div>
+                <div class="cb-desc">Türkiye'nin en güvenilir araç kiralama platformuyla her bütçeye uygun seçenekler.</div>
+            </div>
+            <div class="cb-features">
+                <div class="cb-feat"><div class="cb-feat-ic">✓</div><div class="cb-feat-txt"><strong>Ücretsiz iptal</strong> — 24 saat öncesine kadar</div></div>
+                <div class="cb-feat"><div class="cb-feat-ic">✓</div><div class="cb-feat-txt"><strong>Gizli ücret yok</strong> — tam şeffaflık</div></div>
+                <div class="cb-feat"><div class="cb-feat-ic">✓</div><div class="cb-feat-txt"><strong>7/24 destek</strong> — her an yanınızda</div></div>
+            </div>
+            <div class="cb-stats">
+                <div class="cb-stat"><div class="cb-stat-val">250+</div><div class="cb-stat-lbl">Araç</div></div>
+                <div class="cb-stat"><div class="cb-stat-val">15K+</div><div class="cb-stat-lbl">Müşteri</div></div>
+                <div class="cb-stat"><div class="cb-stat-val">4.8★</div><div class="cb-stat-lbl">Puan</div></div>
+            </div>
+        </div>
+        <div class="cb-right">
+            <div class="cb-form-title">Hoş geldiniz</div>
+            <div class="cb-form-sub">Hesabınıza giriş yapın</div>
+
+            @if (TempData["LoginError"] != null)
+            {
+                <div class="cb-error">⚠ @TempData["LoginError"]</div>
+            }
+
+            <form asp-controller="Login" asp-action="Index" method="post">
+                <div class="cb-field">
+                    <label class="cb-lbl">Kullanıcı adı</label>
+                    <div class="cb-iw">
+                        <span class="oi oi-person"></span>
+                        <input class="cb-inp" type="text" name="Username" placeholder="kullaniciadi" required />
+                    </div>
+                </div>
+                <div class="cb-field">
+                    <label class="cb-lbl">Şifre</label>
+                    <div class="cb-iw">
+                        <span class="oi oi-lock-locked"></span>
+                        <input class="cb-inp" type="password" name="Password" placeholder="••••••••" required />
+                    </div>
+                </div>
+                <button type="submit" class="cb-btn">🔑 Giriş yap</button>
+            </form>
+
+            <div class="cb-div"><span>veya</span></div>
+            <div class="cb-link">Hesabınız yok mu? <a asp-controller="Register" asp-action="Index">Kayıt olun</a></div>
+        </div>
+    </div>
+</body>
+</html>

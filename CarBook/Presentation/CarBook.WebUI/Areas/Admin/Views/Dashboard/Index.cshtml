@@ -1,0 +1,617 @@
+﻿@model GetAllStatisticDto
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+    var fuelColors = new Dictionary<string, string>
+    {
+        { "Diesel", "#185FA5" },
+        { "Petrol", "#0F6E56" },
+        { "Electric", "#854F0B" },
+        { "Hybrid", "#533AB7" }
+    };
+
+    var fuelTotal = Model.CarFuelType?.Values.Sum() ?? 0;
+}
+
+<style>
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        margin-bottom: 20px;
+    }
+
+    .stat-card {
+        border-radius: 14px;
+        padding: 18px 20px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .stat-card .deco {
+            position: absolute;
+            right: -8px;
+            top: -8px;
+            font-size: 60px;
+            opacity: .12;
+        }
+
+        .stat-card .s-label {
+            font-size: 11px;
+            color: rgba(255,255,255,.75);
+            text-transform: uppercase;
+            letter-spacing: .6px;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .s-val {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .stat-card .s-change {
+            font-size: 11px;
+            color: rgba(255,255,255,.8);
+            margin-top: 4px;
+        }
+
+    .s1 {
+        background: linear-gradient(135deg, #3b82f6, #6366f1);
+    }
+
+    .s2 {
+        background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    .s3 {
+        background: linear-gradient(135deg, #f59e0b, #ef4444);
+    }
+
+    .s4 {
+        background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    }
+
+    .main-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 14px;
+        margin-bottom: 14px;
+    }
+
+    .panel {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .panel-header {
+        padding: 14px 18px;
+        border-bottom: 1px solid #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .panel-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    .btn-link {
+        font-size: 11px;
+        color: #3b82f6;
+        text-decoration: none;
+    }
+
+    .bottom-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 14px;
+    }
+
+    .list-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 18px;
+        border-bottom: 1px solid #f8fafc;
+    }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+    .item-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        flex-shrink: 0;
+    }
+
+    .icon-blue {
+        background: #eff6ff;
+    }
+
+    .icon-green {
+        background: #f0fdf4;
+    }
+
+    .icon-amber {
+        background: #fffbeb;
+    }
+
+    .icon-purple {
+        background: #fdf4ff;
+    }
+
+    .item-title {
+        font-size: 12px;
+        font-weight: 500;
+        color: #0f172a;
+    }
+
+    .item-sub {
+        font-size: 10px;
+        color: #94a3b8;
+    }
+
+    .badge {
+        font-size: 9px;
+        padding: 3px 8px;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+
+    .b-green {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    .b-blue {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .b-amber {
+        background: #fef9c3;
+        color: #92400e;
+    }
+
+    .notif-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+    .notif-time {
+        font-size: 10px;
+        color: #cbd5e1;
+        margin-left: auto;
+        white-space: nowrap;
+    }
+
+    .quick-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        padding: 12px 18px;
+    }
+
+    .quick-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 12px;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+        text-decoration: none;
+        transition: all .15s;
+    }
+
+        .quick-btn:hover {
+            border-color: #bfdbfe;
+            background: #eff6ff;
+        }
+
+    .quick-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+    }
+
+    .quick-label {
+        font-size: 11px;
+        font-weight: 500;
+        color: #374151;
+    }
+
+    .chart-wrap {
+        padding: 16px 18px;
+    }
+
+    .bar-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .bar-label {
+        font-size: 11px;
+        color: #64748b;
+        width: 80px;
+        flex-shrink: 0;
+    }
+
+    .bar-track {
+        flex: 1;
+        background: #f1f5f9;
+        border-radius: 20px;
+        height: 8px;
+        overflow: hidden;
+    }
+
+    .bar-fill {
+        height: 100%;
+        border-radius: 20px;
+    }
+
+    .bar-val {
+        font-size: 11px;
+        color: #374151;
+        font-weight: 600;
+        width: 30px;
+        text-align: right;
+        flex-shrink: 0;
+    }
+
+    .donut-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+    }
+
+    .legend {
+        padding: 0 18px 14px;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+
+    .legend-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+    .legend-label {
+        font-size: 12px;
+        color: #374151;
+        flex: 1;
+    }
+
+    .legend-val {
+        font-size: 12px;
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    .weather-wrap {
+        padding: 16px 18px;
+    }
+
+    .weather-main {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+    }
+
+    .weather-icon {
+        font-size: 36px;
+    }
+
+    .weather-temp {
+        font-size: 28px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .weather-city {
+        font-size: 12px;
+        color: #64748b;
+    }
+
+    .weather-detail {
+        font-size: 11px;
+        color: #94a3b8;
+    }
+
+    .weather-row {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .weather-day {
+        text-align: center;
+        padding: 8px;
+        background: #f8fafc;
+        border-radius: 8px;
+        flex: 1;
+        margin: 0 3px;
+    }
+
+    .weather-day-name {
+        font-size: 10px;
+        color: #94a3b8;
+        margin-bottom: 4px;
+    }
+
+    .weather-day-icon {
+        font-size: 18px;
+        margin-bottom: 2px;
+    }
+
+    .weather-day-temp {
+        font-size: 11px;
+        font-weight: 600;
+        color: #374151;
+    }
+</style>
+
+<div class="stats-grid">
+    <div class="stat-card s1">
+        <div class="deco">🚗</div>
+        <div class="s-label">Toplam Araç</div>
+        <div class="s-val">@Model.CarCount</div>
+        <div class="s-change">↑ 12 bu ay eklendi</div>
+    </div>
+    <div class="stat-card s2">
+        <div class="deco">📅</div>
+        <div class="s-label">Toplam Rezervasyon</div>
+        <div class="s-val">@Model.GetReservationCount</div>
+        <div class="s-change">@Model.GetReservationCount Yeni Rezervasyon</div>
+    </div>
+    <div class="stat-card s3">
+        <div class="deco">📢</div>
+        <div class="s-label">En Çok Yorum Alan Blog</div>
+        <div class="s-val">@Model.MostCommentedBlogTitle</div>
+        <div class="s-change">↑ @Model.MostCommentedBlogCommentCount yeni yorum eklendi</div>
+    </div>
+    <div class="stat-card s4">
+        <div class="deco">💬</div>
+        <div class="s-label">En Son Eklenen Blog</div>
+        <div class="s-val">@Model.LastBlogName</div>
+        <div class="s-change">@Model.LastBlogAuthor</div>
+    </div>
+</div>
+
+<div class="main-grid">
+    <div class="panel">
+        <div class="panel-header">
+            <div class="panel-title">Araç İstatistikleri</div>
+        </div>
+        <div class="chart-wrap">
+
+          
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+                <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:12px;">
+                    <div style="font-size:10px; color:#15803d; font-weight:600; text-transform:uppercase; letter-spacing:.4px; margin-bottom:6px;">
+                        <i class="bi bi-arrow-up-circle-fill"></i> En Pahalı
+                    </div>
+                    <div style="font-size:12px; font-weight:700; color:#0f172a; margin-bottom:4px;">@Model.HighestPriceCar</div>
+                    <div style="font-size:16px; font-weight:700; color:#15803d;">@Model.HighestCarDailyPrice₺ <span style="font-size:10px; font-weight:400; color:#94a3b8;">/ gün</span></div>
+                </div>
+                <div style="background:#fff5f5; border:1px solid #fecaca; border-radius:10px; padding:12px;">
+                    <div style="font-size:10px; color:#dc2626; font-weight:600; text-transform:uppercase; letter-spacing:.4px; margin-bottom:6px;">
+                        <i class="bi bi-arrow-down-circle-fill"></i> En Ucuz
+                    </div>
+                    <div style="font-size:12px; font-weight:700; color:#0f172a; margin-bottom:4px;">@Model.CarNameWithBrand</div>
+                    <div style="font-size:16px; font-weight:700; color:#dc2626;">@Model.CheapestCarPriceDay₺ <span style="font-size:10px; font-weight:400; color:#94a3b8;">/ gün</span></div>
+                </div>
+            </div>
+
+           
+            <div class="bar-row">
+                <div class="bar-label">En Yüksek KM</div>
+                <div style="flex:1; font-size:12px; color:#0f172a; font-weight:500;">@Model.HighestCarMileage</div>
+                <div class="bar-val" style="width:auto;">@Model.MileageValue.ToString("N0")</div>
+            </div>
+            <div class="bar-row">
+                <div class="bar-label">En Çok Marka</div>
+                <div style="flex:1; font-size:12px; color:#0f172a; font-weight:500;">@Model.MostCarBrandName</div>
+                <div class="bar-val" style="width:auto;">@Model.MostCarCount araç</div>
+            </div>
+            <div class="bar-row">
+                <div class="bar-label">Yakıt Türü</div>
+                <div style="flex:1; font-size:12px; color:#0f172a; font-weight:500;">@Model.MostUsedFuelType</div>
+                <div class="bar-val" style="width:auto;">@Model.FuelTypeCount araç</div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <div class="panel-title">Yakıt Türü Dağılımı</div>
+        </div>
+        <div style="padding:16px 18px;">
+
+            <div style="text-align:center; margin-bottom:16px; padding-bottom:14px; border-bottom:1px solid #f1f5f9;">
+                <div style="font-size:24px; font-weight:700; color:#0f172a;">@fuelTotal</div>
+                <div style="font-size:11px; color:#94a3b8;">toplam araç</div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                @if (Model.CarFuelType != null)
+                {
+                    foreach (var item in Model.CarFuelType)
+                    {
+                        var pct = fuelTotal > 0 ? (int)Math.Round((double)item.Value / fuelTotal * 100) : 0;
+                        var color = fuelColors.ContainsKey(item.Key) ? fuelColors[item.Key] : "#64748b";
+                        var r = 30;
+                        var circ = 2 * Math.PI * r;
+                        var dash = circ * pct / 100;
+
+                        <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+                            <div style="position:relative; width:80px; height:80px;">
+                                <svg width="80" height="80" viewBox="0 0 80 80" style="transform:rotate(-90deg);">
+                                    <circle cx="40" cy="40" r="@r" fill="none" stroke="#f1f5f9" stroke-width="7" />
+                                    <circle cx="40" cy="40" r="@r" fill="none"
+                                            stroke="@color" stroke-width="7"
+                                            stroke-dasharray="@dash.ToString("F2") @((circ - dash).ToString("F2"))"
+                                            stroke-linecap="round" />
+                                </svg>
+                                <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                                    <div style="font-size:14px; font-weight:700; color:@color;">%@pct</div>
+                                    <div style="font-size:10px; color:#94a3b8;">@item.Value araç</div>
+                                </div>
+                            </div>
+                            <div style="font-size:11px; font-weight:500; color:#374151; text-align:center;">@item.Key</div>
+                            <div style="width:100%; height:3px; border-radius:2px; background:#f1f5f9; overflow:hidden;">
+                                <div style="width:@pct%; height:100%; border-radius:2px; background:@color;"></div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="panel">
+        <div class="panel-header">
+            <div class="panel-title">Hava Durumu</div>
+            <span style="font-size:10px; color:#94a3b8;">@ViewBag.CityName</span>
+        </div>
+        <div class="weather-wrap">
+            <div class="weather-main">
+                <div class="weather-icon"> 
+                    <div class="weather-icon">@ViewBag.Icon</div>
+                </div>
+                <div>
+                    <div class="weather-temp">@ViewBag.Temp°C</div>
+                    <div class="weather-city">@ViewBag.Description</div>
+                    <div class="weather-detail">Nem: %@ViewBag.Humidity · Rüzgar: @ViewBag.WindSpeed km/s</div>
+                </div>
+            </div>
+            <div class="weather-row">
+                <div class="weather-day"><div class="weather-day-name">Pzt</div><div class="weather-day-icon">☀️</div><div class="weather-day-temp">27°</div></div>
+                <div class="weather-day"><div class="weather-day-name">Sal</div><div class="weather-day-icon">⛅</div><div class="weather-day-temp">24°</div></div>
+                <div class="weather-day"><div class="weather-day-name">Çar</div><div class="weather-day-icon">🌧️</div><div class="weather-day-temp">19°</div></div>
+                <div class="weather-day"><div class="weather-day-name">Per</div><div class="weather-day-icon">⛅</div><div class="weather-day-temp">22°</div></div>
+                <div class="weather-day"><div class="weather-day-name">Cum</div><div class="weather-day-icon">☀️</div><div class="weather-day-temp">26°</div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bottom-grid">
+
+    <div class="panel">
+        <div class="panel-header">
+            <div class="panel-title">Son Bloglar</div>
+            <a href="/Admin/Blog/Index/" class="btn-link">Tümü →</a>
+        </div>
+        @if (ViewBag.Last5Blogs != null)
+        {
+            foreach (var item in ViewBag.Last5Blogs)
+            {
+                <div class="list-item">
+                    <img src="@item.CoverImageUrl" style="width:42px; height:42px; border-radius:8px; object-fit:cover; flex-shrink:0;" />
+                    <div style="flex:1">
+                        <div class="item-title">@item.Title</div>
+                        <div class="item-sub">@item.AuthorName · @item.BlogCategoryName</div>
+                    </div>
+                    <span class="badge b-blue">Blog</span>
+                    <div class="notif-time">@item.CreateDate.ToString("dd.MM")</div>
+                </div>
+            }
+        }
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:14px;">
+        <div class="panel">
+            <div class="panel-header"><div class="panel-title">Hızlı Erişim</div></div>
+            <div class="quick-grid">
+                <a asp-area="Admin" asp-controller="Car" asp-action="AddCar" class="quick-btn">
+                    <div class="quick-icon" style="background:#eff6ff;"><i class="bi bi-car-front" style="color:#3b82f6;"></i></div>
+                    <div class="quick-label">Araç Ekle</div>
+                </a>
+                <a asp-area="Admin" asp-controller="Banner" asp-action="AddBanner" class="quick-btn">
+                    <div class="quick-icon" style="background:#fdf4ff;"><i class="bi bi-megaphone" style="color:#8b5cf6;"></i></div>
+                    <div class="quick-label">Banner Ekle</div>
+                </a>
+                <a asp-area="Admin" asp-controller="Blog" asp-action="AdminAddBlog" class="quick-btn">
+                    <div class="quick-icon" style="background:#fffbeb;"><i class="bi bi-file-text" style="color:#f59e0b;"></i></div>
+                    <div class="quick-label">Blog Yaz</div>
+                </a>
+                <a asp-area="Admin" asp-controller="Location" asp-action="AddLocation" class="quick-btn">
+                    <div class="quick-icon" style="background:#f0fdf4;"><i class="bi bi-geo-alt" style="color:#10b981;"></i></div>
+                    <div class="quick-label">Lokasyon</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">Vites Türü Dağılımı</div>
+            </div>
+            <div class="chart-wrap">
+                <div style="display:flex; align-items:center; justify-content:center; gap:24px; margin-bottom:16px;">
+                    <div style="text-align:center;">
+                        <div style="font-size:28px; font-weight:700; color:#3b82f6;">@Model.AutomaticCarCount</div>
+                        <div style="font-size:11px; color:#94a3b8;">Otomatik</div>
+                    </div>
+                    <div style="width:1px; height:40px; background:#e2e8f0;"></div>
+                    <div style="text-align:center;">
+                        <div style="font-size:28px; font-weight:700; color:#f59e0b;">@Model.ManualCarCount</div>
+                        <div style="font-size:11px; color:#94a3b8;">Manuel</div>
+                    </div>
+                </div>
+
+                @{
+                    var total = Model.AutomaticCarCount + Model.ManualCarCount;
+                    var autoPercent = total > 0 ? (Model.AutomaticCarCount * 100 / total) : 0;
+                    var manualPercent = total > 0 ? (Model.ManualCarCount * 100 / total) : 0;
+                }
+
+                <div class="bar-row">
+                    <div class="bar-label">Otomatik</div>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width:@autoPercent%; background:linear-gradient(90deg,#3b82f6,#6366f1);"></div>
+                    </div>
+                    <div class="bar-val">%@autoPercent</div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label">Manuel</div>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width:@manualPercent%; background:linear-gradient(90deg,#f59e0b,#ef4444);"></div>
+                    </div>
+                    <div class="bar-val">%@manualPercent</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

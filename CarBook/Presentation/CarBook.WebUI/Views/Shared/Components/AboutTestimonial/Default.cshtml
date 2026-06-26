@@ -1,0 +1,119 @@
+﻿@model List<ResultTestimonialDto>
+
+<style>
+    .testimony-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 40px 32px 32px;
+        text-align: center;
+        box-shadow: 0 8px 28px rgba(0,0,0,0.07);
+        position: relative;
+        margin: 10px 14px 30px;
+    }
+
+    .testimony-quote-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: #fbb710;
+        color: #1d2127;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        margin: 0 auto 18px;
+    }
+
+    .testimony-user-img {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+        margin: 0 auto 16px;
+        border: 3px solid #fbb710;
+    }
+
+    .testimony-stars {
+        color: #fbb710;
+        font-size: 14px;
+        margin-bottom: 14px;
+        letter-spacing: 2px;
+    }
+
+    .testimony-comment {
+        font-size: 15px;
+        color: #555;
+        line-height: 1.8;
+        margin-bottom: 20px;
+        min-height: 95px;
+    }
+
+    .testimony-divider {
+        width: 36px;
+        height: 2px;
+        background: #fbb710;
+        margin: 0 auto 16px;
+    }
+
+    .testimony-name {
+        font-size: 16px;
+        font-weight: 700;
+        color: #1d2127;
+        margin-bottom: 2px;
+    }
+
+    .testimony-position {
+        font-size: 13px;
+        color: #999;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+    }
+</style>
+
+<section class="ftco-section testimony-section bg-light">
+    <div class="container">
+
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-7 text-center heading-section ftco-animate">
+                <span class="subheading" style="color:#fbb710">Referanslar</span>
+                <h2 class="mb-3">Onlar Anlatsın</h2>
+            </div>
+        </div>
+
+        <div class="row ftco-animate">
+            <div class="col-md-12">
+                <div class="carousel-testimony owl-carousel ftco-owl">
+                    @foreach (var item in Model.Take(10))
+                    {
+                        <div class="item">
+                            <div class="testimony-card">
+                                <div class="testimony-quote-icon">
+                                    <i class="ion-quote"></i>
+                                </div>
+
+                                <div class="testimony-user-img" style="background-image:url('@item.ImageUrl');"></div>
+
+                                <div class="testimony-stars">
+                                    <i class="ion-android-star"></i>
+                                    <i class="ion-android-star"></i>
+                                    <i class="ion-android-star"></i>
+                                    <i class="ion-android-star"></i>
+                                    <i class="ion-android-star"></i>
+                                </div>
+
+                                <p class="testimony-comment">@item.Comment</p>
+
+                                <div class="testimony-divider"></div>
+
+                                <p class="testimony-name">@item.Name</p>
+                                <span class="testimony-position">@item.Title</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

@@ -1,0 +1,676 @@
+﻿@using CarBook.WebUI.Dtos.CarPricingDto
+@model CreateReservationDto
+@{
+    ViewData["Title"] = "Rezervasyon";
+    Layout = "~/Views/Shared/_UILayout.cshtml";
+}
+@section HeroBanner {
+    <style>
+        .page-hero-wrap {
+            position: relative;
+        }
+
+            .page-hero-wrap .overlay {
+                background: linear-gradient(180deg, rgba(13,15,18,0.5), rgba(13,15,18,0.82));
+            }
+
+        .page-breadcrumbs {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 8px 18px;
+            border-radius: 24px;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+            .page-breadcrumbs a {
+                color: #d8d9db;
+                text-decoration: none;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                transition: color .2s ease;
+            }
+
+                .page-breadcrumbs a:hover {
+                    color: #fbb710;
+                    text-decoration: none;
+                }
+
+            .page-breadcrumbs .current {
+                color: #fbb710;
+                font-weight: 600;
+            }
+
+            .page-breadcrumbs .sep {
+                color: #5f646b;
+            }
+
+        .page-hero-title {
+            color: #fff;
+            font-size: 46px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 18px;
+        }
+
+            .page-hero-title::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 60px;
+                height: 4px;
+                background: #fbb710;
+                border-radius: 2px;
+            }
+
+        @@media (max-width: 767px) {
+            .page-hero-title {
+                font-size: 30px;
+            }
+        }
+    </style>
+
+    <section class="hero-wrap hero-wrap-2 page-hero-wrap js-fullheight" style="background-image: url('/carbook-master/images/bg_3.jpg');">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text js-fullheight align-items-end">
+                <div class="col-md-9 pb-5">
+                    <div class="page-breadcrumbs">
+                        <a href="/Default/Index/"><i class="ion-ios-home"></i> Ana Sayfa</a>
+                        <span class="sep">/</span>
+                        <span class="current">Rezervasyon</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<style>
+    .reservation-form .form-control {
+        color: #333 !important;
+        background-color: #fff !important;
+        border-radius: 6px;
+        height: 48px;
+        border: 1px solid #e2e2e2;
+    }
+
+    .reservation-form select.form-control {
+        height: 48px;
+    }
+
+    .reservation-form .label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+        .reservation-form .label i {
+            color: #fbb710;
+            font-size: 16px;
+        }
+
+    .reservation-section-title {
+        font-size: 15px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #fbb710;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f1f1f1;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .reservation-card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+    .reservation-card-header {
+        background: #1d2127;
+        padding: 30px 40px;
+        color: #fff;
+    }
+
+    .reservation-card-body {
+        padding: 40px;
+    }
+
+    .btn-submit-reservation {
+        background: #fbb710;
+        border: none;
+        color: #1d2127;
+        font-weight: 700;
+        border-radius: 6px;
+        padding: 14px;
+        font-size: 16px;
+        transition: all .25s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+        .btn-submit-reservation:hover:not(:disabled) {
+            background: #1d2127;
+            color: #fbb710;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn-submit-reservation:disabled {
+            opacity: .75;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+    .spinner-ring {
+        width: 18px;
+        height: 18px;
+        border: 3px solid rgba(29,33,39,0.25);
+        border-top-color: #1d2127;
+        border-radius: 50%;
+        animation: spin .7s linear infinite;
+        display: inline-block;
+    }
+
+    @@keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    .field-error {
+        color: #dc3545;
+        font-size: 12.5px;
+        margin-top: 6px;
+        display: none;
+    }
+
+    .form-control.is-invalid {
+        border-color: #dc3545 !important;
+    }
+
+    .reservation-success {
+        display: none;
+        text-align: center;
+        padding: 30px 10px 10px;
+        animation: fadeUp .5s ease;
+    }
+
+    @@keyframes fadeUp {
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .success-check {
+        width: 86px;
+        height: 86px;
+        border-radius: 50%;
+        background: #e9f9ee;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+    }
+
+        .success-check i {
+            font-size: 46px;
+            color: #28a745;
+        }
+
+    .reservation-success h3 {
+        font-weight: 700;
+        color: #1d2127;
+        margin-bottom: 10px;
+    }
+
+    .reservation-success p {
+        color: #777;
+        max-width: 420px;
+        margin: 0 auto 28px;
+    }
+
+    .success-info-box {
+        background: #f9fafb;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        padding: 18px 22px;
+        max-width: 420px;
+        margin: 0 auto 28px;
+        text-align: left;
+        font-size: 14px;
+        color: #555;
+    }
+
+        .success-info-box div + div { margin-top: 8px; }
+        .success-info-box strong { color: #1d2127; }
+
+    .btn-back-home {
+        background: #1d2127;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 12px 28px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all .25s ease;
+        text-decoration: none;
+    }
+
+        .btn-back-home:hover {
+            background: #fbb710;
+            color: #1d2127;
+            text-decoration: none;
+        }
+
+    #reservationAlert .alert { border-radius: 8px; }
+
+    /* Fiyat kartları */
+    .price-options-wrap {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    .price-option-card {
+        flex: 1;
+        min-width: 130px;
+        border: 2px solid #e2e2e2;
+        border-radius: 10px;
+        padding: 16px 12px;
+        cursor: pointer;
+        text-align: center;
+        transition: all .2s ease;
+        background: #fff;
+        user-select: none;
+    }
+
+        .price-option-card:hover {
+            border-color: #fbb710;
+            background: #fffbf0;
+        }
+
+        .price-option-card.selected {
+            border-color: #fbb710;
+            background: #fffbf0;
+            box-shadow: 0 4px 14px rgba(251,183,16,0.2);
+        }
+
+    .price-option-icon {
+        font-size: 24px;
+        color: #fbb710;
+        margin-bottom: 8px;
+    }
+
+    .price-option-type {
+        font-size: 13px;
+        font-weight: 700;
+        color: #1d2127;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+    }
+
+    .price-option-amount {
+        font-size: 20px;
+        font-weight: 800;
+        color: #fbb710;
+    }
+
+    .price-option-sub {
+        font-size: 11px;
+        color: #999;
+        margin-top: 3px;
+    }
+
+    .price-error {
+        color: #dc3545;
+        font-size: 12.5px;
+        margin-top: 8px;
+        display: none;
+    }
+</style>
+
+<section class="ftco-section bg-light">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-8 text-center ftco-animate">
+                <span class="subheading">Son Adım</span>
+                <h2 class="mb-2">Rezervasyon Bilgilerinizi Girin</h2>
+                <p class="text-muted">Aşağıdaki formu eksiksiz doldurarak rezervasyonunuzu tamamlayabilirsiniz.</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="reservation-card ftco-animate">
+
+                    <div class="reservation-card-header d-flex align-items-center">
+                        <span class="ion-ios-car mr-3" style="font-size:36px; color:#fbb710;"></span>
+                        <div>
+                            <h4 class="mb-0 text-white" id="cardHeaderTitle">Araç Kiralama Rezervasyonu</h4>
+                            <small style="color:#9aa0a6;" id="cardHeaderSubtitle">Tüm alanlar zorunludur</small>
+                        </div>
+                    </div>
+
+                    <div class="reservation-card-body">
+
+                        <div id="reservationAlert"></div>
+
+                        <div class="reservation-success" id="successPanel">
+                            <div class="success-check">
+                                <i class="ion-ios-checkmark"></i>
+                            </div>
+                            <h3>Rezervasyonunuz Alındı!</h3>
+                            <p>Talebiniz başarıyla oluşturuldu. Rezervasyon detayları kısa süre içinde e-posta adresinize gönderilecektir.</p>
+                            <div class="success-info-box">
+                                <div><strong>Ad Soyad:</strong> <span id="successName"></span></div>
+                                <div><strong>E-posta:</strong> <span id="successEmail"></span></div>
+                                <div><strong>Telefon:</strong> <span id="successPhone"></span></div>
+                            </div>
+                            <a href="/Default/Index" class="btn-back-home">
+                                <i class="ion-ios-home"></i> Ana Sayfaya Dön
+                            </a>
+                        </div>
+
+                        <form method="post" id="reservationForm" class="reservation-form">
+
+                            <div class="reservation-section-title">
+                                <i class="ion-ios-person"></i> Kişisel Bilgiler
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label class="label"><i class="ion-ios-person-outline"></i> Ad</label>
+                                    <input type="text" name="ReservationName" class="form-control" placeholder="Adınız">
+                                    <div class="field-error">Lütfen adınızı girin.</div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="label"><i class="ion-ios-person-outline"></i> Soyad</label>
+                                    <input type="text" name="ReservationSurname" class="form-control" placeholder="Soyadınız">
+                                    <div class="field-error">Lütfen soyadınızı girin.</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label class="label"><i class="ion-ios-email-outline"></i> E-posta</label>
+                                    <input type="email" name="Email" class="form-control" placeholder="ornek@mail.com">
+                                    <div class="field-error">Lütfen geçerli bir e-posta girin.</div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="label"><i class="ion-ios-telephone-outline"></i> Telefon Numarası</label>
+                                    <input type="tel" name="PhoneNumber" class="form-control" placeholder="05XX XXX XX XX">
+                                    <div class="field-error">Lütfen telefon numaranızı girin.</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label class="label"><i class="ion-ios-calendar-outline"></i> Yaş</label>
+                                    <input type="number" name="Age" min="18" max="100" class="form-control" placeholder="Yaşınız">
+                                    <div class="field-error">Lütfen yaşınızı girin (18+).</div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="label"><i class="ion-ios-clipboard-outline"></i> Ehliyet Alış Yılı</label>
+                                    <input type="number" name="DriverLicenseYear" min="1950" max="2026" class="form-control" placeholder="Örn: 2018">
+                                    <div class="field-error">Lütfen ehliyet alış yılınızı girin.</div>
+                                </div>
+                            </div>
+
+                            <div class="reservation-section-title mt-4">
+                                <i class="ion-ios-car-outline"></i> Araç ve Lokasyon Bilgileri
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label class="label"><i class="ion-ios-car-outline"></i> Kiralanacak Araç</label>
+                                    <input type="text" class="form-control" value="@TempData.Peek("CarName")" readonly>
+                                    <input type="hidden" name="CarId" value="@TempData.Peek("CarId")">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label class="label"><i class="ion-ios-pin-outline"></i> Alınacak Lokasyon</label>
+                                    <select name="PickUpLocationId" class="form-control" asp-items="ViewBag.PickUpLocation">
+                                        <option value="">Lokasyon seçiniz</option>
+                                    </select>
+                                    <div class="field-error">Lütfen alış lokasyonu seçin.</div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="label"><i class="ion-ios-pin-outline"></i> Bırakılacak Lokasyon</label>
+                                    <select name="DropOffLocationId" class="form-control" asp-items="ViewBag.DropOffLocation">
+                                        <option value="">Lokasyon seçiniz</option>
+                                    </select>
+                                    <div class="field-error">Lütfen bırakış lokasyonu seçin.</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label class="label"><i class="ion-ios-calendar-outline"></i> Alış Tarihi</label>
+                                    <input type="date" name="PickUpDate" class="form-control">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="label"><i class="ion-ios-calendar-outline"></i> Bırakış Tarihi</label>
+                                    <input type="date" name="DropOffDate" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="reservation-section-title mt-4">
+                                <i class="ion-ios-pricetag-outline"></i> Kiralama Tipi Seçin
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <div class="price-options-wrap">
+                                        @if (ViewBag.Prices != null)
+                                        {
+                                            foreach (var price in ViewBag.Prices as List<ResultCarPricingDto>)
+                                            {
+                                                string icon = price.PricingType?.ToLower().Contains("günlük") == true ? "ion-ios-sunny-outline"
+                                                : price.PricingType?.ToLower().Contains("haftalık") == true ? "ion-ios-calendar-outline"
+                                                : "ion-ios-infinite-outline";
+
+                                                <div class="price-option-card"
+                                                     data-id="@price.Id"
+                                                     data-amount="@price.Amount.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                                                     onclick="selectPrice(this)">
+                                                    <div class="price-option-icon"><i class="@icon"></i></div>
+                                                    <div class="price-option-type">@price.PricingType</div>
+                                                    <div class="price-option-amount">@price.Amount.ToString("C")</div>
+                                                    <div class="price-option-sub">Toplam tutar</div>
+                                                </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <p style="color:#dc3545; font-size:13px;">Bu araca ait fiyatlandırma bulunamadı.</p>
+                                        }
+                                    </div>
+                                    <input type="hidden" name="CarPricingId" id="CarPricingId">
+                                    <input type="hidden" name="Amount" id="Amount">
+                                    <div class="price-error" id="priceError">Lütfen bir kiralama tipi seçin.</div>
+                                </div>
+                            </div>
+
+                            <div class="reservation-section-title mt-4">
+                                <i class="ion-ios-chatbubble-outline"></i> Ek Bilgi
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label class="label"><i class="ion-ios-create-outline"></i> Eklemek İstedikleriniz</label>
+                                    <textarea name="Description" rows="4" class="form-control"
+                                              placeholder="Varsa özel istekleriniz, notlarınız..."
+                                              style="height:auto; padding:12px;"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group mt-4">
+                                <button type="submit" class="btn-submit-reservation w-100" id="submitBtn">
+                                    <span id="submitBtnIcon"><i class="ion-ios-checkmark-circle-outline"></i></span>
+                                    <span id="submitBtnText">Rezervasyonu Tamamla</span>
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        function selectPrice(el) {
+            document.querySelectorAll('.price-option-card').forEach(x => x.classList.remove('selected'));
+            el.classList.add('selected');
+            document.getElementById('CarPricingId').value = el.dataset.id;
+            document.getElementById('Amount').value = el.dataset.amount;
+            document.getElementById('priceError').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('reservationForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const submitBtnIcon = document.getElementById('submitBtnIcon');
+            const submitBtnText = document.getElementById('submitBtnText');
+            const alertBox = document.getElementById('reservationAlert');
+            const successPanel = document.getElementById('successPanel');
+            const headerTitle = document.getElementById('cardHeaderTitle');
+            const headerSubtitle = document.getElementById('cardHeaderSubtitle');
+
+            const requiredFields = [
+                { name: 'ReservationName', label: 'Ad' },
+                { name: 'ReservationSurname', label: 'Soyad' },
+                { name: 'Email', label: 'E-posta' },
+                { name: 'PhoneNumber', label: 'Telefon Numarası' },
+                { name: 'Age', label: 'Yaş' },
+                { name: 'DriverLicenseYear', label: 'Ehliyet Alış Yılı' },
+                { name: 'CarId', label: 'Araç' },
+                { name: 'PickUpLocationId', label: 'Alış Lokasyonu' },
+                { name: 'DropOffLocationId', label: 'Bırakış Lokasyonu' }
+            ];
+
+            function clearValidation() {
+                form.querySelectorAll('.form-control').forEach(el => el.classList.remove('is-invalid'));
+                form.querySelectorAll('.field-error').forEach(el => el.style.display = 'none');
+            }
+
+            function showAlert(message, type) {
+                alertBox.innerHTML =
+                    '<div class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' +
+                    '<i class="ion-ios-information-circle mr-2"></i>' + message +
+                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                    '</div>';
+            }
+
+            function validate() {
+                clearValidation();
+                let valid = true;
+
+                requiredFields.forEach(f => {
+                    const el = form.querySelector('[name="' + f.name + '"]');
+                    if (!el) return;
+                    const val = (el.value || '').toString().trim();
+                    if (!val) {
+                        valid = false;
+                        el.classList.add('is-invalid');
+                        const errorEl = el.closest('.form-group')?.querySelector('.field-error');
+                        if (errorEl) errorEl.style.display = 'block';
+                    }
+                });
+
+                // Fiyat seçimi kontrolü
+                if (!document.getElementById('CarPricingId').value) {
+                    valid = false;
+                    document.getElementById('priceError').style.display = 'block';
+                }
+
+                return valid;
+            }
+
+            function setLoading(isLoading) {
+                submitBtn.disabled = isLoading;
+                if (isLoading) {
+                    submitBtnIcon.innerHTML = '<span class="spinner-ring"></span>';
+                    submitBtnText.textContent = 'İşleniyor...';
+                } else {
+                    submitBtnIcon.innerHTML = '<i class="ion-ios-checkmark-circle-outline"></i>';
+                    submitBtnText.textContent = 'Rezervasyonu Tamamla';
+                }
+            }
+
+                    form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            alertBox.innerHTML = '';
+
+            if (!validate()) {
+                showAlert('Lütfen işaretli alanları eksiksiz doldurun.', 'danger');
+                return;
+            }
+
+            const formData = new FormData(form);
+            const dto = {};
+            formData.forEach((value, key) => {
+                dto[key] = value === '' ? null : value;
+            });
+
+            // Sayısal alanları dönüştür
+            dto.CarId = parseInt(dto.CarId) || 0;
+            dto.CarPricingId = parseInt(dto.CarPricingId) || 0;
+            dto.Amount = parseFloat(dto.Amount) || 0;
+            dto.Age = parseInt(dto.Age) || 0;
+            dto.DriverLicenseYear = parseInt(dto.DriverLicenseYear) || 0;
+            dto.PickUpLocationId = dto.PickUpLocationId ? parseInt(dto.PickUpLocationId) : null;
+            dto.DropOffLocationId = dto.DropOffLocationId ? parseInt(dto.DropOffLocationId) : null;
+            dto.PickUpDate = dto.PickUpDate ? new Date(dto.PickUpDate).toISOString() : null;
+            dto.DropOffDate = dto.DropOffDate ? new Date(dto.DropOffDate).toISOString() : null;
+
+            setLoading(true);
+
+            try {
+                const response = await fetch('/Reservation/Index', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dto)
+                });
+
+                if (response.ok) {
+                    document.getElementById('successName').textContent =
+                        (dto.ReservationName || '') + ' ' + (dto.ReservationSurname || '');
+                    document.getElementById('successEmail').textContent = dto.Email || '';
+                    document.getElementById('successPhone').textContent = dto.PhoneNumber || '';
+
+                    form.style.display = 'none';
+                    alertBox.innerHTML = '';
+                    headerTitle.textContent = 'Rezervasyon Tamamlandı';
+                    headerSubtitle.textContent = 'Teşekkür ederiz';
+                    successPanel.style.display = 'block';
+                    successPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    const err = await response.text();
+                    console.error('API HATASI:', err);
+                    showAlert('Rezervasyon oluşturulurken bir hata oluştu. Lütfen bilgilerinizi kontrol edip tekrar deneyin.', 'danger');
+                    setLoading(false);
+                }
+            } catch (err) {
+                showAlert('Sunucuya bağlanırken bir sorun oluştu. Lütfen daha sonra tekrar deneyin.', 'danger');
+                setLoading(false);
+            }
+        });
+        });
+    </script>
+}
