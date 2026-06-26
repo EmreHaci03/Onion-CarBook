@@ -76,7 +76,6 @@ CarBook/
 | SignalR | Gerçek zamanlı iletişim |
 | JWT Authentication | API güvenliği |
 | Cookie Authentication | UI oturum yönetimi |
-| FluentValidation | Model doğrulama |
 | AutoMapper | Nesne dönüşümleri |
 | MailKit / MimeKit | Mail gönderimi |
 | SQL Server | Veritabanı |
