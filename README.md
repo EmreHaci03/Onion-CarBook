@@ -157,6 +157,7 @@ dotnet run
 - ⭐ Araç değerlendirme ve yorum sistemi
 - 📝 Blog sistemi ve yorumlar
 - 📊 Admin paneli (araç, rezervasyon, blog yönetimi)
+- 🌤️ RapidAPI ile anlık hava durumu
 - 📡 SignalR ile anlık istatistikler
 - 🗺️ Lokasyon bazlı araç kiralama
 
